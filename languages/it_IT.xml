@@ -6,8 +6,6 @@
  <text key="module-title">Workflows</text>
 
  <!-- alerts -->
- <text key="flowNotFound">Il flusso non è stato trovato</text>
-
  <text key="workflowNotFound">Il workflow non è stato trovato</text>
  <text key="workflowCreated">Il workflow è stato creato</text>
  <text key="workflowClosed">Il workflow è stato chiuso</text>
@@ -16,6 +14,13 @@
  <text key="ticketUpdated">Il ticket è stato aggiornato</text>
  <text key="ticketClosed">Il ticket è stato chiuso</text>
  <text key="ticketError">Si è verificato un errore durante il salvataggio del ticket</text>
+
+ <text key="flowNotFound">Il flusso non è stato trovato</text>
+ <text key="flowCreated">Il flusso è stato creato</text>
+ <text key="flowUpdated">Il flusso è stato aggiornato</text>
+ <text key="flowError">Si è verificato un errore durante il salvataggio del flusso</text>
+ 
+
  <text key="categoryCreated">La categoria è stata creata</text>
  <text key="categoryUpdated">La categoria è stata aggiornata</text>
  <text key="categoryError">Si è verificato un errore durante il salvataggio della categoria (verifica di aver compilato correttamente il nome e il gruppo)</text>
@@ -207,8 +212,59 @@
  <text key="flows_edit-fc-cancel">Annulla</text>
 
  <!-- workflows_flows_view.php -->
- <text key="flows_view-"></text>
+ <text key="flows_view-flow">WORKFLOW</text>
+ <text key="flows_view-flow-edit">Modifica workflow</text>
+ <text key="flows_view-dt-category">Categoria</text>
+ <text key="flows_view-dt-subject">Oggetto</text>
+ <text key="flows_view-dt-typology">Tipologia</text>
+ <text key="flows_view-dt-priority">Priorità</text>
+ <text key="flows_view-dd-pinned">In evidenza</text>
+ <text key="flows_view-dt-sla">SLA</text>
+ <text key="flows_view-dt-description">Descrizione</text>
+ <text key="flows_view-dt-advice">Suggerimento</text>
+ <text key="flows_view-fields">CAMPI</text>
+ <text key="flows_view-fields-add">Aggiungi campo</text>
+ <text key="flows_view-fields-tr-unvalued">Non è presente nessun campo..</text>
+ <text key="flows_view-fields-th-label">Campo</text>
+ <text key="flows_view-fields-th-typology">Tipologia</text>
+ <text key="flows_view-fields-th-name">Nome</text>
+ <text key="flows_view-fields-th-value">Valore</text>
+ <text key="flows_view-fields-th-options">Opzioni</text>
 
+ <text key="flows_view-fields-mh-field">Modifica campo: {0}</text>
+ <text key="flows_view-fields-mh-fieldAdd">Nuovo campo</text>
+ <text key="flows_view-fields-ff-label">Etichetta</text>
+ <text key="flows_view-fields-ff-label-placeholder">Etichetta visualizzata</text>
+ <text key="flows_view-fields-ff-typology">Tipologia</text>
+ <text key="flows_view-fields-ff-name">Nome</text>
+ <text key="flows_view-fields-ff-name-placeholder">Nome univoco del campo</text>
+ <text key="flows_view-fields-ff-value">Valore</text>
+ <text key="flows_view-fields-ff-value-placeholder">Valore predefinito</text>
+ <text key="flows_view-fields-ff-class">Classe</text>
+ <text key="flows_view-fields-ff-classNull">Nessuna classe</text>
+ <text key="flows_view-fields-ff-placeholder">Placeholder</text>
+ <text key="flows_view-fields-ff-placeholder-placeholder">Messaggio di suggerimento</text>
+ <text key="flows_view-fields-ff-optionsMethod">Metodo opzioni</text>
+ <text key="flows_view-fields-ff-optionsValues">Opzioni</text>
+ <text key="flows_view-fields-ff-optionsValues-placeholder">Inserire un valore per riga nel formato: valore=etichetta</text>
+ <text key="flows_view-fields-ff-optionsQuery">MySQL Query</text>
+ <text key="flows_view-fields-ff-optionsQuery-placeholder">SELECT value,name FROM table ORDER BY name ASC</text>
+ <text key="flows_view-fields-ff-optionsValue">Campo valore</text>
+ <text key="flows_view-fields-ff-optionsValue-placeholder">Campo MySQL valore</text>
+ <text key="flows_view-fields-ff-optionsLabel">Campo etichetta</text>
+ <text key="flows_view-fields-ff-optionsLabel-placeholder">Campo MySQL etichetta</text>
+ <text key="flows_view-fields-ff-required">Obbligatorio</text>
+ <text key="flows_view-fields-fc-submit">Salva campo</text>
+ <text key="flows_view-fields-fc-delete">Elimina campo</text>
+ <text key="flows_view-fields-fc-delete-confirm">Eliminare definitivamente questo campo?</text>
+ <text key="flows_view-actions">AZIONI</text>
+ <text key="flows_view-actions-add">Aggiungi azione</text>
+ <text key="flows_view-actions-tr-unvalued">Non è presente nessuna azione..</text>
+ <text key="flows_view-actions-th-condition">Condizione</text>
+ <text key="flows_view-actions-th-subject">Oggetto</text>
+ <text key="flows_view-actions-th-group">Gruppo</text>
+ <text key="flows_view-actions-th-assigned">Incaricato</text>
+ <text key="flows_view-actions-th-"></text>
 
  <!-- submit.php -->
  <text key="submit-"></text>

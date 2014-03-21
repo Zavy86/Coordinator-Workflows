@@ -8,11 +8,11 @@ api_loadLocaleFile("./");
 $act=$_GET['act'];
 switch($act){
 
- // flows
- case "flow_save":flow_save();break;
  case "flow_field_save":flow_field_save();break;
+
  case "flow_field_move_up":flow_field_move("up");break;
  case "flow_field_move_down":flow_field_move("down");break;
+
  case "flow_field_delete":flow_field_delete();break;
  case "flow_action_save":flow_action_save();break;
  case "flow_action_delete":flow_action_delete();break;
@@ -23,12 +23,17 @@ switch($act){
 
  // ok
 
+
+
  // workflows
  case "workflow_save":workflow_save();break;
 
  // tickets
  case "ticket_assign":ticket_assign();break;
  case "ticket_process":ticket_process();break;
+
+ // flows
+ case "flow_save":flow_save();break;
 
  // categories
  case "category_save":category_save();break;
@@ -43,50 +48,6 @@ switch($act){
 
 
 
-/* -[ Workflow Save ]-------------------------------------------------------- */
-function flow_save(){
- if(!api_checkPermission("workflows","workflows_admin")){api_die("accessDenied");}
- // acquire variables
- $g_id=$_GET['id'];
- if(!$g_id){$g_id=0;}
- $p_idCategory=$_POST['idCategory'];
- $p_typology=$_POST['typology'];
- $p_name=addslashes($_POST['name']);
- $p_description=addslashes($_POST['description']);
- $p_advice=addslashes($_POST['advice']);
- $p_priority=$_POST['priority'];
- $p_pinned=$_POST['pinned'];
- if($p_pinned=="on"){$p_pinned=1;}else{$p_pinned=0;}
- // build query
- if($g_id>0){
-  $query="UPDATE workflows_workflows SET
-   idCategory='".$p_idCategory."',
-   typology='".$p_typology."',
-   name='".$p_name."',
-   description='".$p_description."',
-   advice='".$p_advice."',
-   priority='".$p_priority."',
-   pinned='".$p_pinned."'
-   WHERE id='".$g_id."'";
-  // execute query
-  $GLOBALS['db']->execute($query);
-  // redirect
-  $alert="&alert=workflowUpdated&alert_class=alert-success";
-  header("location: workflows_fields_edit.php?id=".$g_id.$alert);
- }else{
-  $query="INSERT INTO workflows_workflows
-   (idCategory,typology,name,description,advice,priority,pinned) VALUES
-   ('".$p_idCategory."','".$p_typology."','".$p_name."','".$p_description."',
-    '".$p_advice."','".$p_priority."','".$p_pinned."')";
-  // execute query
-  $GLOBALS['db']->execute($query);
-  // set id to last inserted id
-  $g_id=$GLOBALS['db']->lastInsertedId();
-  // redirect
-  $alert="&alert=workflowCreated&alert_class=alert-success";
-  header("location: workflows_fields_edit.php?id=".$g_id.$alert);
- }
-}
 
 /* -[ Workflow Field Save ]-------------------------------------------------- */
 function flow_field_save(){
@@ -348,6 +309,8 @@ function ticket_solicit(){/*
 
 
 // ok
+
+
 
 
 
@@ -652,6 +615,56 @@ function ticket_process(){
  }
  // redirect
  header("location: workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket.$alert);
+}
+
+
+/* -[ Flow Save ]------------------------------------------------------------ */
+function flow_save(){
+ if(!api_checkPermission("workflows","workflows_admin")){api_die("accessDenied");}
+ // acquire variables
+ $g_idFlow=$_GET['idFlow'];
+ if(!$g_idFlow){$g_idFlow=0;}
+ $p_idCategory=$_POST['idCategory'];
+ $p_typology=$_POST['typology'];
+ $p_pinned=$_POST['pinned'];
+ $p_subject=addslashes($_POST['subject']);
+ $p_description=addslashes($_POST['description']);
+ $p_advice=addslashes($_POST['advice']);
+ $p_priority=$_POST['priority'];
+ $p_sla=$_POST['sla'];
+ //$p_procedure=$_POST['procedure']; <- da implementare
+ // build query
+ if($g_idFlow>0){
+  $query="UPDATE workflows_flows SET
+   idCategory='".$p_idCategory."',
+   typology='".$p_typology."',
+   pinned='".$p_pinned."',
+   subject='".$p_subject."',
+   description='".$p_description."',
+   advice='".$p_advice."',
+   priority='".$p_priority."',
+   sla='".$p_sla."',
+   updDate='".date("Y-m-d H:i:s")."',
+   updIdAccount='".$_SESSION['account']->id."'
+   WHERE id='".$g_idFlow."'";
+  // execute query
+  $GLOBALS['db']->execute($query);
+  // redirect
+  $alert="&alert=flowUpdated&alert_class=alert-success";
+  header("location: workflows_flows_view.php?idFlow=".$g_idFlow.$alert);
+ }else{
+  $query="INSERT INTO workflows_flows
+   (idCategory,typology,pinned,subject,description,advice,priority,sla,addDate,addIdAccount) VALUES
+   ('".$p_idCategory."','".$p_typology."','".$p_pinned."','".$p_subject."','".$p_description."',
+    '".$p_advice."','".$p_priority."','".$p_sla."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+  // execute query
+  $GLOBALS['db']->execute($query);
+  // set id to last inserted id
+  $q_idFlow=$GLOBALS['db']->lastInsertedId();
+  // redirect
+  $alert="&alert=flowCreated&alert_class=alert-success";
+  header("location: workflows_flows_view.php?idFlow=".$q_idFlow.$alert);
+ }
 }
 
 

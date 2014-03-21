@@ -117,6 +117,19 @@ function api_workflows_ticket($idticket){
  return $ticket;
 }
 
+/* -[ Ticket Typology ]--------------------------------------------------- */
+// @integer $typology : ticket typology id
+// @integer $onlyIcon : show only icon
+function api_workflows_ticketTypology($typology,$onlyIcon=FALSE){
+ switch($typology){
+  case 1:$return=api_icon("icon-map-marker",api_text("ticket-standard"));if(!$onlyIcon){$return.=" ".api_text("ticket-standard");}break;
+  case 2:$return=api_icon("icon-envelope",api_text("ticket-external"));if(!$onlyIcon){$return.=" ".api_text("ticket-external");}break;
+  case 3:$return=api_icon("icon-check",api_text("ticket-authorization"));if(!$onlyIcon){$return.=" ".api_text("ticket-authorization");}break;
+  default:$return="[Ticket typology not found]";
+ }
+ return $return;
+}
+
 /* -[ Ticket SLA ]----------------------------------------------------------- */
 // @object $ticket : ticket object
 // @boolean $popup : show textual difference in popup
@@ -240,9 +253,27 @@ function api_workflows_flow($idFlow,$subobjects=TRUE){
   $fields=$GLOBALS['db']->query("SELECT * FROM workflows_fields WHERE idFlow='".$flow->id."' ORDER BY position ASC");
   while($field=$GLOBALS['db']->fetchNextObject($fields)){$flow->fields[]=$field;}
   // get flows actions
-
+  $flow->actions=array();
+  $actions=$GLOBALS['db']->query("SELECT * FROM workflows_actions WHERE idFlow='".$flow->id."' ORDER BY idAction ASC");
+  while($action=$GLOBALS['db']->fetchNextObject($actions)){$flow->actions[]=$action;}
  }
  return $flow;
+}
+
+/* -[ Flow field object by id ]---------------------------------------------- */
+// @integer $idField : field id
+function api_workflows_flowField($idField){
+ $field=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_fields WHERE id='".$idField."'");
+ if(!$field->id){return FALSE;}
+ return $field;
+}
+
+/* -[ Flow action object by id ]--------------------------------------------- */
+// @integer $idAction : action id
+function api_workflows_flowAction($idAction){
+ $action=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_actions WHERE id='".$idAction."'");
+ if(!$action->id){return FALSE;}
+ return $action;
 }
 
 /* -[ Flow fields options by field object ]---------------------------------- */

@@ -148,7 +148,7 @@ function content(){
  $workflow_dl->render();
  // split page
  $GLOBALS['html']->split_span(6);
- // show description dynamic list
+ // show details dynamic list
  $details_dl->render();
  // close split
  $GLOBALS['html']->split_close();
