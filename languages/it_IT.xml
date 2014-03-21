@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<locale language="IT">
+
+ <!-- module -->
+ <text key="module-title">Workflows</text>
+
+ <!-- alerts -->
+ <text key="flowNotFound">Il flusso non è stato trovato</text>
+
+ <text key="workflowNotFound">Il workflow non è stato trovato</text>
+ <text key="workflowCreated">Il workflow è stato creato</text>
+ <text key="workflowClosed">Il workflow è stato chiuso</text>
+ <text key="workflowError">Si è verificato un errore durante il salvataggio del workflow</text>
+ <text key="ticketAssigned">Il ticket ti è stato assegnato</text>
+ <text key="ticketUpdated">Il ticket è stato aggiornato</text>
+ <text key="ticketClosed">Il ticket è stato chiuso</text>
+ <text key="ticketError">Si è verificato un errore durante il salvataggio del ticket</text>
+ <text key="categoryCreated">La categoria è stata creata</text>
+ <text key="categoryUpdated">La categoria è stata aggiornata</text>
+ <text key="categoryError">Si è verificato un errore durante il salvataggio della categoria (verifica di aver compilato correttamente il nome e il gruppo)</text>
+
+
+ <!-- verificare -->
+ <text key="fieldCreated">Il campo è stato creato</text>
+ <text key="fieldUpdated">Il campo è stato aggiornato</text>
+ <text key="fieldMoved">Il campo è stato spostato</text>
+ <text key="fieldDeleted">Il campo è stato eliminato</text>
+ <text key="actionCreated">L'azione è stata creata</text>
+ <text key="actionUpdated">L'azione è stata aggiornata</text>
+ <text key="actionDeleted">L'azione è stata eliminata</text>
+ <text key="actionRequired">Non è possibile eliminare questa azione in quanto richiesta da altre azioni</text>
+
+ <!-- status -->
+ <text key="status">Stato</text>
+ <text key="status-opened">Aperto</text>
+ <text key="status-assigned">Assegnato</text>
+ <text key="status-standby">Sospeso</text>
+ <text key="status-closed">Chiuso</text>
+ <text key="status-closedExecuted">Chiuso (Eseguito)</text>
+ <text key="status-closedUnnecessary">Chiuso (Non necessario)</text>
+ <text key="status-closedUnexecuted">Chiuso (Non eseguibile)</text>
+ <text key="status-locked">Bloccato</text>
+
+ <!-- solved -->
+ <text key="solved-executed">Eseguito</text>
+ <text key="solved-unexecuted">Non eseguibile</text>
+ <text key="solved-unnecessary">Non necessario</text>
+
+ <!-- typology -->
+ <text key="typology">Typologia</text>
+ <text key="typology-request">Richiesta</text>
+ <text key="typology-incident">Problematica</text>
+
+ <!-- priority -->
+ <text key="priority">Priorità</text>
+ <text key="priority-highest">Massima</text>
+ <text key="priority-high">Alta</text>
+ <text key="priority-medium">Media</text>
+ <text key="priority-low">Bassa</text>
+ <text key="priority-lowest">Minima</text>
+
+ <!-- typology -->
+ <text key="difficulty">Difficoltà</text>
+ <text key="difficulty-low">Bassa</text>
+ <text key="difficulty-medium">Media</text>
+ <text key="difficulty-high">Alta</text>
+
+ <!-- ticket -->
+ <text key="ticket-standard">Ticket standard</text>
+ <text key="ticket-external">Ticket gestito esternamente da {0}</text>
+ <text key="ticket-authorization">Richiesta autorizzazione di {0}</text>
+
+ <!-- filters -->
+ <text key="filter-status">Stato</text>
+ <text key="filter-opened">Aperti</text>
+ <text key="filter-assigned">Assegnati</text>
+ <text key="filter-standby">Sospesi</text>
+ <text key="filter-closed">Chiusi</text>
+ <text key="filter-locked">Bloccati</text>
+ <text key="filter-category">Categoria</text>
+ <text key="filter-typology">Tipologia</text>
+
+ <!-- api.inc.php -->
+ <text key="api-sla">{0} minuti</text>
+ <text key="api-sla-expire">Scadenza fra {0}</text>
+ <text key="api-sla-expired">Scaduta da {0}</text>
+ <text key="api-sla-completed">Completata in {0}</text>
+ <text key="api-sla-completedExpired">Completata con {0} di ritardo</text>
+ <text key="api-details-mh-ticket">Ticket: {0}</text>
+ <text key="api-details-dt-category">Categoria</text>
+ <text key="api-details-dt-add">Creazione</text>
+ <text key="api-details-dd-add">{0} il {1}</text>
+ <text key="api-details-dt-ass">Assegnazione</text>
+ <text key="api-details-dd-ass">{0} il {1}</text>
+ <text key="api-details-dt-end">Conclusione</text>
+ <text key="api-details-dt-hostname">Hostname</text>
+ <text key="api-details-dt-note">Note</text>
+
+ <!-- template.inc.php -->
+ <text key="nav-workflows">Workflows</text>
+ <text key="nav-open">Apri un workflow</text>
+ <text key="nav-operations">Operazioni</text>
+ <text key="nav-solicit">Sollecita</text>
+ <text key="nav-administration">Amministrazione</text>
+ <text key="nav-list">Lista flussi</text>
+ <text key="nav-add">Nuovo flusso</text>
+ <text key="nav-categories">Gestione Categorie</text>
+ <text key="nav-addTicket">Aggiungi ticket</text>
+
+ <!-- workflows_flows.php -->
+ <text key="flows-workflows">Workflow personali</text>
+ <text key="flows-tickets">Tickets disponibili</text>
+ <text key="flows-th-idWorkflow"> </text>
+ <text key="flows-th-idTicket">Ticket</text>
+ <text key="flows-th-timestamp">Data</text>
+ <text key="flows-th-sla">SLA</text>
+ <text key="flows-th-category">Categoria</text>
+ <text key="flows-th-subject">Oggetto</text>
+ <text key="flows-th-account">Utente</text>
+ <text key="flows-th-group">Gruppo</text>
+ <text key="flows-th-assigned">Incaricato</text>
+ <text key="flows-th-update">Aggiornamento</text>
+ <text key="flows-tr-workflowsUnvalued">Non è presente nessun workflow aperto da te..</text>
+ <text key="flows-tr-ticketsUnvalued">Non è presente nessun ticket..</text>
+
+ <!-- workflows_view.php -->
+ <text key="view-dt-idWorkflow">Workflow</text>
+ <text key="view-dt-category">Categoria</text>
+ <text key="view-dt-subject">Oggetto</text>
+ <text key="view-dt-account">Utente</text>
+ <text key="view-dt-typology">Tipologia</text>
+ <text key="view-dt-priority">Priorità</text>
+ <text key="view-dt-status">Stato</text>
+ <text key="view-dt-addDate">Creazione</text>
+ <text key="view-dt-endDate">Conclusione</text>
+ <text key="view-dt-sla">SLA</text>
+ <text key="view-dt-details">Dettagli</text>
+ <text key="view-dt-note">Note</text>
+ <text key="view-th-idTicket">Ticket</text>
+ <text key="view-th-sla">SLA</text>
+ <text key="view-th-subject">Oggetto</text>
+ <text key="view-th-group">Gruppo</text>
+ <text key="view-th-assigned">Incaricato</text>
+ <text key="view-th-update">Aggiornamento</text>
+ <text key="view-td-assign">Assegnati il ticket</text>
+ <text key="view-td-assign-confirm">Confermi di volerti assegnare questo ticket?</text>
+ <text key="view-td-edit">Modifica il ticket</text>
+ <text key="view-td-process">Processa il ticket</text>
+ <text key="view-tr-unvalued">Non è presente nessun ticket..</text>
+ <text key="view-ff-idGroup">Gruppo</text>
+ <text key="view-ff-idAssigned">Incaricato</text>
+ <text key="view-ff-note">Note</text>
+ <text key="view-fc-submit">Salva</text>
+
+ <!-- workflows_view.php -->
+ <text key="search-li-show">Mostra tutta la categoria {0}</text>
+ <text key="search-li-other">Altra richiesta o problema non in elenco</text>
+
+ <!-- workflows_add.php -->
+ <text key="add-ff-category">Categoria</text>
+ <text key="add-ff-typology">Tipologia</text>
+ <text key="add-ff-subject">Oggetto</text>
+ <text key="add-ff-priority">Priorità</text>
+ <text key="add-ff-phone">Telefono</text>
+ <text key="add-ff-note">Note</text>
+ <text key="add-fc-submit">Salva</text>
+ <text key="add-fc-cancel">Annulla</text>
+
+ <!-- workflows_categories.php -->
+ <text key="categories-th-category">Categoria</text>
+ <text key="categories-th-description">Descrizione</text>
+ <text key="categories-tr-unvalued">Non è presente nessuna categoria..</text>
+ <text key="categories-create">Nuova categoria</text>
+ <text key="categories-update">Modifica categoria</text>
+ <text key="categories-ff-category">Categoria padre</text>
+ <text key="categories-ff-category-default">Categoria principale</text>
+ <text key="categories-ff-name">Categoria</text>
+ <text key="categories-ff-name-placeholder">Nome visualizzato</text>
+ <text key="categories-ff-description">Descrizione</text>
+ <text key="categories-ff-description-placeholder">Breve descrizione della categoria</text>
+ <text key="categories-ff-group">Gruppo</text>
+ <text key="categories-ff-group-placeholder">Seleziona un gruppo</text>
+ <text key="categories-fc-submit">Salva categoria</text>
+ <text key="categories-fc-cancel">Annulla</text>
+
+ <!-- workflows_flows_list.php -->
+ <text key="flows_list-th-category">Categoria</text>
+ <text key="flows_list-th-flow">Workflow</text>
+ <text key="flows_list-th-description">Descrizione</text>
+ <text key="flows_list-th-counter">Utilizzi</text>
+ <text key="flows_list-tr-unvalued">Non è presente nessun workflow..</text>
+
+ <!-- workflows_flows_edit.php -->
+ <text key="flows_edit-ff-category">Categoria</text>
+ <text key="flows_edit-ff-subject">Oggetto</text>
+ <text key="flows_edit-ff-subject-placeholder">Oggetto del workflow</text>
+ <text key="flows_edit-ff-description">Descrizione</text>
+ <text key="flows_edit-ff-description-placeholder">Descrizione sintetica del workflow</text>
+ <text key="flows_edit-ff-advice">Suggerimento</text>
+ <text key="flows_edit-ff-advice-placeholder">Suggerimenti, requisiti o prove da eseguire prima di aprire il workflow</text>
+ <text key="flows_edit-ff-sla">SLA</text>
+ <text key="flows_edit-ff-typology">Tipologia</text>
+ <text key="flows_edit-fo-pinned">In evidenza</text>
+ <text key="flows_edit-ff-priority">Priorità</text>
+ <text key="flows_edit-fc-submit">Salva</text>
+ <text key="flows_edit-fc-cancel">Annulla</text>
+
+ <!-- workflows_flows_view.php -->
+ <text key="flows_view-"></text>
+
+
+ <!-- submit.php -->
+ <text key="submit-"></text>
+
+</locale>
