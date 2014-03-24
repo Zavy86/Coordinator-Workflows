@@ -101,8 +101,10 @@ function content(){
   });
   // validation
   $('form').validate({
+   ignore:null,
    rules:{
-    name:{required:true,minlength:3}
+    name:{required:true,minlength:3},
+    idGroup:{required:true}
    },
    submitHandler:function(form){form.submit();}
   });

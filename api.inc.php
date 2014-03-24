@@ -13,7 +13,7 @@ function api_workflows_workflow($idWorkflow,$subobjects=TRUE){
  if($subobjects){
   // get workflow tickets
   $workflow->tickets=array();
-  $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE idWorkflow='".$workflow->id."' ORDER BY idTicket ASC,status DESC,id ASC");
+  $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE idWorkflow='".$workflow->id."' ORDER BY requiredTicket ASC,status DESC,id ASC");
   while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){$workflow->tickets[]=$ticket;}
  }
  return $workflow;
@@ -141,7 +141,7 @@ function api_workflows_ticketSLA($ticket,$popup=TRUE){
  if($ticket->status==4){$timestamp_to=$ticket->endDate;}
  else{$timestamp_to=date("Y-m-d H:i:s");}
  // get sla
- if($ticket->status==1 && intval($ticket->slaAssignements)>0){$sla=intval($ticket->slaAssignements);}
+ if($ticket->status==1 && intval($ticket->slaAssignment)>0){$sla=intval($ticket->slaAssignment);}
  else{$sla=intval($ticket->slaClosure);}
  // check sla
  if($sla==0){return FALSE;}
@@ -254,7 +254,7 @@ function api_workflows_flow($idFlow,$subobjects=TRUE){
   while($field=$GLOBALS['db']->fetchNextObject($fields)){$flow->fields[]=$field;}
   // get flows actions
   $flow->actions=array();
-  $actions=$GLOBALS['db']->query("SELECT * FROM workflows_actions WHERE idFlow='".$flow->id."' ORDER BY idAction ASC");
+  $actions=$GLOBALS['db']->query("SELECT * FROM workflows_actions WHERE idFlow='".$flow->id."' ORDER BY requiredAction ASC");
   while($action=$GLOBALS['db']->fetchNextObject($actions)){$flow->actions[]=$action;}
  }
  return $flow;
@@ -295,7 +295,7 @@ function api_workflows_flowFieldOptions($field){
     $option_obj->label=stripslashes($options_value[1]);
     if($options_value[0]==$field->value){$option_obj->selected=TRUE;}
     else{$option_obj->selected=FALSE;}
-    $return[]=$option_obj;
+    $return[$options_value[0]]=$option_obj;
    }
    break;
   // populate options from a database query
@@ -308,7 +308,7 @@ function api_workflows_flowFieldOptions($field){
     $option_obj->label=stripslashes($option[1]);
     if($option[0]==$field->value){$option_obj->selected=TRUE;}
     else{$option_obj->selected=FALSE;}
-    $return[]=$option_obj;
+    $return[$options_value[0]]=$option_obj;
    }
    break;
  }

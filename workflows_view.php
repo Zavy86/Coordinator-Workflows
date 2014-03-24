@@ -12,7 +12,6 @@ function content(){
  $selected_ticket=api_workflows_ticket($_GET['idTicket'],TRUE);
  // acquire variables
  $g_act=$_GET['act'];
-
  // build workflow dynamic list
  $workflow_dl=new str_dl("br","dl-horizontal");
  $workflow_dl->addElement(api_text("view-dt-idWorkflow"),str_pad($workflow->id,5,"0",STR_PAD_LEFT));
@@ -25,12 +24,10 @@ function content(){
  $workflow_dl->addElement(api_text("view-dt-addDate"),api_timestampFormat($workflow->addDate,api_text("datetime")));
  if($workflow->endDate<>NULL){$workflow_dl->addElement(api_text("view-dt-endDate"),api_timestampFormat($workflow->endDate,api_text("datetime")));}
  $workflow_dl->addElement(api_text("view-dt-sla"),api_workflows_workflowSLA($workflow),NULL);
-
  // build details dynamic list
  $details_dl=new str_dl("br","dl-horizontal");
  $details_dl->addElement(api_text("view-dt-details"),nl2br(stripslashes($workflow->description)));
  if(strlen($workflow->note)>0){$details_dl->addElement(api_text("view-dt-note"),nl2br(stripslashes($workflow->note)),NULL);}
-
  // build tickets table
  $tickets_table=new str_table(api_text("view-tr-unvalued"),TRUE);
  $tickets_table->addHeader("&nbsp;",NULL,"16");
@@ -46,7 +43,6 @@ function content(){
  //if(can_operate $activity->typology<>3){
  $tickets_table->addHeader("&nbsp;",NULL,"16");
  //}
-
  // build tickets table rows
  foreach($workflow->tickets as $ticket){
   if($ticket->id==$selected_ticket->id){$tickets_table->addRow("info");}
@@ -54,8 +50,8 @@ function content(){
   // ticket typology
   switch($ticket->typology){
    case 1:$typology=api_icon("icon-tag",api_text("ticket-standard"));break;
-   case 2:$typology=api_icon("icon-envelope",api_text("ticket-external",$ticket->mail));break;
-   case 3:$typology=api_icon("icon-check",api_text("ticket-authorization",$ticket->mail));break;
+   case 2:$typology=api_icon("icon-envelope",api_text("ticket-external-by",$ticket->mail));break;
+   case 3:$typology=api_icon("icon-check",api_text("ticket-authorization-by",$ticket->mail));break;
   }
   // notes
   if(strlen($ticket->note)>0){
@@ -70,14 +66,12 @@ function content(){
   // build tickets table fields
   $tickets_table->addField($typology,"nowarp");
   $tickets_table->addField(str_pad($ticket->idWorkflow,5,"0",STR_PAD_LEFT)."-".str_pad($ticket->id,5,"0",STR_PAD_LEFT),"nowarp");
-
   // DA RIFARE MOLTO MELGIO-----------------------------------
   if($ticket->typology==3){
    $tickets_table->addField(api_workflows_status($ticket->status,TRUE,$ticket->approved),"nowarp text-center");
   }else{
    $tickets_table->addField(api_workflows_status($ticket->status,TRUE,$ticket->solved),"nowarp text-center");
   }
-
   $tickets_table->addField($ticket->priority,"nowarp text-center");
   $tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
   $tickets_table->addField(stripslashes($ticket->subject));
@@ -86,9 +80,7 @@ function content(){
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $tickets_table->addField($update,"nowarp");
   //if(can_operate $activity->typology<>5){
-
    // nascondi se è tipo 3
-
    if($ticket->status==1){
     $action="<a href='submit.php?act=ticket_assign&idWorkflow=".$ticket->idWorkflow."&idTicket=".$ticket->id."' onClick='return confirm(\"".api_text("view-td-assign-confirm")."\")'>".api_icon("icon-eye-open",api_text("view-td-assign"))."</a>";
    }elseif($ticket->status==2){
@@ -100,7 +92,6 @@ function content(){
   //$tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
   $tickets_table->addField($action,"nowarp text-center");
  }
-
  // edit selected ticket or add ticket modal window
  if($selected_ticket->id>0 && $g_act=="editTicket"){
   // build ticket edit modal window
@@ -132,15 +123,28 @@ function content(){
   $ticket_modal->body($body_form->render(FALSE));
  }elseif($g_act=="addTicket"){
   // build ticket add modal window
-  $ticket_modal=new str_modal("ticket_edit");
-  $ticket_modal->header(stripslashes($selected_ticket->subject));
-  $body_form=new str_form("submit.php?act=ticket_save&idWorkflow=".$workflow->id,"post","ticket_add");
-
-// --------------------------------------------------------- DA FARE
-
-  $ticket_modal->body($body_form->render(FALSE));
+  $ticket_modal=new str_modal("ticket_add");
+  $ticket_modal->header(api_text("view-ticketAdd"));
+  $form_body=new str_form("submit.php?act=ticket_save&idWorkflow=".$workflow->id,"post","ticket_add");
+  $form_body->addField("text","subject",api_text("view-ff-subject"),NULL,"input-xlarge",api_text("view-ff-subject-placeholder"));
+  $form_body->addField("select","typology",api_text("view-ff-typology"),NULL,"input-large");
+  $typologies=array(1=>"ticket-standard",2=>"ticket-external",3=>"ticket-authorization");
+  foreach($typologies as $value=>$label){$form_body->addFieldOption($value,api_text($label));}
+  $form_body->addField("text","mail",api_text("view-ff-mail"),NULL,"input-xlarge",api_text("view-ff-mail-placeholder"));
+  $form_body->addField("hidden","idGroup",api_text("view-ff-group"),NULL,"input-large");
+  $form_body->addField("hidden","idAssigned",api_text("view-ff-assigned"),NULL,"input-large");
+  $form_body->addField("textarea","note",api_text("view-ff-note"),NULL,"input-xlarge");
+  $form_body->addField("radio","priority",api_text("view-ff-priority"));
+  $priority=array(1=>"priority-highest",2=>"priority-high",3=>"priority-medium",4=>"priority-low",5=>"priority-lowest");
+  foreach($priority as $value=>$label){$form_body->addFieldOption($value,api_text($label),($value==3)?TRUE:FALSE);}
+  $form_body->addField("radio","difficulty",api_text("view-ff-difficulty"));
+  $difficulty=array(1=>"difficulty-low",2=>"difficulty-medium",3=>"difficulty-high");
+  foreach($difficulty as $value=>$label){$form_body->addFieldOption($value,api_text($label),($value==2)?TRUE:FALSE);}
+  $form_body->addField("text","slaAssignment",api_text("view-ff-slaAssignment"),NULL,"input-mini",NULL,FALSE,NULL,api_text("minutes"));
+  $form_body->addField("text","slaClosure",api_text("view-ff-slaClosure"),NULL,"input-mini",NULL,FALSE,NULL,api_text("minutes"));
+  $form_body->addControl("submit",api_text("view-fc-submit"));
+  $ticket_modal->body($form_body->render(FALSE));
  }
-
  // open split
  $GLOBALS['html']->split_open();
  $GLOBALS['html']->split_span(6);
@@ -157,151 +161,14 @@ function content(){
  // show ticket modal window
  if(is_object($ticket_modal)){$ticket_modal->render();}
 ?>
-
-<?php if($g_act=="addTicket"){ ?>
-
-
-<!-- ModalPopup for ticket_modal -->
-<div id='ticket_modal' class='modal hide fade' role='dialog' aria-hidden='true'>
-<div class='modal-header'>
-<button type='button' class='close' data-dismiss='modal' aria-hidden='true'>&times;</button>
-<h4>Nuova azione</h4>
-</div>
-<div class='modal-body'>
-
-<form class="form-horizontal" action="<?php echo "submit.php?act=workflow_action_save&idWorkflow=".$workflow->id."&id=".$selected_action->id;?>" method="post">
-
- <div class="control-group">
-  <label class="control-label">Tipologia</label>
-  <div class="controls" id="typology">
-   <select name="typology">
-    <option value="1"<?php if($selected_action->typology==1){echo " selected";} ?>>Ticket standard</option>
-    <option value="2"<?php if($selected_action->typology==2){echo " selected";} ?>>Ticket gestito esternamente</option>
-    <option value="3"<?php if($selected_action->typology==3){echo " selected";} ?>>Richiesta di autorizzazione</option>
-   </select>
-  </div>
- </div>
-
- <div id="toggleMail">
-  <div class="control-group">
-   <label class="control-label" for="mail">Indirizzo mail</label>
-   <div class="controls"><input type="text" id="mail" class="input-large" name="mail" placeholder="Mail per la gestione del ticket" value="<?php echo stripslashes($selected_action->mail);?>"></div>
-  </div>
- </div>
-
- <div class="control-group">
-  <label class="control-label">Azione richiesta</label>
-  <div class="controls">
-   <select name="idAction">
-    <option value="0">Nessuna</option>
-    <?php
-     /*$actions=$GLOBALS['db']->query("SELECT * FROM workflows_actions WHERE idWorkflow='".$workflow->id."' ORDER BY idAction ASC,name ASC");
-     while($action=$GLOBALS['db']->fetchNextObject($actions)){
-      if($action->id<>$selected_action->id){
-       echo "<option value='".$action->id."'";
-       if($action->id==$selected_action->idAction){echo " selected";}
-       echo ">[".$action->id."] ".stripslashes($action->name);
-       echo "</option>\n";
-      }
-     }*/
-    ?>
-   </select>
-  </div>
- </div>
-
- <div class="control-group">
-  <label class="control-label">Condizionata da</label>
-  <div class="controls">
-   <select name="idField">
-    <option value="0">Nessuna condizione</option>
-    <?php
-     /*$fields=$GLOBALS['db']->query("SELECT * FROM workflows_fields WHERE idWorkflow='".$workflow->id."'");
-     while($field=$GLOBALS['db']->fetchNextObject($fields)){
-      echo "<option value='".$field->id."'";
-      if($field->id==$selected_action->idField){echo " selected";}
-      echo ">".stripslashes($field->name);
-      echo "</option>\n";
-     }*/
-    ?>
-   </select>
-  </div>
- </div>
-
- <div class="control-group">
-  <label class="control-label" for="value">Valore</label>
-  <div class="controls"><input type="text" id="value" class="input-large" name="value" placeholder="Valore condizionale del campo" value="<?php echo stripslashes($selected_action->value);?>"></div>
- </div>
-
- <div class="control-group">
-  <label class="control-label" for="value">Nome attivit&agrave;</label>
-  <div class="controls"><input type="text" id="name" class="input-xlarge" name="name" placeholder="Titolo dell'attivit&agrave;" value="<?php echo stripslashes($selected_action->name);?>"></div>
- </div>
-
- <div id="dGroup" class="control-group">
-  <label class="control-label" for="idGroup">Gruppo</label>
-  <div class="controls">
-   <input type="hidden" id="idGroup" name="idGroup" class="input-large" value="<?php echo stripslashes($selected_action->idGroup);?>">
-  </div>
- </div>
-
- <div id="dSingle" class="control-group">
-  <label class="control-label" for="idAssigned">Utente</label>
-  <div class="controls">
-   <input type="hidden" id="idAssigned" name="idAssigned" class="input-large" value="<?php echo stripslashes($selected_action->idAssigned);?>">
-  </div>
- </div>
-
- <div class="control-group">
-  <label class="control-label">Priorit&agrave;</label>
-  <div class="controls">
-   <select name="priority">
-    <option value="1"<?php if($selected_action->priority==1){echo " selected";} ?>>Bassa</option>
-    <option value="2"<?php if($selected_action->priority==2 || $selected_action->id==0){echo " selected";} ?>>Media</option>
-    <option value="3"<?php if($selected_action->priority==3){echo " selected";} ?>>Alta</option>
-   </select>
-  </div>
- </div>
-
- <div class="control-group">
-  <label class="control-label">Difficolt&agrave;</label>
-  <div class="controls">
-   <select name="difficulty">
-    <option value="1"<?php if($selected_action->difficulty==1){echo " selected";} ?>>Bassa</option>
-    <option value="2"<?php if($selected_action->difficulty==2 || $selected_action->id==0){echo " selected";} ?>>Media</option>
-    <option value="3"<?php if($selected_action->difficulty==3){echo " selected";} ?>>Alta</option>
-   </select>
-  </div>
- </div>
-
- <div class="control-group">
-  <div class="controls">
-   <input type='submit' class='btn btn-primary' name='submit' value='Salva'>
-   <?php if($selected_action->id>0){echo "<a class='btn btn-danger' href='submit.php?act=workflow_action_delete&idWorkflow=".$workflow->id."&id=".$selected_action->id."' onclick='return confirm(\"Sei sicuro di voler eliminare questa azione?\")'>Elimina</a>";} ?>
-  </div>
- </div>
-
-</form>
-
-</div>
-</div>
-
-<?php } ?>
-
-
-
-
-
-
-
-
 <script type="text/javascript">
  $(document).ready(function(){
-  <?php if($g_act=="addTicket"){echo "$('#ticket_modal').modal('show');\n";} ?>
-  <?php //if($g_act=="addTicket"){echo "$('#modal_ticket_add').modal('show');\n";} ?>
-  <?php if($g_act=="editTicket"){echo "$('#modal_ticket_edit').modal('show');\n";} ?>
-
+  <?php if($g_act=="addTicket"){echo "  $('#modal_ticket_add').modal('show');\n";} ?>
+  <?php if($g_act=="editTicket"){echo "  $('#modal_ticket_edit').modal('show');\n";} ?>
+  // call action typology method change event
+  $("form[name=ticket_add] #field_typology").trigger("change");
   // select2 idGroup
-  $("input[name=idGroup]").select2({
+  $("form[name=ticket_edit] input[name=idGroup]").select2({
    placeholder:"<?php echo api_text("view-ff-idGroup-placeholder"); ?>",
    allowClear:true,
    ajax:{
@@ -320,7 +187,7 @@ function content(){
    }
   });
   // select2 idAccountTo
-  $("input[name=idAssigned]").select2({
+  $("form[name=ticket_edit] input[name=idAssigned]").select2({
    placeholder:"<?php echo api_text("view-ff-idAssigned-placeholder"); ?>",
    minimumInputLength:2,
    allowClear:true,
@@ -339,30 +206,9 @@ function content(){
     }
    }
   });
-
-
-
-
-
-
-
-
-
-
-
-
-  // toggle mail
-  $("#toggleMail").hide();
-  $("#typology").on('change', function() {
-   if($("#typology option:selected").val()==1){
-    $("#toggleMail").hide();
-   }else{
-    $("#toggleMail").show();
-   }
-  });
   // select2 idGroup
-  $("#idGroup").select2({
-   placeholder:"Seleziona un gruppo",
+  $("form[name=ticket_add] input[name=idGroup]").select2({
+   placeholder:"<?php echo api_text("view-ff-group-placeholder"); ?>",
    allowClear:true,
    ajax:{
     url:"../accounts/groups_json.inc.php",
@@ -379,9 +225,9 @@ function content(){
     }
    }
   });
-  // select2 idAccountTo
-  $("#idAssigned").select2({
-   placeholder:"Seleziona un utente",
+  // select2 idAssigned
+  $("form[name=ticket_add] input[name=idAssigned]").select2({
+   placeholder:"<?php echo api_text("view-ff-assigned-placeholder"); ?>",
    minimumInputLength:2,
    allowClear:true,
    ajax:{
@@ -399,6 +245,25 @@ function content(){
     }
    }
   });
+  // ticket_add validation
+  $('form[name=ticket_add]').validate({
+   ignore:null,
+   rules:{
+    subject:{required:true,minlength:3},
+    idGroup:{required:true},
+    slaAssigned:{number:true},
+    slaClosure:{number:true}
+   },
+   submitHandler:function(form){form.submit();}
+  });
+ });
+ // toggle action typology
+ $("form[name=ticket_add] #field_typology").change(function(){
+  if($(this).find("option:selected").val()==="1"){
+   $("#field_mail").hide();
+  }else{
+   $("#field_mail").show();
+  }
  });
 </script>
 <?php } ?>
