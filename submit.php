@@ -8,12 +8,9 @@ api_loadLocaleFile("./");
 $act=$_GET['act'];
 switch($act){
 
- case "flow_field_save":flow_field_save();break;
 
- case "flow_field_move_up":flow_field_move("up");break;
- case "flow_field_move_down":flow_field_move("down");break;
 
- case "flow_field_delete":flow_field_delete();break;
+
  case "flow_action_save":flow_action_save();break;
  case "flow_action_delete":flow_action_delete();break;
  // ticket
@@ -27,6 +24,10 @@ switch($act){
 
  // workflows
  case "workflow_save":workflow_save();break;
+ case "flow_field_save":flow_field_save();break;
+ case "flow_field_move_up":flow_field_move("up");break;
+ case "flow_field_move_down":flow_field_move("down");break;
+ case "flow_field_delete":flow_field_delete();break;
 
  // tickets
  case "ticket_assign":ticket_assign();break;
@@ -41,7 +42,7 @@ switch($act){
  // default
  default:
   $alert="?alert=submitFunctionNotFound&alert_class=alert-warning&act=".$act;
-  header("location: index.php".$alert);
+  exit(header("location: index.php".$alert));
 }
 
 
@@ -49,129 +50,8 @@ switch($act){
 
 
 
-/* -[ Workflow Field Save ]-------------------------------------------------- */
-function flow_field_save(){
- if(!api_checkPermission("workflows","workflows_admin")){api_die("accessDenied");}
- // acquire variables
- $g_id=$_GET['id'];
- if(!$g_id){$g_id=0;}
- $g_idWorkflow=$_GET['idWorkflow'];
- if(!$g_idWorkflow){$g_idWorkflow=0;}
- if(!$g_idWorkflow>0){
-  // redirect
-  $alert="?alert=workflowsError&alert_class=alert-error";
-  header("location: workflows_list.php".$alert);
- }
- $p_typology=$_POST['typology'];
- $p_name=api_clearFileName(addslashes($_POST['name']));
- $p_title=addslashes($_POST['title']);
- $p_value=addslashes($_POST['value']);
- $p_defined=addslashes($_POST['defined']);
- $p_size=addslashes($_POST['size']);
- $p_required=$_POST['required'];
- if($p_required=="on"){$p_required=1;}else{$p_required=0;}
- // check for insert or update
- if($g_id>0){
-  // build query
-  $query="UPDATE workflows_fields SET
-   idWorkflow='".$g_idWorkflow."',
-   typology='".$p_typology."',
-   name='".$p_name."',
-   title='".$p_title."',
-   value='".$p_value."',
-   defined='".$p_defined."',
-   size='".$p_size."',
-   required='".$p_required."'
-   WHERE id='".$g_id."'";
-  // execute query
-  $GLOBALS['db']->execute($query);
-  // redirect
-  $alert="&alert=fieldUpdated&alert_class=alert-success";
-  header("location: workflows_fields_edit.php?id=".$g_idWorkflow.$alert);
- }else{
-  // get number of fields for position
-  $position=$GLOBALS['db']->countOf("workflows_fields","idWorkflow='".$g_idWorkflow."'");
-  $position++;
-  // build query
-  $query="INSERT INTO workflows_fields
-   (idWorkflow,typology,name,title,value,defined,size,required,position) VALUES
-   ('".$g_idWorkflow."','".$p_typology."','".$p_name."','".$p_title."','".$p_value."',
-    '".$p_defined."','".$p_size."','".$p_required."','".$position."')";
-  // execute query
-  $GLOBALS['db']->execute($query);
-  // set id to last inserted id
-  $g_id=$GLOBALS['db']->lastInsertedId();
-  // redirect
-  $alert="&alert=fieldCreated&alert_class=alert-success";
-  header("location: workflows_fields_edit.php?id=".$g_idWorkflow.$alert);
- }
-}
 
-/* -[ Workflow Field Move ]-------------------------------------------------- */
-function flow_field_move($to){
- if(!api_checkPermission("workflows","workflows_admin")){api_die("accessDenied");}
- // acquire variables
- $g_id=$_GET['id'];
- if(!$g_id){$g_id=0;}
- $g_idWorkflow=$_GET['idWorkflow'];
- if(!$g_idWorkflow){$g_idWorkflow=0;}
- if($g_idWorkflow>0 && $g_id>0){
-  $moved=FALSE;
-  // get current position
-  $position=$GLOBALS['db']->queryUniqueValue("SELECT position FROM workflows_fields WHERE id='".$g_id."'");
-  // move field
-  switch($to){
-   case "up":
-    if($position>1){
-     echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=".$position." WHERE position='".($position-1)."' AND idWorkflow='".$g_idWorkflow."'");
-     echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=".($position-1)." WHERE id='".$g_id."'");
-     $moved=TRUE;
-    }
-    break;
-   case "down":
-    $max_position=$GLOBALS['db']->countOf("workflows_fields","idWorkflow='".$g_idWorkflow."'");
-    if($position<$max_position){
-     echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=".$position." WHERE position='".($position+1)."' AND idWorkflow='".$g_idWorkflow."'");
-     echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=".($position+1)." WHERE id='".$g_id."'");
-     $moved=TRUE;
-    }
-    break;
-  }
-  // alert and redirect
-  if($moved){$alert="&alert=fieldMoved&alert_class=alert-success";}
-   else{$alert="&alert=workflowError&alert_class=alert-error";}
-  exit(header("location: workflows_fields_edit.php?id=".$g_idWorkflow.$alert));
- }else{
-  // redirect
-  $alert="&alert=workflowError&alert_class=alert-error";
-  exit(header("location: workflows_fields_edit.php?id=".$g_idWorkflow.$alert));
- }
-}
 
-/* -[ Workflow Field Delete ]------------------------------------------------ */
-function flow_field_delete(){
- if(!api_checkPermission("workflows","workflows_admin")){api_die("accessDenied");}
- // acquire variables
- $g_id=$_GET['id'];
- if(!$g_id){$g_id=0;}
- $g_idWorkflow=$_GET['idWorkflow'];
- if(!$g_idWorkflow){$g_idWorkflow=0;}
- if($g_idWorkflow>0 && $g_id>0){
-  // get field position
-  $position=$GLOBALS['db']->queryUniqueValue("SELECT position FROM workflows_fields WHERE id='".$g_id."'");
-  // delete action
-  echo $GLOBALS['db']->execute("DELETE FROM workflows_fields WHERE id='".$g_id."'");
-  // moves back fields located after
-  echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=position-1 WHERE position>'".$position."' AND idWorkflow='".$g_idWorkflow."'");
-  // redirect
-  $alert="&alert=fieldDeleted&alert_class=alert-success";
-  exit(header("location: workflows_fields_edit.php?id=".$g_idWorkflow.$alert));
- }else{
-  // redirect
-  $alert="&alert=workflowError&alert_class=alert-error";
-  exit(header("location: workflows_fields_edit.php?id=".$g_idWorkflow.$alert));
- }
-}
 
 /* -[ Workflow Action Save ]-------------------------------------------------- */
 function flow_action_save(){
@@ -184,7 +64,7 @@ function flow_action_save(){
  if(!$g_idWorkflow>0){
   // redirect
   $alert="?alert=workflowsError&alert_class=alert-error";
-  header("location: workflows_list.php".$alert);
+  exit(header("location: workflows_list.php".$alert));
  }
  $p_typology=$_POST['typology'];
  $p_mail=addslashes($_POST['mail']);
@@ -221,7 +101,7 @@ function flow_action_save(){
   $GLOBALS['db']->execute($query);
   // redirect
   $alert="&alert=actionUpdated&alert_class=alert-success";
-  header("location: workflows_fields_edit.php?id=".$g_idWorkflow.$alert);
+  exit(header("location: workflows_fields_edit.php?id=".$g_idWorkflow.$alert));
  }else{
   $query="INSERT INTO workflows_actions
    (idWorkflow,typology,mail,idAction,conditioned,idField,value,name,idGroup,
@@ -235,7 +115,7 @@ function flow_action_save(){
   $g_id=$GLOBALS['db']->lastInsertedId();
   // redirect
   $alert="&alert=actionCreated&alert_class=alert-success";
-  header("location: workflows_fields_edit.php?id=".$g_idWorkflow.$alert);
+  exit(header("location: workflows_fields_edit.php?id=".$g_idWorkflow.$alert));
  }
 }
 
@@ -291,7 +171,7 @@ function ticket_solicit(){/*
   $alert="&alert=ticketError&alert_class=alert-error";
  }
  // redirect
- header("location: workflows_view.php?id=".$g_id.$alert);*/
+ exit(header("location: workflows_view.php?id=".$g_id.$alert));*/
 }
 
 
@@ -350,7 +230,7 @@ function workflow_save(){
  // process actions
  if(!workflow_process_actions($g_id,$flow->id)){$alert="?alert=workflowError&alert_class=alert-error";}
  // redirect
- header("location: workflows_list.php".$alert);
+ exit(header("location: workflows_list.php".$alert));
 }
 
 /* -[ Workflow Get Field ]----------------------------------------------------- */
@@ -529,7 +409,7 @@ function ticket_assign(){
   $alert="&alert=ticketError&alert_class=alert-error";
  }
  // redirect
- header("location: workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket.$alert);
+ exit(header("location: workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket.$alert));
 }
 
 /* -[ Ticket Process ]------------------------------------------------------- */
@@ -614,7 +494,7 @@ function ticket_process(){
   $alert="&alert=ticketError&alert_class=alert-error";
  }
  // redirect
- header("location: workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket.$alert);
+ exit(header("location: workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket.$alert));
 }
 
 
@@ -651,7 +531,7 @@ function flow_save(){
   $GLOBALS['db']->execute($query);
   // redirect
   $alert="&alert=flowUpdated&alert_class=alert-success";
-  header("location: workflows_flows_view.php?idFlow=".$g_idFlow.$alert);
+  exit(header("location: workflows_flows_view.php?idFlow=".$g_idFlow.$alert));
  }else{
   $query="INSERT INTO workflows_flows
    (idCategory,typology,pinned,subject,description,advice,priority,sla,addDate,addIdAccount) VALUES
@@ -663,7 +543,142 @@ function flow_save(){
   $q_idFlow=$GLOBALS['db']->lastInsertedId();
   // redirect
   $alert="&alert=flowCreated&alert_class=alert-success";
-  header("location: workflows_flows_view.php?idFlow=".$q_idFlow.$alert);
+  exit(header("location: workflows_flows_view.php?idFlow=".$q_idFlow.$alert));
+ }
+}
+
+/* -[ Workflow Field Save ]-------------------------------------------------- */
+function flow_field_save(){
+ if(!api_checkPermission("workflows","workflows_admin")){api_die("accessDenied");}
+ // acquire variables
+ $g_idFlow=$_GET['idFlow'];
+ if(!$g_idFlow){$g_idFlow=0;}
+ $g_idField=$_GET['idField'];
+ if(!$g_idField){$g_idField=0;}
+ $p_typology=$_POST['typology'];
+ $p_name=api_clearFileName(addslashes($_POST['name']));
+ $p_label=addslashes($_POST['label']);
+ $p_value=addslashes($_POST['value']);
+ $p_class=addslashes($_POST['class']);
+ $p_placeholder=addslashes($_POST['placeholder']);
+ $p_required=$_POST['required'];
+ $p_options_method=addslashes($_POST['options_method']);
+ $p_options_values=addslashes($_POST['options_values']);
+ $p_options_query=addslashes($_POST['options_query']);
+ // convert fields
+ if($p_options_method=="none"){$p_options_method="";}
+ // check flow id
+ if(!$g_idFlow>0){
+  // redirect
+  $alert="?alert=flowsError&alert_class=alert-error";
+  exit(header("location: workflows_flow_list.php".$alert));
+ }
+ // check for insert or update
+ if($g_idField>0){
+  // build query
+  $query="UPDATE workflows_fields SET
+   idFlow='".$g_idFlow."',
+   typology='".$p_typology."',
+   name='".$p_name."',
+   label='".$p_label."',
+   value='".$p_value."',
+   class='".$p_class."',
+   placeholder='".$p_placeholder."',
+   options_method='".$p_options_method."',
+   options_values='".$p_options_values."',
+   options_query='".$p_options_query."',
+   required='".$p_required."'
+   WHERE id='".$g_idField."'";
+  // execute query
+  $GLOBALS['db']->execute($query);
+  // redirect
+  $alert="&alert=fieldUpdated&alert_class=alert-success";
+  exit(header("location: workflows_flows_view.php?idFlow=".$g_idFlow.$alert));
+ }else{
+  // get number of fields for position
+  $position=$GLOBALS['db']->countOf("workflows_fields","idFlow='".$g_idFlow."'");
+  $position++;
+  // build query
+  $query="INSERT INTO workflows_fields
+   (idFlow,typology,name,label,value,class,placeholder,options_method,options_values,
+    options_query,required,position) VALUES
+   ('".$g_idFlow."','".$p_typology."','".$p_name."','".$p_label."','".$p_value."',
+    '".$p_class."','".$p_placeholder."','".$p_options_method."','".$p_options_values."',
+    '".$p_options_query."','".$p_required."','".$position."')";
+  // execute query
+  $GLOBALS['db']->execute($query);
+  // set id to last inserted id
+  $q_idField=$GLOBALS['db']->lastInsertedId();
+  // redirect
+  $alert="&alert=fieldCreated&alert_class=alert-success";
+  exit(header("location: workflows_flows_view.php?idFlow=".$g_idFlow.$alert));
+ }
+}
+
+/* -[ Workflow Field Move ]-------------------------------------------------- */
+function flow_field_move($to){
+ if(!api_checkPermission("workflows","workflows_admin")){api_die("accessDenied");}
+ // acquire variables
+ $g_idFlow=$_GET['idFlow'];
+ if(!$g_idFlow){$g_idFlow=0;}
+ $g_idField=$_GET['idField'];
+ if(!$g_idField){$g_idField=0;}
+ if($g_idFlow>0 && $g_idField>0){
+  $moved=FALSE;
+  // get current position
+  $position=$GLOBALS['db']->queryUniqueValue("SELECT position FROM workflows_fields WHERE id='".$g_idField."'");
+  // move field
+  switch($to){
+   case "up":
+    if($position>1){
+     echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=".$position." WHERE position='".($position-1)."' AND idFlow='".$g_idFlow."'");
+     echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=".($position-1)." WHERE id='".$g_idField."'");
+     $moved=TRUE;
+    }
+    break;
+   case "down":
+    $max_position=$GLOBALS['db']->countOf("workflows_fields","idFlow='".$g_idFlow."'");
+    if($position<$max_position){
+     echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=".$position." WHERE position='".($position+1)."' AND idFlow='".$g_idFlow."'");
+     echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=".($position+1)." WHERE id='".$g_idField."'");
+     $moved=TRUE;
+    }
+    break;
+  }
+  // alert and redirect
+  if($moved){$alert="&alert=fieldMoved&alert_class=alert-success";}
+   else{$alert="&alert=flowError&alert_class=alert-error";}
+  exit(header("location: workflows_flows_view.php?idFlow=".$g_idFlow.$alert));
+ }else{
+  // redirect
+  $alert="&alert=flowError&alert_class=alert-error";
+  exit(header("location: workflows_flows_view.php?idFlow=".$g_idFlow.$alert));
+ }
+}
+
+/* -[ Workflow Field Delete ]------------------------------------------------ */
+function flow_field_delete(){
+ if(!api_checkPermission("workflows","workflows_admin")){api_die("accessDenied");}
+ // acquire variables
+ $g_idFlow=$_GET['idFlow'];
+ if(!$g_idFlow){$g_idFlow=0;}
+ $g_idField=$_GET['idField'];
+ if(!$g_idField){$g_idField=0;}
+ // check
+ if($g_idFlow>0 && $g_idField>0){
+  // get field position
+  $position=$GLOBALS['db']->queryUniqueValue("SELECT position FROM workflows_fields WHERE id='".$g_idField."'");
+  // delete action
+  echo $GLOBALS['db']->execute("DELETE FROM workflows_fields WHERE id='".$g_idField."'");
+  // moves back fields located after
+  echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=position-1 WHERE position>'".$position."' AND idFlow='".$g_idFlow."'");
+  // redirect
+  $alert="&alert=fieldDeleted&alert_class=alert-warning";
+  exit(header("location: workflows_flows_view.php?idFlow=".$g_idFlow.$alert));
+ }else{
+  // redirect
+  $alert="&alert=flowError&alert_class=alert-error";
+  exit(header("location: workflows_flows_view.php?idFlow=".$g_idFlow.$alert));
  }
 }
 
@@ -694,7 +709,7 @@ function category_save(){
    $GLOBALS['db']->execute($query);
    // redirect
    $alert="?alert=categoryUpdated&alert_class=alert-success";
-   header("location: workflows_categories.php".$alert);
+   exit(header("location: workflows_categories.php".$alert));
   }else{
    $query="INSERT INTO workflows_categories
     (idCategory,name,description,idGroup,addDate,addIdAccount) VALUES
@@ -706,11 +721,11 @@ function category_save(){
    $g_id=$GLOBALS['db']->lastInsertedId();
    // redirect
    $alert="?alert=categoryCreated&alert_class=alert-success";
-   header("location: workflows_categories.php".$alert);
+   exit(header("location: workflows_categories.php".$alert));
   }
  }else{
   // redirect
   $alert="?alert=categoryError&alert_class=alert-error";
-  header("location: workflows_categories.php".$alert);
+  exit(header("location: workflows_categories.php".$alert));
  }
 }

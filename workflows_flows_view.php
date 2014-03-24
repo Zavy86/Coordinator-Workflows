@@ -39,7 +39,7 @@ function content(){
  $fields_table->addHeader(api_text("flows_view-fields-th-typology"),"nowarp");
  $fields_table->addHeader(api_text("flows_view-fields-th-name"),"nowarp");
  $fields_table->addHeader(api_text("flows_view-fields-th-value"),"nowarp");
- $fields_table->addHeader(api_text("flows_view-fields-th-options"),NULL,"100%");
+ $fields_table->addHeader(api_text("flows_view-fields-th-options"),NULL,"100%",NULL,2);
  $fields_table->addHeader("&nbsp;",NULL,16);
  // build fields table rows
  foreach($flow->fields as $field){
@@ -54,7 +54,14 @@ function content(){
   $fields_table->addField(stripslashes($field->typology),"nowarp");
   $fields_table->addField(stripslashes($field->name),"nowarp");
   $fields_table->addField(stripslashes($field->value),"nowarp");
-  $fields_table->addField("<small>".stripslashes($field->options)."</small>","nowarp");
+  $fields_table->addField(stripslashes($field->options_method));
+  if($field->options_method=="values"){
+   $fields_table->addField("<small>".nl2br(stripslashes($field->options_values))."</small>");
+  }elseif($field->options_method=="query"){
+   $fields_table->addField("<small>".stripslashes($field->options_query)."</small>");
+  }else{
+   $fields_table->addField("&nbsp;");
+  }
   $fields_table->addField("<a href='workflows_flows_view.php?idFlow=".$flow->id."&idField=".$field->id."&act=editField'>".api_icon("icon-edit")."</a>");
  }
  // build actions table
@@ -82,7 +89,7 @@ function content(){
    $conditioned_field=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_fields WHERE id='".$action->idField."'");
    $condition=stripslashes($conditioned_field->name)."=".$action->value;
   }
-  // build fields table fields
+  // build actions table fields
   $actions_table->addField(api_workflows_ticketTypology($action->typology,TRUE),"nowarp");
   $actions_table->addField(stripslashes($condition),"nowarp");
   $actions_table->addField(stripslashes($action->priority),"text-center");
@@ -117,19 +124,21 @@ function content(){
  foreach($classes as $class){$form_body->addFieldOption($class,$class,($class==$selected_field->class)?TRUE:FALSE);}
  $form_body->addField("text","placeholder",api_text("flows_view-fields-ff-placeholder"),$selected_field->placeholder,"input-xlarge",api_text("flows_view-fields-ff-placeholder-placeholder"));
  $form_body->addField("select","options_method",api_text("flows_view-fields-ff-optionsMethod"),NULL,"input-medium");
- $options=explode("|",$selected_field->options);
- if($options[0]=="values"){$options[1]=str_replace(";","\n",$options[1]);}
- $methods=array("values","query");
- foreach($methods as $method){$form_body->addFieldOption($method,ucwords($method),($method==$options[0])?TRUE:FALSE);}
- $form_body->addField("textarea","options_values",api_text("flows_view-fields-ff-optionsValues"),$options[1],"input-xlarge",api_text("flows_view-fields-ff-optionsValues-placeholder"));
- $form_body->addField("text","options_query",api_text("flows_view-fields-ff-optionsQuery"),$options[1],"input-xlarge",api_text("flows_view-fields-ff-optionsQuery-placeholder"));
- $form_body->addField("text","options_value",api_text("flows_view-fields-ff-optionsValue"),$options[2],"input-medium",api_text("flows_view-fields-ff-optionsValue-placeholder"));
- $form_body->addField("text","options_label",api_text("flows_view-fields-ff-optionsLabel"),$options[3],"input-medium",api_text("flows_view-fields-ff-optionsLabel-placeholder"));
+ $methods=array("none","values","query");
+ foreach($methods as $method){$form_body->addFieldOption($method,ucwords($method),($selected_field->options_method==$method)?TRUE:FALSE);}
+ $form_body->addField("textarea","options_values",api_text("flows_view-fields-ff-optionsValues"),stripslashes($selected_field->options_values),"input-xlarge",api_text("flows_view-fields-ff-optionsValues-placeholder"));
+ $form_body->addField("text","options_query",api_text("flows_view-fields-ff-optionsQuery"),stripslashes($selected_field->options_query),"input-xlarge",api_text("flows_view-fields-ff-optionsQuery-placeholder"));
  $form_body->addField("checkbox","required","&nbsp;");
  $form_body->addFieldOption(1,api_text("flows_view-fields-ff-required"),($selected_field->required)?TRUE:FALSE);
  $form_body->addControl("submit",api_text("flows_view-fields-fc-submit"));
- if($selected_field->id){$form_body->addControl("button",api_text("flows_view-fields-fc-delete"),"btn-danger","submit.php?act=workflow_field_delete&idFlow=".$flow->id."&idField=".$selected_field->id,api_text("flows_view-fields-fc-delete-confirm"));}
+ if($selected_field->id){$form_body->addControl("button",api_text("flows_view-fields-fc-delete"),"btn-danger","submit.php?act=flow_field_delete&idFlow=".$flow->id."&idField=".$selected_field->id,api_text("flows_view-fields-fc-delete-confirm"));}
  $field_modal->body($form_body->render(FALSE));
+
+
+
+
+
+ 
 
 
 
@@ -307,6 +316,11 @@ function content(){
 <script type="text/javascript">
  $(document).ready(function(){
 
+  // call typology change event on page load
+  $("#field_typology").trigger("change");
+  // call options method change event
+  $("#field_options_method").trigger("change");
+
   <?php
    // modals
    switch($g_act){
@@ -319,34 +333,14 @@ function content(){
      echo "$('#modal_action_edit').modal('show');\n";
      break;
    }
-   // toggles
-   //if(!$selected_action->id>0 || $selected_action->typology==1){echo "$('#toggleMail').hide();\n";}
-   //if($selected_action->idField==0){echo "$('#toggleConditioned').hide();\n";}
   ?>
-
-  // hide query options
-  /*$("#field_options_query").hide();
-  $("#field_options_value").hide();
-  $("#field_options_label").hide();*/
-  // toggle options method
-  $("#field_options_method]").change(function(){
-   alert("ciao");
-   /*if($("input[name=options_method]").val()=="values"){
-    $("#field_options_values").show();
-    $("#field_options_query").hide();
-    $("#field_options_value").hide();
-    $("#field_options_label").hide();
-   }else{
-    $("#field_options_values").hide();
-    $("#field_options_query").show();
-    $("#field_options_value").show();
-    $("#field_options_label").show();
-   }*/
-  });
 
 
 /*
 
+
+   //if(!$selected_action->id>0 || $selected_action->typology==1){echo "$('#toggleMail').hide();\n";}
+   //if($selected_action->idField==0){echo "$('#toggleConditioned').hide();\n";}
 
   // toggle mail
   $("#typology").on('change',function(){
@@ -404,6 +398,48 @@ function content(){
    }
   });
 */
+
+  // validation
+  $('form[name=field_edit]').validate({
+   rules:{
+    label:{required:true},
+    name:{required:true}
+   },
+   submitHandler:function(form){form.submit();}
+  });
+
  });
+
+ // toggle typology options
+ $("#field_typology").change(function(){
+  switch($(this).find("option:selected").val()){
+   case "checkbox":
+   case "radio":
+   case "select":
+   case "multiselect":
+    $("#field_options_method").show();
+    break;
+   default:
+    $("#field_options_method option[value=none]").attr("selected","selected");
+    $("#field_options_method").hide();
+    // call options method change event
+    $("#field_options_method").trigger("change");
+  }
+ });
+
+ // toggle options method
+ $("#field_options_method").change(function(){
+  if($(this).find("option:selected").val()==="values"){
+   $("#field_options_values").show();
+   $("#field_options_query").hide();
+  }else if($(this).find("option:selected").val()==="query"){
+   $("#field_options_values").hide();
+   $("#field_options_query").show();
+  }else{
+   $("#field_options_values").hide();
+   $("#field_options_query").hide();
+  }
+ });
+
 </script>
 <?php } ?>

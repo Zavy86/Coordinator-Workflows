@@ -281,17 +281,18 @@ function api_workflows_flowAction($idAction){
 function api_workflows_flowFieldOptions($field){
  $return=array();
  // build field options
- $options_array=explode("|",$field->options);
- switch($options_array[0]){
+ //$options_array=explode("|",$field->options);
+ //switch($options_array[0]){
+ switch($field->options_method){
   // populate options manually
   case "values":
-   $options=explode(";",$options_array[1]);
+   $options=explode("\n",$field->options_values);
    foreach($options as $option){
     $options_value=explode("=",$option);
     // build option object
     $option_obj=new stdClass();
     $option_obj->value=$options_value[0];
-    $option_obj->label=$options_value[1];
+    $option_obj->label=stripslashes($options_value[1]);
     if($options_value[0]==$field->value){$option_obj->selected=TRUE;}
     else{$option_obj->selected=FALSE;}
     $return[]=$option_obj;
@@ -299,20 +300,13 @@ function api_workflows_flowFieldOptions($field){
    break;
   // populate options from a database query
   case "query":
-   $options_query=$options_array[1];
-   $options_valueField=$options_array[2];
-   $options_labelFields=explode(";",$options_array[3]);
-   $options=$GLOBALS['db']->query($options_query);
+   $options=$GLOBALS['db']->query(stripslashes($field->options_query));
    while($option=$GLOBALS['db']->fetchNextArray($options)){
-    $label=NULL;
-    foreach($options_labelFields as $options_labelField){
-     $label.=$option[$options_labelField];
-    }
     // build option object
     $option_obj=new stdClass();
-    $option_obj->value=$option[$options_valueField];
-    $option_obj->label=$label;
-    if($option[$options_valueField]==$field->value){$option_obj->selected=TRUE;}
+    $option_obj->value=$option[0];
+    $option_obj->label=stripslashes($option[1]);
+    if($option[0]==$field->value){$option_obj->selected=TRUE;}
     else{$option_obj->selected=FALSE;}
     $return[]=$option_obj;
    }

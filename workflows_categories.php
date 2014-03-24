@@ -61,11 +61,11 @@ function content(){
  if($selected_category->id){$form->addControl("button",api_text("categories-fc-cancel"),NULL,"workflows_categories.php");}
  // open split
  $GLOBALS['html']->split_open();
- $GLOBALS['html']->split_span(6);
+ $GLOBALS['html']->split_span(7);
  // show table
  $table->render();
  // split page
- $GLOBALS['html']->split_span(6);
+ $GLOBALS['html']->split_span(5);
  if($selected_category->id){echo "<center><h5>".api_text("categories-update")."</h5></center><br>\n";}
  else{echo "<center><h5>".api_text("categories-create")."</h5></center><br>\n";}
  // show form

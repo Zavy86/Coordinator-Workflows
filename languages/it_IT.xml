@@ -19,7 +19,12 @@
  <text key="flowCreated">Il flusso è stato creato</text>
  <text key="flowUpdated">Il flusso è stato aggiornato</text>
  <text key="flowError">Si è verificato un errore durante il salvataggio del flusso</text>
- 
+
+ <text key="fieldCreated">Il campo è stato creato</text>
+ <text key="fieldUpdated">Il campo è stato aggiornato</text>
+ <text key="fieldMoved">Il campo è stato spostato</text>
+ <text key="fieldDeleted">Il campo è stato eliminato</text>
+
 
  <text key="categoryCreated">La categoria è stata creata</text>
  <text key="categoryUpdated">La categoria è stata aggiornata</text>
@@ -27,10 +32,6 @@
 
 
  <!-- verificare -->
- <text key="fieldCreated">Il campo è stato creato</text>
- <text key="fieldUpdated">Il campo è stato aggiornato</text>
- <text key="fieldMoved">Il campo è stato spostato</text>
- <text key="fieldDeleted">Il campo è stato eliminato</text>
  <text key="actionCreated">L'azione è stata creata</text>
  <text key="actionUpdated">L'azione è stata aggiornata</text>
  <text key="actionDeleted">L'azione è stata eliminata</text>
@@ -248,11 +249,7 @@
  <text key="flows_view-fields-ff-optionsValues">Opzioni</text>
  <text key="flows_view-fields-ff-optionsValues-placeholder">Inserire un valore per riga nel formato: valore=etichetta</text>
  <text key="flows_view-fields-ff-optionsQuery">MySQL Query</text>
- <text key="flows_view-fields-ff-optionsQuery-placeholder">SELECT value,name FROM table ORDER BY name ASC</text>
- <text key="flows_view-fields-ff-optionsValue">Campo valore</text>
- <text key="flows_view-fields-ff-optionsValue-placeholder">Campo MySQL valore</text>
- <text key="flows_view-fields-ff-optionsLabel">Campo etichetta</text>
- <text key="flows_view-fields-ff-optionsLabel-placeholder">Campo MySQL etichetta</text>
+ <text key="flows_view-fields-ff-optionsQuery-placeholder">SELECT valore,etichetta FROM tabella ORDER BY etichetta ASC</text>
  <text key="flows_view-fields-ff-required">Obbligatorio</text>
  <text key="flows_view-fields-fc-submit">Salva campo</text>
  <text key="flows_view-fields-fc-delete">Elimina campo</text>
