@@ -109,12 +109,16 @@
  <text key="nav-workflows">Workflows</text>
  <text key="nav-open">Apri un workflow</text>
  <text key="nav-operations">Operazioni</text>
- <text key="nav-solicit">Sollecita</text>
+ <text key="nav-addTicket">Aggiungi ticket</text>
+ <text key="nav-ticket">Ticket: {0}</text>
+ <text key="nav-assign">Assegnati il ticket</text>
+ <text key="nav-process">Processa il ticket</text>
+ <text key="nav-unlock">Sblocca il ticket</text>
+ <text key="nav-reopen">Riapri il ticket</text>
  <text key="nav-administration">Amministrazione</text>
  <text key="nav-list">Lista flussi</text>
  <text key="nav-add">Nuovo flusso</text>
  <text key="nav-categories">Gestione Categorie</text>
- <text key="nav-addTicket">Aggiungi ticket</text>
 
  <!-- workflows_flows.php -->
  <text key="flows-workflows">Workflow personali</text>
@@ -153,8 +157,9 @@
  <text key="view-th-update">Aggiornamento</text>
  <text key="view-td-assign">Assegnati il ticket</text>
  <text key="view-td-assign-confirm">Confermi di volerti assegnare questo ticket?</text>
- <text key="view-td-edit">Modifica il ticket</text>
  <text key="view-td-process">Processa il ticket</text>
+ <text key="view-td-unlock">Sblocca manualmente il ticket</text>
+ <text key="view-td-reopen">Riapri il ticket</text>
  <text key="view-tr-unvalued">Non è presente nessun ticket..</text>
  <text key="view-ticketAdd">Nuovo ticket</text>
  <text key="view-ff-idGroup">Gruppo</text>

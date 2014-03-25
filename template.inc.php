@@ -7,7 +7,6 @@ include("../core/api.inc.php");
 api_loadModule(array("registries","materials"));
 // print header
 $html->header(api_text("module-title"),$module_name);
-
 // acquire variables
 $g_id=$_GET['id'];
 if(!$g_id){$g_id=0;}
@@ -16,13 +15,10 @@ if(!$g_idTicket){$g_idTicket=0;}
 $g_idWorkflow=$_GET['idWorkflow'];
 if(!$g_idWorkflow){$g_idWorkflow=0;}
 if($g_idWorkflow>0){$g_id=$g_idWorkflow;}
-
 // get workflow object
 $workflow=api_workflows_workflow($g_id,FALSE);
-
 // get ticket object
 $ticket=api_workflows_ticket($g_idTicket,TRUE);
-
 // search box
 if(api_baseName()=="workflows_list.php" ||
    api_baseName()=="workflows_search.php" ||
@@ -31,22 +27,27 @@ if(api_baseName()=="workflows_list.php" ||
 }else{
  $search=FALSE;
 }
-
 // build navigation
 global $navigation;
 $navigation=new str_navigation($search,"idCategory");
-
 // workflows tickets list
 $navigation->addTab(api_text("nav-workflows"),"workflows_list.php");
-
 // operations
 if($workflow->id){
  $navigation->addTab(api_text("nav-operations"),NULL,NULL,"active");
- $navigation->addSubTab(api_text("nav-solicit"),"#submit.php?act=");
  $navigation->addSubTab(api_text("nav-addTicket"),"workflows_view.php?id=".$workflow->id."&act=addTicket");
- if($ticket->id){
-  //$navigation->addSubTab(api_text("nav-assign"),"#submit.php?act=");
-
+ if($ticket->id &&api_workflows_ticketProcessPermission($ticket)){
+  $navigation->addSubTabDivider();
+  $navigation->addSubTabHeader(api_text("nav-ticket",$ticket->number));
+  if($ticket->status==1){
+   $navigation->addSubTab(api_text("nav-assign"),"submit.php?act=ticket_assign&idWorkflow=".$workflow->id."&idTicket=".$ticket->id);
+  }elseif($ticket->status>1 && $ticket->status<4){
+   $navigation->addSubTab(api_text("nav-process"),"workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."&act=editTicket");
+  }elseif($ticket->status==5){
+   $navigation->addSubTab(api_text("nav-unlock"),"workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."&act=editTicket");
+  }else{
+   $navigation->addSubTab(api_text("nav-reopen"),"workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."&act=editTicket");
+  }
  }
 }
 

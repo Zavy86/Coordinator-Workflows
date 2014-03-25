@@ -7,17 +7,6 @@ include('api.inc.php');
 api_loadLocaleFile("./");
 $act=$_GET['act'];
 switch($act){
-
-
-
-
- // ticket
- case "ticket_solicit":ticket_solicit();break;
-
-
- // ok
-
-
  // workflows
  case "workflow_save":workflow_save();break;
  // tickets
@@ -41,63 +30,6 @@ switch($act){
   $alert="?alert=submitFunctionNotFound&alert_class=alert-warning&act=".$act;
   exit(header("location: index.php".$alert));
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* -[ Ticket Solicit ]------------------------------------------------------- */
-function ticket_solicit(){/*
- if(!api_checkPermission("workflows","workflows_user")){api_die("accessDenied");}
- // acquire variables
- $g_id=$_GET['id'];
- if(!$g_id){$g_id=0;}
- // check
- if($g_id>0){
-  // execute query
-  //$GLOBALS['db']->execute("UPDATE workflows_tickets_activities SET status='2',idAssigned='".$_SESSION['account']->id."',updDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_id."'");
-  // alert
-  $alert="&alert=ticketActivityAssigned&alert_class=alert-success";
- }else{
-  // alert
-  $alert="&alert=ticketError&alert_class=alert-error";
- }
- // redirect
- exit(header("location: workflows_view.php?id=".$g_id.$alert));*/
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// ok
-
-
-
-
-
 
 
 /* -[ Workflow Save ]--------------------------------------------------------- */
@@ -268,6 +200,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
   // return
   return TRUE;
  }/*else{
+  * DA ELIMINARE!!!
   // open standard ticket
   $p_idCategory=$_POST['idCategory'];
   $hash=md5(api_randomString(32));
@@ -341,8 +274,7 @@ function ticket_save(){
 
 /* -[ Ticket Assign ]-------------------------------------------------------- */
 function ticket_assign(){
- // che permission to assign
- //if(!api_checkPermission("workflows","workflows_supporter")){api_die("accessDenied");}
+ if(!api_workflows_ticketProcessPermission($_GET['idTicket'])){api_die("accessDenied");}
  // acquire variables
  $g_idWorkflow=$_GET['idWorkflow'];
  if(!$g_idWorkflow){$g_idWorkflow=0;}
@@ -364,8 +296,7 @@ function ticket_assign(){
 
 /* -[ Ticket Process ]------------------------------------------------------- */
 function ticket_process(){
- // check permission to process
- //if(!api_checkPermission("workflows","workflows_supporter")){api_die("accessDenied");}
+ if(!api_workflows_ticketProcessPermission($_GET['idTicket'])){api_die("accessDenied");}
  // acquire variables
  $g_idWorkflow=$_GET['idWorkflow'];
  if(!$g_idWorkflow){$g_idWorkflow=0;}

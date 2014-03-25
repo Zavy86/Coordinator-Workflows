@@ -64,7 +64,7 @@ function content(){
   if($ticket->status==4){$update=api_timestampFormat($ticket->endDate,api_text("datetime"));}
   else{$update=api_timestampFormat($ticket->updDate,api_text("datetime"));}
   // build tickets table fields
-  $tickets_table->addField($typology,"nowarp");
+  $tickets_table->addField("<a href='workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."'>".$typology."</a>","nowarp");
   $tickets_table->addField(str_pad($ticket->idWorkflow,5,"0",STR_PAD_LEFT)."-".str_pad($ticket->id,5,"0",STR_PAD_LEFT),"nowarp");
   // DA RIFARE MOLTO MELGIO-----------------------------------
   if($ticket->typology==3){
@@ -79,17 +79,20 @@ function content(){
   $tickets_table->addField($italic.(($ticket->idAssigned>0)?api_accountFirstName($ticket->idAssigned):"&nbsp;").$unitalic,"nowarp text-right");
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $tickets_table->addField($update,"nowarp");
-  //if(can_operate $activity->typology<>5){
-   // nascondi se è tipo 3
+  // check for process permission
+  if($ticket->typology<>3 && api_workflows_ticketProcessPermission($ticket)){
    if($ticket->status==1){
     $action="<a href='submit.php?act=ticket_assign&idWorkflow=".$ticket->idWorkflow."&idTicket=".$ticket->id."' onClick='return confirm(\"".api_text("view-td-assign-confirm")."\")'>".api_icon("icon-eye-open",api_text("view-td-assign"))."</a>";
-   }elseif($ticket->status==2){
+   }elseif($ticket->status>1 && $ticket->status<4){
     $action="<a href='workflows_view.php?id=".$ticket->idWorkflow."&idTicket=".$ticket->id."&act=editTicket'>".api_icon("icon-cog",api_text("view-td-process"))."</a>";
+   }elseif($ticket->status==5){
+    $action="<a href='workflows_view.php?id=".$ticket->idWorkflow."&idTicket=".$ticket->id."&act=editTicket'>".api_icon("icon-eye-close",api_text("view-td-unlock"))."</a>";
    }else{
-    $action="<a href='workflows_view.php?id=".$ticket->idWorkflow."&idTicket=".$ticket->id."&act=editTicket'>".api_icon("icon-edit",api_text("view-td-edit"))."</a>";
+    $action="<a href='workflows_view.php?id=".$ticket->idWorkflow."&idTicket=".$ticket->id."&act=editTicket'>".api_icon("icon-edit",api_text("view-td-reopen"))."</a>";
    }
-  //}
-  //$tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
+  }else{
+   $tickets_table->addField("&nbsp;");
+  }
   $tickets_table->addField($action,"nowarp text-center");
  }
  // edit selected ticket or add ticket modal window
