@@ -10,6 +10,10 @@
 function api_workflows_workflow($idWorkflow,$subobjects=TRUE){
  $workflow=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_workflows WHERE id='".$idWorkflow."'");
  if(!$workflow->id){return FALSE;}
+ // build workflow number
+ $workflow->number=str_pad($workflow->id,5,"0",STR_PAD_LEFT);
+ // retrieve workflow hostname
+ $workflow->hostname=$GLOBALS['db']->queryUniqueValue("SELECT DISTINCT(hostname) FROM workflows_tickets WHERE idWorkflow='".$workflow->id."'");
  if($subobjects){
   // get workflow tickets
   $workflow->tickets=array();
