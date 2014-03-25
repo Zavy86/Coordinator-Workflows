@@ -297,9 +297,14 @@ function api_workflows_flowAction($idAction){
 // @object $field : field object
 function api_workflows_flowFieldOptions($field){
  $return=array();
+ // if no preset value
+ if(!$field->value){
+  $option_obj=new stdClass();
+  $option_obj->value="";
+  $option_obj->label=api_text("api-option-undefined");
+  $return[]=$option_obj;
+ }
  // build field options
- //$options_array=explode("|",$field->options);
- //switch($options_array[0]){
  switch($field->options_method){
   // populate options manually
   case "values":

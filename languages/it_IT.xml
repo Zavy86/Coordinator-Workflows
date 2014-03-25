@@ -97,6 +97,7 @@
  <text key="api-details-dt-end">Conclusione</text>
  <text key="api-details-dt-hostname">Hostname</text>
  <text key="api-details-dt-note">Note</text>
+ <text key="api-option-undefined">Non definito</text>
 
  <!-- template.inc.php -->
  <text key="nav-workflows">Workflows</text>
