@@ -48,7 +48,7 @@ function workflow_save(){
   $sla=$flow->sla;
  }else{
   $idFlow=0;
-  $sla=240;
+  $sla=480;
  }
  // build query
  $query="INSERT INTO workflows_workflows
@@ -199,8 +199,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
   }
   // return
   return TRUE;
- }/*else{
-  * DA ELIMINARE!!!
+ }else{
   // open standard ticket
   $p_idCategory=$_POST['idCategory'];
   $hash=md5(api_randomString(32));
@@ -214,7 +213,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
    (idWorkflow,idCategory,typology,hash,subject,idGroup,difficulty,priority,
     slaAssignment,slaClosure,status,solved,approved,hostname,addDate,addIdAccount) VALUES
    ('".$idWorkflow."','".$p_idCategory."','1','".$hash."','".$p_subject."',
-    '".$idGroup."','2','".$p_priority."','0','240','1','0','0','".$hostname."',
+    '".$idGroup."','2','".$p_priority."','0','480','1','0','0','".$hostname."',
     '".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
   // execute query
   $GLOBALS['db']->execute($query);
@@ -224,7 +223,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
   api_workflows_notifications($q_idTicket);
   // return
   return TRUE;
- }*/
+ }
  return FALSE;
 }
 
