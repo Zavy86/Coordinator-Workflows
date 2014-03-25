@@ -39,8 +39,23 @@ function content(){
    $workflows_table->addField(stripslashes($workflow->subject));
   }
  }
+ // generate tickets query
+ $query_where=$GLOBALS['navigation']->filtersQuery("1");
+ // only assignable tickets
+ $query_where.=" AND ( ";
+ $query_where.=" idAssigned='".$_SESSION['account']->id."'";
+ foreach(api_accountGroups() as $group){
+  if($group->grouprole>2){$query_where.=" OR idGroup='".$group->id."'";}
+ }
+ if(api_accountGroupMember(api_groupId("SIS"))){$query_where.=" OR idGroup='0'";}
+ $query_where.=" )";
+ // order tickets
+ $query_order=api_queryOrder("addDate DESC");
+ // pagination
+ $pagination=new str_pagination("workflows_tickets",$query_where,$GLOBALS['navigation']->filtersGet());
+ $query_limit=$pagination->queryLimit();
  // check for assignables tickets
- //if($GLOBALS['db']->countOf("workflows_tickets",$query_where)>0){
+ if($GLOBALS['db']->countOf("workflows_tickets",$query_where)>0){
   // build tickets table
   $tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
   $tickets_table->addHeader("&nbsp;",NULL,"16");
@@ -55,13 +70,6 @@ function content(){
   $tickets_table->addHeader(api_text("flows-th-assigned"),"nowarp");
   $tickets_table->addHeader(api_text("flows-th-group"),"nowarp text-center");
   $tickets_table->addHeader("&nbsp;",NULL,"16");
-  // generate tickets query
-  $query_where=$GLOBALS['navigation']->filtersQuery("1");
-  // order tickets
-  $query_order=api_queryOrder("addDate DESC");
-  // pagination
-  $pagination=new str_pagination("workflows_workflows",$query_where,$GLOBALS['navigation']->filtersGet());
-  $query_limit=$pagination->queryLimit();
   // build tickets table rows
   $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where.$query_order.$query_limit);
   while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){
@@ -85,7 +93,7 @@ function content(){
    $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
    $tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
   }
- //}
+ }
  // show workflows table
  if(is_object($workflows_table)){
   echo "<h5>".api_text("flows-workflows")."</h5>\n";
