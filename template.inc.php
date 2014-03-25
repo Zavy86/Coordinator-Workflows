@@ -51,7 +51,8 @@ if($workflow->id){
  }
 }
 // open new workflow
-$navigation->addTab(api_text("nav-open"),"workflows_search.php");
+if(api_baseName()=="workflows_add.php"){$class="active";}else{$class=NULL;}
+$navigation->addTab(api_text("nav-open"),"workflows_search.php",NULL,$class);
 // selected
 if(api_baseName()=="workflows_flows_list.php" ||
    api_baseName()=="workflows_flows_view.php" ||

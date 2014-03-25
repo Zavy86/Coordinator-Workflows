@@ -297,9 +297,14 @@ function api_workflows_flowAction($idAction){
 // @object $field : field object
 function api_workflows_flowFieldOptions($field){
  $return=array();
+ // if no preset value
+ if(!$field->value){
+  $option_obj=new stdClass();
+  $option_obj->value="";
+  $option_obj->label=api_text("api-option-undefined");
+  $return[]=$option_obj;
+ }
  // build field options
- //$options_array=explode("|",$field->options);
- //switch($options_array[0]){
  switch($field->options_method){
   // populate options manually
   case "values":
@@ -336,13 +341,71 @@ function api_workflows_flowFieldOptions($field){
 /* -[ Replace Tag Codes in string ]------------------------------------------ */
 // @param $string : String with Tag Codes to be replaced
 function api_workflows_replaceTagCodes($string){
+ // defined tag values
  $tagcodes_array=array(
   "[account-id]"=>$_SESSION['account']->id,
   "[account-mail]"=>api_accountMail(),
   "[account-name]"=>api_accountName(),
   "[account-firstname]"=>api_accountFirstname(),
-  "[account-ldap]"=>$_SESSION['account']->ldapUsername
+  "[account-ldap]"=>$_SESSION['account']->ldapUsername,
  );
+
+ // --- da rifare in modo che veda anche più del primo field
+
+ // acquire Flow
+ $idFlow=$_GET['idFlow'];
+ // dynamic tag field values
+ $posStart=strpos($string,"[field-");
+ if($posStart>0){
+  $tag=substr($string,$posStart,strpos($string,"]",$posStart)-$posStart+1);
+  $field=substr($string,$posStart+7,strpos($string,"]",$posStart)-$posStart-7);
+  $field_obj=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_fields WHERE idFlow='".$idFlow."' AND name='".$field."' ORDER BY position ASC");
+  $field_obj->options=api_workflows_flowFieldOptions($field_obj);
+  // acquire field values by typology
+  switch($field_obj->typology){
+   // multiselect have array values
+   case "multiselect":
+    $values=NULL;
+    if(is_array($_POST[$field_obj->name])){
+     foreach($_POST[$field_obj->name] as $g_option){
+      $values.=", ".$field_obj->options[$g_option]->label;
+     }
+    }
+    $value=substr($values,2);
+    break;
+   // checkbox and radio have text value
+   case "checkbox":
+   case "radio":
+    if($_POST[$field_obj->name]<>NULL){$value=$field_obj->options[$_POST[$field_obj->name]]->label;}
+    break;
+   // select value is in array
+   case "select":
+    if($_POST[$field_obj->name]<>NULL){$value=$field_obj->options[$_POST[$field_obj->name]]->label;}
+    break;
+   // range values
+   case "range":
+   case "daterange":
+   case "datetimerange":
+    if($_POST[$field_obj->name."_from"]<>NULL){$value=api_text("form-range-from")." ".$_POST[$field_obj->name."_from"]." ";}
+    if($_POST[$field_obj->name."_to"]<>NULL){$value.=api_text("form-range-to")." ".$_POST[$field_obj->name."_to"];}
+    break;
+   case "file":
+    $value=NULL;
+    $file=api_file_upload($_FILES[$field_obj->name],"workflows_attachments",NULL,NULL,NULL,NULL,FALSE,NULL,FALSE);
+    if($file->id){
+     $value=addslashes("<a href='submit.php?act=attachments_download&id=".$file->id."'>".$file->name."</a>");
+    }
+    break;
+   default:
+    $value=addslashes($_POST[$field_obj->name]);
+  }
+  if(!$value){$value=$tag;}
+  $tagcodes_array[$tag]=$value;
+ }
+
+ // ---
+
+ // replace tags
  $string=str_replace(array_keys($tagcodes_array),array_values($tagcodes_array),$string);
  return $string;
 }

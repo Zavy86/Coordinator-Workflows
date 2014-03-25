@@ -85,6 +85,9 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
    // field name to show in description
    if(strlen($field->label)>0){$field->nameShow=$field->label;}
    else{$field->nameShow=$field->name;}
+
+   // --- da rifare magari in un api
+
    // prepare options array
    $field->options=api_workflows_flowFieldOptions($field);
    // acquire field values by typology
@@ -125,6 +128,9 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
     default:
      $value=addslashes($_POST[$field->name]);
    }
+
+   // ---
+
    $description.=$field->nameShow.": ".$value."\n\n";
   }
  }
@@ -163,7 +169,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
     $typology=$action->typology;
     if($typology<>1){$hash=md5(api_randomString(32));}else{$hash=NULL;}
     $mail=api_workflows_replaceTagCodes($action->mail);
-    $subject=$action->subject;
+    $subject=api_workflows_replaceTagCodes($action->subject);
     $idGroup=$action->idGroup;
     $idAssigned=$action->idAssigned;
     $difficulty=$action->difficulty;
