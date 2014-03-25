@@ -106,9 +106,6 @@ function content(){
  if(is_object($pagination)){$pagination->render();}
  // show status modal windows
  foreach($details_modals_array as $modal){$modal->render();}
-
- echo api_workflows_replaceTagCodes("ciao [field-module] come va? dicono che [field-name] sia una figata")
-
 ?>
 <script type="text/javascript">
  // refresh page every 5 minutes
