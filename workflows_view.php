@@ -91,7 +91,7 @@ function content(){
     $action="<a href='workflows_view.php?id=".$ticket->idWorkflow."&idTicket=".$ticket->id."&act=editTicket'>".api_icon("icon-edit",api_text("view-td-reopen"))."</a>";
    }
   }else{
-   $tickets_table->addField("&nbsp;");
+   $action="&nbsp;";
   }
   $tickets_table->addField($action,"nowarp text-center");
  }

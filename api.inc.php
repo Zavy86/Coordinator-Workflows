@@ -196,7 +196,7 @@ function api_workflows_ticketProcessPermission($ticket){
  if(!$ticket->id){$ticket=api_workflows_ticket($ticket);}
  if(!$ticket->id){return FALSE;}
  if($ticket->idAssigned==$_SESSION['account']->id){return TRUE;}
- if(api_accountGrouprole($ticket->idGroup)>1){return TRUE;}
+ if(api_accountGrouprole($ticket->idGroup,$_SESSION['account']->id,TRUE)>1){return TRUE;}
  if($ticket->idGroup==0 && api_accountGroupMember(api_groupId("SIS"))){return TRUE;}
  return FALSE;
 }
