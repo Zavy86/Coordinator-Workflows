@@ -325,7 +325,7 @@ function api_workflows_flowFieldOptions($field){
     $option_obj->label=stripslashes($option[1]);
     if($option[0]==$field->value){$option_obj->selected=TRUE;}
     else{$option_obj->selected=FALSE;}
-    $return[$options_value[0]]=$option_obj;
+    $return[$option[0]]=$option_obj;
    }
    break;
  }
