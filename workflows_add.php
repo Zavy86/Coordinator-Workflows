@@ -64,6 +64,7 @@ function content(){
   }
  }
  // defaults fields
+ $form->addField("text","referent",api_text("add-ff-referent"),api_accountName(),"input-medium");
  $form->addField("text","phone",api_text("add-ff-phone"),NULL,"input-small");
  $form->addField("textarea","note",api_text("add-ff-note"),NULL,"input-xxlarge");
  // controls
