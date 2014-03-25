@@ -203,7 +203,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
   // open standard ticket
   $p_idCategory=$_POST['idCategory'];
   $hash=md5(api_randomString(32));
-  $p_subject=addslashes($_POST['name']);
+  $p_subject=addslashes($_POST['subject']);
   $p_priority=$_POST['priority'];
   $hostname=api_hostName();
   // get group id by selected category
