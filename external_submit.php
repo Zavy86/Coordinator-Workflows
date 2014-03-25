@@ -46,12 +46,12 @@ function ticket_external(){
    // execute query
    $GLOBALS['db']->execute($query);
    if($g_solved>0){
-    $locked_tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE idTicket='".$g_idTicket."' AND status='5'");
+    $locked_tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE requiredTicket='".$g_idTicket."' AND status='5'");
     while($locked_ticket=$GLOBALS['db']->fetchNextObject($locked_tickets)){
      // send notification
      api_workflows_notifications($locked_ticket);
     }
-    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".date("Y-m-d H:i:s")."' WHERE idTicket='".$g_idTicket."' AND status='5'");
+    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".date("Y-m-d H:i:s")."' WHERE requiredTicket='".$g_idTicket."' AND status='5'");
    }
    // check if all activities are completed
    if($GLOBALS['db']->countOf("workflows_tickets","idWorkflow='".$g_idWorkflow."' AND (status<'4' OR status='5')")==0){
@@ -100,12 +100,12 @@ function ticket_authorize(){
    // execute query
    $GLOBALS['db']->execute($query);
    if($g_authorization){
-    $locked_tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE idTicket='".$g_idTicket."' AND status='5'");
+    $locked_tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE requiredTicket='".$g_idTicket."' AND status='5'");
     while($locked_ticket=$GLOBALS['db']->fetchNextObject($locked_tickets)){
      // send notification
      api_workflows_notifications($locked_ticket);
     }
-    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".date("Y-m-d H:i:s")."' WHERE idTicket='".$g_idTicket."' AND status='5'");
+    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".date("Y-m-d H:i:s")."' WHERE requiredTicket='".$g_idTicket."' AND status='5'");
 
     // check if all activities are completed
     if($GLOBALS['db']->countOf("workflows_tickets","idWorkflow='".$g_idWorkflow."' AND (status<'4' OR status='5')")==0){
