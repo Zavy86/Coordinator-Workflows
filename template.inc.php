@@ -50,9 +50,8 @@ if($workflow->id){
   }
  }
 }
-
+// open new workflow
 $navigation->addTab(api_text("nav-open"),"workflows_search.php");
-
 // selected
 if(api_baseName()=="workflows_flows_list.php" ||
    api_baseName()=="workflows_flows_view.php" ||
@@ -62,12 +61,11 @@ if(api_baseName()=="workflows_flows_list.php" ||
 }else{
  $class=NULL;
 }
-
+// administration
 $navigation->addTab(api_text("nav-administration"),NULL,NULL,$class);
 $navigation->addSubTab(api_text("nav-list"),"workflows_flows_list.php");
 $navigation->addSubTab(api_text("nav-add"),"workflows_flows_edit.php");
 $navigation->addSubTab(api_text("nav-categories"),"workflows_categories.php");
-
 // filters
 if(api_baseName()=="workflows_list.php"){
  $navigation->addFilter("multiselect","status",api_text("filter-status"),array(1=>api_text("filter-opened"),2=>api_text("filter-assigned"),3=>api_text("filter-standby"),4=>api_text("filter-closed"),5=>api_text("filter-locked")));
@@ -92,9 +90,10 @@ if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list
   }
  }
  $navigation->addFilter("multiselect","idCategory",api_text("filter-category"),$categories_array,"input-xlarge");
-
  // if not filtered load default filters
- if($_GET['filtered']<>1){}
+ if($_GET['filtered']<>1){
+  // any default filters
+ }
 }
 if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list.php"){
  $navigation->addFilter("multiselect","typology",api_text("filter-typology"),array(1=>api_text("typology-request"),2=>api_text("typology-incident")),"input-xlarge");
