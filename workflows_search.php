@@ -53,13 +53,14 @@ function content(){
    $query_where.=" subject LIKE '%".$g_search."%'";
    $query_where.=" OR description LIKE '%".$g_search."%'";
    $query_where.=" )";
-  }elseif($subcategories_count){
+  }elseif($subcategories_count && $category->id<>$selected_category->id){
    // query only pinned
    $query_where.=" AND pinned='1'";
   }
   // open list
   echo "<ul>\n";
   // query
+  //echo $query_where;
   $workflows=$GLOBALS['db']->query("SELECT * FROM workflows_flows WHERE ".$query_where." ORDER BY pinned DESC,subject ASC");
   while($workflow=$GLOBALS['db']->fetchNextObject($workflows)){
    if($workflow->pinned==1){$bold="<strong>";$unbold="</strong>";}else{$bold=NULL;$unbold=NULL;}
