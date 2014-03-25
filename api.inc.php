@@ -114,6 +114,8 @@ function api_workflows_priority($priority){
 function api_workflows_ticket($idticket){
  $ticket=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_tickets WHERE id='".$idticket."'");
  if(!$ticket->id){return FALSE;}
+ // build ticket number
+ $ticket->number=str_pad($ticket->idWorkflow,5,"0",STR_PAD_LEFT)."-".str_pad($ticket->id,5,"0",STR_PAD_LEFT);
  return $ticket;
 }
 
@@ -186,6 +188,17 @@ function api_workflows_ticketDetailsModal($ticket){
  $dl_body->addElement(api_text("status"),api_workflows_status($ticket->status),NULL);
  $return->body($dl_body->render(FALSE));
  return $return;
+}
+
+/* -[ Ticket check process permission ]-------------------------------------- */
+// @object $ticket : ticket object or ticket id
+function api_workflows_ticketProcessPermission($ticket){
+ if(!$ticket->id){$ticket=api_workflows_ticket($ticket);}
+ if(!$ticket->id){return FALSE;}
+ if($ticket->idAssigned==$_SESSION['account']->id){return TRUE;}
+ if(api_accountGrouprole($ticket->idGroup)>2){return TRUE;}
+ if($ticket->idGroup==0 && api_accountGroupMember(api_groupId("SIS"))){return TRUE;}
+ return FALSE;
 }
 
 

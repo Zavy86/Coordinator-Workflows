@@ -149,7 +149,7 @@ CREATE TABLE IF NOT EXISTS `workflows_tickets` (
   `mail` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci,
-  `idGroup` int(11) unsigned NOT NULL,
+  `idGroup` int(11) unsigned NOT NULL DEFAULT '0',
   `idAssigned` int(11) unsigned DEFAULT NULL,
   `difficulty` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 low, 2 medium, 3 high',
   `priority` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 highest, 2 high, 3 medium, 4 low, 5 lowest',

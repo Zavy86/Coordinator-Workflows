@@ -9,7 +9,6 @@ function content(){
  $g_search=$_GET['q'];
  // get category object
  $selected_category=api_workflows_category($_GET['idCategory']);
-
  // show main categories
  if(!$selected_category->id){
   $categories=$GLOBALS['db']->query("SELECT * FROM workflows_categories WHERE idCategory='0' ORDER BY name ASC");
@@ -21,7 +20,6 @@ function content(){
   }
   return TRUE;
  }
-
  // show categories
  if($selected_category->id>0){
   echo "<h4><a href='workflows_search.php?idCategory=".$selected_category->idCategory."'>&laquo;</a> ".stripslashes($selected_category->name);
@@ -29,12 +27,12 @@ function content(){
   echo "</h4>\n<hr>\n";
   $query_where="id='".$selected_category->id."' OR idCategory='".$selected_category->id."'";
  }
-
  // show categories and subcategories
  $categories=$GLOBALS['db']->query("SELECT * FROM workflows_categories WHERE ".$query_where." ORDER BY idCategory ASC,name ASC");
  while($category=$GLOBALS['db']->fetchNextObject($categories)){
   if($category->id<>$selected_category->id){
-   echo "<p><strong>".stripslashes($category->name)."</strong>";
+   echo "<p><a href='workflows_search.php?idCategory=".$category->id."'>".api_icon("icon-search")."</a> ";
+   echo "<strong>".stripslashes($category->name)."</strong>";
    if(strlen($category->description)>0){echo " &rarr; <small class='muted'><i>".stripslashes($category->description)."</i></small>\n";}
    echo "</p>\n";
    // query category and subcategories
@@ -49,7 +47,6 @@ function content(){
    $query_where="( idCategory='".$category->id."')";
    $subcategories_count=$GLOBALS['db']->countOf("workflows_categories","idCategory='".$category->id."'");
   }
-
   // query search
   if(strlen($g_search)>0){
    $query_where.=" AND (";
@@ -60,10 +57,8 @@ function content(){
    // query only pinned
    $query_where.=" AND pinned='1'";
   }
-
   // open list
   echo "<ul>\n";
-
   // query
   $workflows=$GLOBALS['db']->query("SELECT * FROM workflows_flows WHERE ".$query_where." ORDER BY pinned DESC,subject ASC");
   while($workflow=$GLOBALS['db']->fetchNextObject($workflows)){
@@ -80,7 +75,6 @@ function content(){
   }else{
    echo "<li><a href='workflows_search.php?idCategory=".$category->id."'>".api_text("search-li-show",stripslashes($category->name))."</a></li>\n";
   }
-
   // close list
   echo "</ul>\n";
  }
