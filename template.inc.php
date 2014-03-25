@@ -7,7 +7,6 @@ include("../core/api.inc.php");
 api_loadModule(array("registries","materials"));
 // print header
 $html->header(api_text("module-title"),$module_name);
-
 // acquire variables
 $g_id=$_GET['id'];
 if(!$g_id){$g_id=0;}
@@ -16,13 +15,10 @@ if(!$g_idTicket){$g_idTicket=0;}
 $g_idWorkflow=$_GET['idWorkflow'];
 if(!$g_idWorkflow){$g_idWorkflow=0;}
 if($g_idWorkflow>0){$g_id=$g_idWorkflow;}
-
 // get workflow object
 $workflow=api_workflows_workflow($g_id,FALSE);
-
 // get ticket object
 $ticket=api_workflows_ticket($g_idTicket,TRUE);
-
 // search box
 if(api_baseName()=="workflows_list.php" ||
    api_baseName()=="workflows_search.php" ||
@@ -31,27 +27,31 @@ if(api_baseName()=="workflows_list.php" ||
 }else{
  $search=FALSE;
 }
-
 // build navigation
 global $navigation;
 $navigation=new str_navigation($search,"idCategory");
-
 // workflows tickets list
 $navigation->addTab(api_text("nav-workflows"),"workflows_list.php");
-
 // operations
 if($workflow->id){
  $navigation->addTab(api_text("nav-operations"),NULL,NULL,"active");
- $navigation->addSubTab(api_text("nav-solicit"),"#submit.php?act=");
  $navigation->addSubTab(api_text("nav-addTicket"),"workflows_view.php?id=".$workflow->id."&act=addTicket");
- if($ticket->id){
-  //$navigation->addSubTab(api_text("nav-assign"),"#submit.php?act=");
-
+ if($ticket->id &&api_workflows_ticketProcessPermission($ticket)){
+  $navigation->addSubTabDivider();
+  $navigation->addSubTabHeader(api_text("nav-ticket",$ticket->number));
+  if($ticket->status==1){
+   $navigation->addSubTab(api_text("nav-assign"),"submit.php?act=ticket_assign&idWorkflow=".$workflow->id."&idTicket=".$ticket->id);
+  }elseif($ticket->status>1 && $ticket->status<4){
+   $navigation->addSubTab(api_text("nav-process"),"workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."&act=editTicket");
+  }elseif($ticket->status==5){
+   $navigation->addSubTab(api_text("nav-unlock"),"workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."&act=editTicket");
+  }else{
+   $navigation->addSubTab(api_text("nav-reopen"),"workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."&act=editTicket");
+  }
  }
 }
-
+// open new workflow
 $navigation->addTab(api_text("nav-open"),"workflows_search.php");
-
 // selected
 if(api_baseName()=="workflows_flows_list.php" ||
    api_baseName()=="workflows_flows_view.php" ||
@@ -61,12 +61,11 @@ if(api_baseName()=="workflows_flows_list.php" ||
 }else{
  $class=NULL;
 }
-
+// administration
 $navigation->addTab(api_text("nav-administration"),NULL,NULL,$class);
 $navigation->addSubTab(api_text("nav-list"),"workflows_flows_list.php");
 $navigation->addSubTab(api_text("nav-add"),"workflows_flows_edit.php");
 $navigation->addSubTab(api_text("nav-categories"),"workflows_categories.php");
-
 // filters
 if(api_baseName()=="workflows_list.php"){
  $navigation->addFilter("multiselect","status",api_text("filter-status"),array(1=>api_text("filter-opened"),2=>api_text("filter-assigned"),3=>api_text("filter-standby"),4=>api_text("filter-closed"),5=>api_text("filter-locked")));
@@ -91,9 +90,10 @@ if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list
   }
  }
  $navigation->addFilter("multiselect","idCategory",api_text("filter-category"),$categories_array,"input-xlarge");
-
  // if not filtered load default filters
- if($_GET['filtered']<>1){}
+ if($_GET['filtered']<>1){
+  // any default filters
+ }
 }
 if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list.php"){
  $navigation->addFilter("multiselect","typology",api_text("filter-typology"),array(1=>api_text("typology-request"),2=>api_text("typology-incident")),"input-xlarge");
