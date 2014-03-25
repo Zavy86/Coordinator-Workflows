@@ -45,7 +45,7 @@ function content(){
  $query_where.=" AND ( ";
  $query_where.=" idAssigned='".$_SESSION['account']->id."'";
  foreach(api_accountGroups() as $group){
-  if($group->grouprole>2){$query_where.=" OR idGroup='".$group->id."'";}
+  if($group->grouprole>1){$query_where.=" OR idGroup='".$group->id."'";}
  }
  if(api_accountGroupMember(api_groupId("SIS"))){$query_where.=" OR idGroup='0'";}
  $query_where.=" )";
