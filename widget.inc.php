@@ -63,7 +63,7 @@ if($GLOBALS['db']->countOf("workflows_workflows","addIdAccount='".$_SESSION['acc
  $tickets_table->addHeader(api_text("flows-th-group"),"nowarp text-center");
  $tickets_table->addHeader("&nbsp;",NULL,"16");
  // generate tickets query
- $query_where="1";
+ $query_where="(status='1' OR status='2' OR status='3')";
  // build tickets table rows
  $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where." ORDER BY addDate DESC");
  while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){
