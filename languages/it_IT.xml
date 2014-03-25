@@ -14,24 +14,17 @@
  <text key="ticketUpdated">Il ticket è stato aggiornato</text>
  <text key="ticketClosed">Il ticket è stato chiuso</text>
  <text key="ticketError">Si è verificato un errore durante il salvataggio del ticket</text>
-
  <text key="flowNotFound">Il flusso non è stato trovato</text>
  <text key="flowCreated">Il flusso è stato creato</text>
  <text key="flowUpdated">Il flusso è stato aggiornato</text>
  <text key="flowError">Si è verificato un errore durante il salvataggio del flusso</text>
-
  <text key="fieldCreated">Il campo è stato creato</text>
  <text key="fieldUpdated">Il campo è stato aggiornato</text>
  <text key="fieldMoved">Il campo è stato spostato</text>
  <text key="fieldDeleted">Il campo è stato eliminato</text>
-
-
  <text key="categoryCreated">La categoria è stata creata</text>
  <text key="categoryUpdated">La categoria è stata aggiornata</text>
  <text key="categoryError">Si è verificato un errore durante il salvataggio della categoria (verifica di aver compilato correttamente il nome e il gruppo)</text>
-
-
- <!-- verificare -->
  <text key="actionCreated">L'azione è stata creata</text>
  <text key="actionUpdated">L'azione è stata aggiornata</text>
  <text key="actionDeleted">L'azione è stata eliminata</text>
@@ -148,6 +141,7 @@
  <text key="view-dt-endDate">Conclusione</text>
  <text key="view-dt-sla">SLA</text>
  <text key="view-dt-details">Dettagli</text>
+ <text key="view-dt-hostname">Hostname</text>
  <text key="view-dt-note">Note</text>
  <text key="view-th-idTicket">Ticket</text>
  <text key="view-th-sla">SLA</text>

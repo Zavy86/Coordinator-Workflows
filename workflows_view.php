@@ -12,9 +12,11 @@ function content(){
  $selected_ticket=api_workflows_ticket($_GET['idTicket'],TRUE);
  // acquire variables
  $g_act=$_GET['act'];
+ // retrieve hostname
+
  // build workflow dynamic list
  $workflow_dl=new str_dl("br","dl-horizontal");
- $workflow_dl->addElement(api_text("view-dt-idWorkflow"),str_pad($workflow->id,5,"0",STR_PAD_LEFT));
+ $workflow_dl->addElement(api_text("view-dt-idWorkflow"),$workflow->number);
  $workflow_dl->addElement(api_text("view-dt-category"),api_workflows_categoryName($workflow->idCategory,TRUE,TRUE));
  $workflow_dl->addElement(api_text("view-dt-subject"),"<strong>".stripslashes($workflow->subject)."</strong>");
  $workflow_dl->addElement(api_text("view-dt-account"),api_accountName($workflow->addIdAccount));
@@ -27,7 +29,8 @@ function content(){
  // build details dynamic list
  $details_dl=new str_dl("br","dl-horizontal");
  $details_dl->addElement(api_text("view-dt-details"),nl2br(stripslashes($workflow->description)));
- if(strlen($workflow->note)>0){$details_dl->addElement(api_text("view-dt-note"),nl2br(stripslashes($workflow->note)),NULL);}
+ if(strlen($workflow->note)>0){$details_dl->addElement(api_text("view-dt-note"),nl2br(stripslashes($workflow->note)));}
+ $details_dl->addElement(api_text("view-dt-hostname"),stripslashes($workflow->hostname),NULL);
  // build tickets table
  $tickets_table=new str_table(api_text("view-tr-unvalued"),TRUE);
  $tickets_table->addHeader("&nbsp;",NULL,"16");
