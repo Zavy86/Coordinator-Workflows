@@ -2,7 +2,7 @@
 /* -------------------------------------------------------------------------- *\
 |* -[ Workflows - Flow List ]------------------------------------------------ *|
 \* -------------------------------------------------------------------------- */
-$checkPermission="workflows_user";
+$checkPermission="workflows_admin";
 include("template.inc.php");
 function content(){
  // acquire variables
