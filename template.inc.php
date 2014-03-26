@@ -21,8 +21,8 @@ $workflow=api_workflows_workflow($g_id,FALSE);
 $ticket=api_workflows_ticket($g_idTicket,TRUE);
 // search box
 if(api_baseName()=="workflows_list.php" ||
-   api_baseName()=="workflows_search.php" ||
-   api_baseName()=="workflows_flows_list.php"){
+   api_baseName()=="workflows_flows_list.php" ||
+   (api_baseName()=="workflows_search.php" && $_GET['idCategory']>0)){
  $search=TRUE;
 }else{
  $search=FALSE;
