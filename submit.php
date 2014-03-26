@@ -169,7 +169,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
     $typology=$action->typology;
     if($typology<>1){$hash=md5(api_randomString(32));}else{$hash=NULL;}
     $mail=api_workflows_replaceTagCodes($action->mail);
-    $subject=api_workflows_replaceTagCodes($action->subject);
+    $subject=addslashes(api_workflows_replaceTagCodes($action->subject));
     $idGroup=$action->idGroup;
     $idAssigned=$action->idAssigned;
     $difficulty=$action->difficulty;
