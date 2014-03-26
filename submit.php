@@ -289,6 +289,7 @@ function ticket_assign(){
  if($g_idWorkflow>0 && $g_idTicket>0){
   // execute query
   $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='2',idAssigned='".$_SESSION['account']->id."',assDate='".date("Y-m-d H:i:s")."',updDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idTicket."'");
+  $GLOBALS['db']->execute("UPDATE workflows_workflow SET status='2' WHERE id='".$g_idWorkflow."'");
   // alert
   $alert="&alert=ticketAssigned&alert_class=alert-success";
  }else{
