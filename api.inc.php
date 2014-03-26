@@ -349,14 +349,17 @@ function api_workflows_replaceTagCodes($string){
   "[account-firstname]"=>api_accountFirstname(),
   "[account-ldap]"=>$_SESSION['account']->ldapUsername,
  );
+ // replace tags
+ $string=str_replace(array_keys($tagcodes_array),array_values($tagcodes_array),$string);
 
  // --- da rifare in modo che veda anche più del primo field
 
  // acquire Flow
  $idFlow=$_GET['idFlow'];
+
  // dynamic tag field values
- $posStart=strpos($string,"[field-");
- if($posStart>0){
+ while(($posStart=strpos($string,"[field-"))>0){
+  //$tagcodes_array=array();
   $tag=substr($string,$posStart,strpos($string,"]",$posStart)-$posStart+1);
   $field=substr($string,$posStart+7,strpos($string,"]",$posStart)-$posStart-7);
   $field_obj=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_fields WHERE idFlow='".$idFlow."' AND name='".$field."' ORDER BY position ASC");
@@ -399,14 +402,17 @@ function api_workflows_replaceTagCodes($string){
    default:
     $value=addslashes($_POST[$field_obj->name]);
   }
-  if(!$value){$value=$tag;}
-  $tagcodes_array[$tag]=$value;
+  //if(!$value){$value="[not-found-field-".$field."]";}
+  //$tagcodes_array[$tag]=$value;
+
+  // replace tags
+  $string=str_replace($tag,$value,$string);
  }
 
  // ---
 
  // replace tags
- $string=str_replace(array_keys($tagcodes_array),array_values($tagcodes_array),$string);
+ //$string=str_replace(array_keys($tagcodes_array),array_values($tagcodes_array),$string);
  return $string;
 }
 
