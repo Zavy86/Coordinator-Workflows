@@ -53,6 +53,8 @@ function content(){
    $query_where.=" subject LIKE '%".$g_search."%'";
    $query_where.=" OR description LIKE '%".$g_search."%'";
    $query_where.=" )";
+  }elseif($selected_category->idCategory==0){
+   $query_where="0";
   }elseif($subcategories_count && $category->id<>$selected_category->id){
    // query only pinned
    $query_where.=" AND pinned='1'";

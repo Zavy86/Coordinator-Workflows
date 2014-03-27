@@ -76,6 +76,7 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
  // definitions
  $description=NULL;
  // acquire varaibles
+ $p_referent=addslashes($_POST['referent']);
  $p_phone=addslashes($_POST['phone']);
  $p_note=addslashes($_POST['note']);
  // get flow fields
@@ -135,6 +136,7 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
   }
  }
  // acquire variables
+ $description.=api_text("add-ff-referent").": ".$p_referent."\n\n";
  $description.=api_text("add-ff-phone").": ".$p_phone;
  // execute query
  $GLOBALS['db']->execute("UPDATE workflows_workflows SET description='".$description."',note='".$p_note."' WHERE id='".$idWorkflow."'");
@@ -289,6 +291,7 @@ function ticket_assign(){
  if($g_idWorkflow>0 && $g_idTicket>0){
   // execute query
   $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='2',idAssigned='".$_SESSION['account']->id."',assDate='".date("Y-m-d H:i:s")."',updDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idTicket."'");
+  $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='2' WHERE id='".$g_idWorkflow."'");
   // alert
   $alert="&alert=ticketAssigned&alert_class=alert-success";
  }else{
