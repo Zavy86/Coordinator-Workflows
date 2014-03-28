@@ -5,6 +5,8 @@
 $checkPermission="workflows_view";
 include("template.inc.php");
 function content(){
+ // definitions
+ $notes_modals_array=array();
  // get workflow object
  $workflow=api_workflows_workflow($_GET['id'],TRUE);
  if(!$workflow->id){echo api_text("workflowNotFound");return FALSE;}
@@ -38,8 +40,8 @@ function content(){
  $tickets_table->addHeader("&nbsp;",NULL,"16");
  $tickets_table->addHeader("!","nowarp text-center");
  $tickets_table->addHeader(api_text("view-th-sla"),"nowarp text-center");
- $tickets_table->addHeader(api_text("view-th-subject"),NULL,"100%");
  $tickets_table->addHeader("&nbsp;",NULL,"16");
+ $tickets_table->addHeader(api_text("view-th-subject"),NULL,"100%");
  $tickets_table->addHeader(api_text("view-th-assigned"),"nowarp text-right");
  $tickets_table->addHeader(api_text("view-th-group"),"nowarp text-center");
  $tickets_table->addHeader(api_text("view-th-update"),"nowarp");
@@ -57,9 +59,20 @@ function content(){
    case 3:$typology=api_icon("icon-check",api_text("ticket-authorization-by",$ticket->mail));break;
   }
   // notes
-  if(strlen($ticket->note)>0){
+  /*if(strlen($ticket->note)>0){
    $notes=" <a data-toggle='popover' data-placement='top' data-content=\"".stripslashes(str_replace("\n","| ",$ticket->note))."\">".api_icon("icon-comment")."</a>";
-  }else{$notes=NULL;}
+  }else{$notes=NULL;}*/
+  $notes_modal=new str_modal("notes_".$ticket->id);
+  $notes_modal->header(stripslashes($ticket->subject));
+  $form_body=new str_form("submit.php?act=ticket_note&idWorkflow=".$workflow->id."&idTicket=".$ticket->id,"post","ticket_notes_".$ticket->id);
+  $form_body->addField("textarea","note",api_accountName()."<br>".api_timestampFormat(date("Y-m-d H:i:s"))."<br><br><input type='submit' class='btn btn-primary' value='Salva'>",NULL,"input-xlarge",api_text("view-ff-note-placeholder"),FALSE,5);
+  $dl_body=new str_dl("br","dl-horizontal");
+  foreach($ticket->notes as $note){
+   $dl_body->addElement(api_accountName($note->addIdAccount)."<br>".api_timestampFormat($note->addDate),nl2br(stripslashes($note->note)));
+  }
+  if(!count($ticket->notes)){$dl_body->addElement("&nbsp;",api_text("view-dd-notesNull"));}
+  $notes_modal->body($form_body->render(FALSE).$dl_body->render(FALSE));
+  $notes_modals_array[]=$notes_modal;
   // assigned
   if($ticket->status==1 || $ticket->status==3){$italic="<i>";$unitalic="</i>";}
   else{$italic=NULL;$unitalic=NULL;}
@@ -77,8 +90,8 @@ function content(){
   }
   $tickets_table->addField($ticket->priority,"nowarp text-center");
   $tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
+  $tickets_table->addField($notes_modal->link(api_icon("icon-comment")),"nowarp");
   $tickets_table->addField(stripslashes($ticket->subject));
-  $tickets_table->addField($notes,"nowarp");
   $tickets_table->addField($italic.(($ticket->idAssigned>0)?api_accountFirstName($ticket->idAssigned):"&nbsp;").$unitalic,"nowarp text-right");
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $tickets_table->addField($update,"nowarp");
@@ -124,7 +137,7 @@ function content(){
   $body_form->addFieldOption(1,api_text("difficulty-low"),($selected_ticket->difficulty==1)?TRUE:FALSE);
   $body_form->addFieldOption(2,api_text("difficulty-medium"),($selected_ticket->difficulty==2)?TRUE:FALSE);
   $body_form->addFieldOption(3,api_text("difficulty-high"),($selected_ticket->difficulty==3)?TRUE:FALSE);
-  $body_form->addField("textarea","note",api_text("view-ff-note"),stripslashes($selected_ticket->note),"input-xlarge",NULL,FALSE,3);
+  //$body_form->addField("textarea","note",api_text("view-ff-note"),stripslashes($selected_ticket->note),"input-xlarge",NULL,FALSE,3);
   $body_form->addControl("submit",api_text("view-fc-submit"));
   $ticket_modal->body($body_form->render(FALSE));
  }elseif($g_act=="addTicket"){
@@ -164,8 +177,10 @@ function content(){
  $GLOBALS['html']->split_close();
  // show tickets table
  $tickets_table->render();
- // show ticket modal window
+ // show ticket modal windows
  if(is_object($ticket_modal)){$ticket_modal->render();}
+ // show notes modal windows
+ foreach($notes_modals_array as $notes_modal){$notes_modal->render();}
 ?>
 <script type="text/javascript">
  $(document).ready(function(){

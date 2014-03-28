@@ -148,7 +148,6 @@ CREATE TABLE IF NOT EXISTS `workflows_tickets` (
   `hash` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `mail` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `note` text COLLATE utf8_unicode_ci,
   `idGroup` int(11) unsigned NOT NULL DEFAULT '0',
   `idAssigned` int(11) unsigned DEFAULT NULL,
   `difficulty` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 low, 2 medium, 3 high',
@@ -166,6 +165,22 @@ CREATE TABLE IF NOT EXISTS `workflows_tickets` (
   `endDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Struttura della tabella `workflows_tickets_notes`
+--
+
+CREATE TABLE IF NOT EXISTS `workflows_tickets_notes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `idTicket` int(11) unsigned NOT NULL,
+  `note` text COLLATE utf8_unicode_ci NOT NULL,
+  `addDate` datetime DEFAULT NULL,
+  `addIdAccount` int(11) unsigned NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `idFeasibility` (`idTicket`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
 
 -- --------------------------------------------------------
 

@@ -35,6 +35,7 @@ $navigation->addTab(api_text("nav-workflows"),"workflows_list.php");
 // operations
 if($workflow->id){
  $navigation->addTab(api_text("nav-operations"),NULL,NULL,"active");
+ $navigation->addSubTab(api_text("nav-sendmail"),"workflows_sendmail.php?id=".$workflow->id);
  $navigation->addSubTab(api_text("nav-addTicket"),"workflows_view.php?id=".$workflow->id."&act=addTicket");
  if($ticket->id &&api_workflows_ticketProcessPermission($ticket)){
   $navigation->addSubTabDivider();

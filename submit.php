@@ -13,6 +13,7 @@ switch($act){
  case "ticket_save":ticket_save();break;
  case "ticket_assign":ticket_assign();break;
  case "ticket_process":ticket_process();break;
+ case "ticket_note":ticket_note();break;
  // categories
  case "category_save":category_save();break;
  // flows
@@ -252,7 +253,7 @@ function ticket_save(){
  if($p_typology<>1){$hash=md5(api_randomString(32));}else{$hash=NULL;}
  $p_mail=addslashes($_POST['mail']);
  $p_subject=addslashes($_POST['subject']);
- $p_note=addslashes($_POST['note']);
+ //$p_note=addslashes($_POST['note']);
  $p_idGroup=$_POST['idGroup'];
  $p_idAssigned=$_POST['idAssigned'];
  $p_difficulty=$_POST['difficulty'];
@@ -262,10 +263,10 @@ function ticket_save(){
  $hostname=api_hostName();
  // build query
  $query="INSERT INTO workflows_tickets
-  (idWorkflow,idCategory,typology,hash,mail,subject,note,idGroup,idAssigned,difficulty,priority,
+  (idWorkflow,idCategory,typology,hash,mail,subject,idGroup,idAssigned,difficulty,priority,
    slaAssignment,slaClosure,status,solved,approved,hostname,addDate,addIdAccount) VALUES
   ('".$workflow->id."','".$p_idCategory."','".$p_typology."','".$hash."','".$p_mail."',
-   '".$p_subject."','".$p_note."','".$p_idGroup."','".$p_idAssigned."','".$p_difficulty."',
+   '".$p_subject."','".$p_idGroup."','".$p_idAssigned."','".$p_difficulty."',
    '".$p_priority."','".$slaAssignment."','".$slaClosure."','1','0','0','".$hostname."',
    '".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
  // execute query
@@ -375,8 +376,9 @@ function ticket_process(){
 
    // -----!!!----- notifica che il workflow è chiuso
 
-   // alert
-   $alert="&alert=workflowClosed&alert_class=alert-success";
+   // redirect
+   $alert="?alert=workflowClosed&alert_class=alert-success";
+   exit(header("location: workflows_list.php".$alert));
   }
  }else{
   // alert
@@ -384,6 +386,42 @@ function ticket_process(){
  }
  // redirect
  exit(header("location: workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket.$alert));
+}
+
+/* -[ Ticket Note ]---------------------------------------------------------- */
+function ticket_note(){
+ if(!api_checkPermission("workflows","workflows_add")){api_die("accessDenied");}
+ // get workflow object
+ $workflow=api_workflows_workflow($_GET['idWorkflow'],FALSE);
+ $ticket=api_workflows_ticket($_GET['idTicket'],FALSE);
+ // check id
+ if(!$workflow->id){
+  // redirect
+  $alert="?alert=workflowError&alert_class=alert-error";
+  exit(header("location: workflows_list.php".$alert));
+ }
+ if(!$ticket->id){
+  // redirect
+  $alert="&alert=workflowError&alert_class=alert-error";
+  exit(header("location: workflows_view.php?id=".$workflow->id.$alert));
+ }
+ // build and acquire variables
+ $p_note=addslashes($_POST['note']);
+ // build query
+ $query="INSERT INTO workflows_tickets_notes
+  (idTicket,note,addDate,addIdAccount) VALUES
+  ('".$ticket->id."','".$p_note."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+ // execute query
+ $GLOBALS['db']->execute($query);
+ // set id to last inserted id
+ $q_idNote=$GLOBALS['db']->lastInsertedId();
+ // notifications
+
+ // --
+
+ // redirect
+ $alert="&alert=ticketUpdated&alert_class=alert-success";
+ exit(header("location: workflows_view.php?id=".$workflow->id.$alert));
 }
 
 
