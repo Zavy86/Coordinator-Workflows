@@ -14,8 +14,6 @@ function content(){
  $selected_ticket=api_workflows_ticket($_GET['idTicket'],TRUE);
  // acquire variables
  $g_act=$_GET['act'];
- // retrieve hostname
-
  // build workflow dynamic list
  $workflow_dl=new str_dl("br","dl-horizontal");
  $workflow_dl->addElement(api_text("view-dt-idWorkflow"),$workflow->number);

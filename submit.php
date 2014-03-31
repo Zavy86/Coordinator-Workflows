@@ -290,9 +290,11 @@ function ticket_assign(){
  if(!$g_idTicket){$g_idTicket=0;}
  // check id
  if($g_idWorkflow>0 && $g_idTicket>0){
-  // execute query
+  // execute queries
   $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='2',idAssigned='".$_SESSION['account']->id."',assDate='".date("Y-m-d H:i:s")."',updDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idTicket."'");
   $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='2' WHERE id='".$g_idWorkflow."'");
+  // change group
+  if(api_accountMainGroup()!==FALSE){$GLOBALS['db']->execute("UPDATE workflows_tickets SET idGroup='".api_accountMainGroup()->id."' WHERE id='".$g_idTicket."'");}
   // alert
   $alert="&alert=ticketAssigned&alert_class=alert-success";
  }else{
@@ -316,7 +318,6 @@ function ticket_process(){
  $p_idAssigned=$_POST['idAssigned'];
  $p_priority=$_POST['priority'];
  $p_difficulty=$_POST['difficulty'];
- $p_note=addslashes($_POST['note']);
  // switch status
  switch($p_status){
   case 1: // opened
@@ -350,7 +351,6 @@ function ticket_process(){
    idAssigned='".$p_idAssigned."',
    priority='".$p_priority."',
    difficulty='".$p_difficulty."',
-   note='".$p_note."',
    solved='".$solved."'
    ".$update_date."
    WHERE id='".$g_idTicket."'";
