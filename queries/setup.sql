@@ -37,7 +37,7 @@ CREATE TABLE IF NOT EXISTS `workflows_actions` (
 CREATE TABLE IF NOT EXISTS `workflows_attachments` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `type` varchar(25) COLLATE utf8_unicode_ci NOT NULL,
+  `type` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `size` int(11) NOT NULL,
   `hash` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `file` longblob NOT NULL,
