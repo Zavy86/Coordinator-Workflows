@@ -103,6 +103,7 @@
  <text key="nav-workflows">Workflows</text>
  <text key="nav-open">Apri un workflow</text>
  <text key="nav-operations">Operazioni</text>
+ <text key="nav-sendmail">Inoltra per e-mail</text>
  <text key="nav-addTicket">Aggiungi ticket</text>
  <text key="nav-ticket">Ticket: {0}</text>
  <text key="nav-assign">Assegnati il ticket</text>
@@ -157,11 +158,12 @@
  <text key="view-td-reopen">Riapri il ticket</text>
  <text key="view-tr-unvalued">Non è presente nessun ticket..</text>
  <text key="view-ticketAdd">Nuovo ticket</text>
+ <text key="view-dd-notesNull">Non è presente nessuna nota..</text>
+ <text key="view-ff-note-placeholder">Aggiungi una nota</text>
  <text key="view-ff-idGroup">Gruppo</text>
  <text key="view-ff-idGroup-placeholder">Seleziona un gruppo</text>
  <text key="view-ff-idAssigned">Incaricato</text>
  <text key="view-ff-idAssigned-placeholder">Seleziona un utente</text>
- <text key="view-ff-note">Note</text>
  <text key="view-ff-subject">Oggetto</text>
  <text key="view-ff-subject-placeholder">Oggetto del ticket</text>
  <text key="view-ff-mail">Indirizzo mail</text>

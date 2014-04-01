@@ -18,7 +18,12 @@ function api_workflows_workflow($idWorkflow,$subobjects=TRUE){
   // get workflow tickets
   $workflow->tickets=array();
   $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE idWorkflow='".$workflow->id."' ORDER BY requiredTicket ASC,status DESC,id ASC");
-  while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){$workflow->tickets[]=$ticket;}
+  while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){
+   $ticket->notes=array();
+   $notes=$GLOBALS['db']->query("SELECT * FROM workflows_tickets_notes WHERE idTicket='".$ticket->id."' ORDER BY addDate DESC");
+   while($note=$GLOBALS['db']->fetchNextObject($notes)){$ticket->notes[]=$note;}
+   $workflow->tickets[]=$ticket;
+  }
  }
  return $workflow;
 }
@@ -115,11 +120,17 @@ function api_workflows_priority($priority){
 
 /* -[ Ticket object by id ]-------------------------------------------------- */
 // @integer $idTicket : ticket id
-function api_workflows_ticket($idticket){
+// @boolean $subobjects : load also feasibility subobjects
+function api_workflows_ticket($idticket,$subobjects=TRUE){
  $ticket=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_tickets WHERE id='".$idticket."'");
  if(!$ticket->id){return FALSE;}
  // build ticket number
  $ticket->number=str_pad($ticket->idWorkflow,5,"0",STR_PAD_LEFT)."-".str_pad($ticket->id,5,"0",STR_PAD_LEFT);
+ if($subobjects){
+  $ticket->notes=array();
+  $notes=$GLOBALS['db']->query("SELECT * FROM workflows_tickets_notes WHERE idTicket='".$ticket->id."' ORDER BY addDate DESC");
+  while($note=$GLOBALS['db']->fetchNextObject($notes)){$ticket->notes[]=$note;}
+ }
  return $ticket;
 }
 
@@ -188,7 +199,7 @@ function api_workflows_ticketDetailsModal($ticket){
  if($ticket->endDate<>NULL){$dl_body->addElement(api_text("api-details-dt-end"),api_timestampFormat($ticket->endDate,api_text("datetime")));}
  if($ticket->updIdAccount<>NULL){$dl_body->addElement(api_text("api-details-dt-upd"),api_text("api-details-dd-upd",array(api_accountName($ticket->updIdAccount),api_timestampFormat($ticket->updDate,api_text("datetime")))));}
  if(strlen($ticket->hostname)>0){$dl_body->addElement(api_text("api-details-dt-hostname"),stripslashes($ticket->hostname));}
- if(strlen($ticket->note)>0){$dl_body->addElement(api_text("api-details-dt-note"),nl2br(stripslashes($ticket->note)));}
+ //if(strlen($ticket->note)>0){$dl_body->addElement(api_text("api-details-dt-note"),nl2br(stripslashes($ticket->note)));}
  $dl_body->addElement(api_text("status"),api_workflows_status($ticket->status),NULL);
  $return->body($dl_body->render(FALSE));
  return $return;
@@ -437,10 +448,10 @@ function api_workflows_notifications($ticket){
    $message.="<strong>Richiedente:</strong> ".api_accountName($ticket->addIdAccount)."\n\n";
    $message.="<strong>Categoria:</strong> ".api_workflows_categoryName($ticket->idCategory,TRUE,TRUE)."\n\n";
    $message.="<strong>Oggetto:</strong> ".stripslashes($ticket->subject)."\n\n";
-   if(strlen($ticket->note)>0){
+   /*if(strlen($ticket->note)>0){
     $message.="<strong>Note</strong>:\n\n";
     $message.=stripslashes($ticket->note)."\n\n\n";
-   }
+   }*/
    $message.="<strong>Dettagli</strong>:\n\n";
    $message.=stripslashes($workflow->description)."\n\n\n";
    if(strlen($workflow->note)>0){
