@@ -5,7 +5,7 @@
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `workflows_actions`
+-- Table structure for table `workflows_actions`
 --
 
 CREATE TABLE IF NOT EXISTS `workflows_actions` (
@@ -13,25 +13,26 @@ CREATE TABLE IF NOT EXISTS `workflows_actions` (
   `idFlow` int(11) unsigned NOT NULL,
   `typology` tinyint(1) unsigned NOT NULL COMMENT '1 ticket, 2 external ticket, 3 authorization',
   `requiredAction` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'id of the action required',
-  `conditionedField` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'id of the condition field',
+  `conditionedField` int(11) unsigned DEFAULT NULL COMMENT 'id of the condition field',
   `conditionedValue` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL COMMENT 'value of the condition field',
   `subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci,
-  `idGroup` int(11) unsigned NOT NULL DEFAULT '0',
-  `idAssigned` int(11) unsigned NOT NULL DEFAULT '0',
+  `idGroup` int(11) unsigned DEFAULT NULL,
+  `idAssigned` int(11) unsigned DEFAULT NULL,
   `mail` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `difficulty` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 low, 2 medium, 3 high',
-  `priority` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 highest, 2 high, 3 medium, 4 low, 5 lowest',
+  `priority` tinyint(1) unsigned NOT NULL DEFAULT '3' COMMENT '1 highest, 2 high, 3 medium, 4 low, 5 lowest',
   `slaAssignment` int(5) unsigned NOT NULL DEFAULT '0',
   `slaClosure` int(5) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `idWorkflow` (`idFlow`)
+  KEY `idFlow` (`idFlow`),
+  KEY `conditionedField` (`conditionedField`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `workflows_attachments`
+-- Table structure for table `workflows_attachments`
 --
 
 CREATE TABLE IF NOT EXISTS `workflows_attachments` (
@@ -57,7 +58,7 @@ CREATE TABLE IF NOT EXISTS `workflows_attachments` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `workflows_categories`
+-- Table structure for table `workflows_categories`
 --
 
 CREATE TABLE IF NOT EXISTS `workflows_categories` (
@@ -72,10 +73,10 @@ CREATE TABLE IF NOT EXISTS `workflows_categories` (
   `updIdAccount` int(11) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idCategory` (`idCategory`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=14 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
--- Dump dei dati per la tabella `workflows_categories`
+-- Dumping data for table `workflows_categories`
 --
 
 INSERT IGNORE INTO `workflows_categories` (`id`, `idCategory`, `name`, `description`, `idGroup`, `addDate`, `addIdAccount`, `updDate`, `updIdAccount`) VALUES
@@ -86,7 +87,7 @@ INSERT IGNORE INTO `workflows_categories` (`id`, `idCategory`, `name`, `descript
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `workflows_fields`
+-- Table structure for table `workflows_fields`
 --
 
 CREATE TABLE IF NOT EXISTS `workflows_fields` (
@@ -104,24 +105,25 @@ CREATE TABLE IF NOT EXISTS `workflows_fields` (
   `options_query` text COLLATE utf8_unicode_ci,
   `required` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `position` int(2) NOT NULL DEFAULT '1',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idFlow` (`idFlow`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `workflows_flows`
+-- Table structure for table `workflows_flows`
 --
 
 CREATE TABLE IF NOT EXISTS `workflows_flows` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `idCategory` int(11) unsigned NOT NULL,
+  `idCategory` int(11) unsigned DEFAULT NULL,
   `typology` tinyint(1) unsigned NOT NULL COMMENT '1 request, 2 incident',
   `pinned` tinyint(1) unsigned NOT NULL DEFAULT '0',
   `subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `advice` text COLLATE utf8_unicode_ci,
-  `priority` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 highest, 2 high, 3 medium, 4 low, 5 lowest',
+  `priority` tinyint(1) unsigned NOT NULL DEFAULT '3' COMMENT '1 highest, 2 high, 3 medium, 4 low, 5 lowest',
   `sla` int(5) unsigned NOT NULL DEFAULT '0',
   `procedure` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `addDate` datetime NOT NULL,
@@ -135,23 +137,23 @@ CREATE TABLE IF NOT EXISTS `workflows_flows` (
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `workflows_tickets`
+-- Table structure for table `workflows_tickets`
 --
 
 CREATE TABLE IF NOT EXISTS `workflows_tickets` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `idWorkflow` int(11) unsigned NOT NULL,
-  `idCategory` int(11) unsigned NOT NULL DEFAULT '0',
+  `idCategory` int(11) unsigned DEFAULT NULL,
   `requiredTicket` int(11) unsigned NOT NULL DEFAULT '0' COMMENT 'id of the required ticket',
-  `requiredAction` int(11) unsigned DEFAULT '0' COMMENT 'id of the required flow action',
+  `requiredAction` int(11) unsigned DEFAULT NULL COMMENT 'id of the required flow action',
   `typology` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 ticket, 2 external ticket, 3 authorization',
   `hash` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `mail` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
   `subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `idGroup` int(11) unsigned NOT NULL DEFAULT '0',
+  `idGroup` int(11) unsigned DEFAULT NULL,
   `idAssigned` int(11) unsigned DEFAULT NULL,
   `difficulty` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 low, 2 medium, 3 high',
-  `priority` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 highest, 2 high, 3 medium, 4 low, 5 lowest',
+  `priority` tinyint(1) unsigned NOT NULL DEFAULT '3' COMMENT '1 highest, 2 high, 3 medium, 4 low, 5 lowest',
   `slaAssignment` int(5) unsigned NOT NULL DEFAULT '0',
   `slaClosure` int(5) unsigned NOT NULL DEFAULT '0',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 open, 2 assigned, 3 standby, 4 closed, 5 locked',
@@ -159,17 +161,20 @@ CREATE TABLE IF NOT EXISTS `workflows_tickets` (
   `approved` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '0 no, 1 yes',
   `hostname` varchar(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `addDate` datetime NOT NULL,
-  `addIdAccount` int(11) unsigned NOT NULL,
+  `addIdAccount` int(11) unsigned DEFAULT NULL,
   `updDate` datetime DEFAULT NULL,
   `assDate` datetime DEFAULT NULL,
   `endDate` datetime DEFAULT NULL,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `idWorkflow` (`idWorkflow`),
+  KEY `idCategory` (`idCategory`),
+  KEY `requiredAction` (`requiredAction`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `workflows_tickets_notes`
+-- Table structure for table `workflows_tickets_notes`
 --
 
 CREATE TABLE IF NOT EXISTS `workflows_tickets_notes` (
@@ -179,38 +184,45 @@ CREATE TABLE IF NOT EXISTS `workflows_tickets_notes` (
   `addDate` datetime DEFAULT NULL,
   `addIdAccount` int(11) unsigned NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
-  KEY `idFeasibility` (`idTicket`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=3 ;
+  KEY `idTicket` (`idTicket`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Constraints for table `workflows_tickets_notes`
+--
+
+ALTER TABLE `workflows_tickets_notes`
+  ADD CONSTRAINT `workflows_tickets_notes_ibfk_1` FOREIGN KEY (`idTicket`) REFERENCES `workflows_tickets` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `workflows_workflows`
+-- Table structure for table `workflows_workflows`
 --
 
 CREATE TABLE IF NOT EXISTS `workflows_workflows` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `idCategory` int(11) unsigned NOT NULL,
-  `idFlow` int(11) unsigned NOT NULL DEFAULT '0',
-  `typology` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT '1 request, 2 incident',
+  `idCategory` int(11) unsigned DEFAULT NULL,
+  `idFlow` int(11) unsigned DEFAULT NULL,
+  `typology` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 request, 2 incident',
   `subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `description` text COLLATE utf8_unicode_ci NOT NULL,
   `note` text COLLATE utf8_unicode_ci,
-  `priority` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 highest, 2 high, 3 medium, 4 low, 5 lowest',
+  `priority` tinyint(1) unsigned NOT NULL DEFAULT '3' COMMENT '1 highest, 2 high, 3 medium, 4 low, 5 lowest',
   `sla` int(5) unsigned NOT NULL DEFAULT '0',
   `status` tinyint(1) unsigned NOT NULL DEFAULT '1' COMMENT '1 open, 2 assigned, 3 standby, 4 closed',
   `addDate` datetime NOT NULL,
-  `addIdAccount` int(11) unsigned NOT NULL,
+  `addIdAccount` int(11) unsigned DEFAULT NULL,
   `endDate` datetime DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `idCategory` (`idCategory`),
-  KEY `idWorkflow` (`idFlow`)
+  KEY `idFlow` (`idFlow`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
 --
--- Dati della tabelle `settings_permissions`
+-- Dumping data for table `settings_permissions`
 --
 
 INSERT IGNORE INTO `settings_permissions` (`id`,`module`,`action`,`description`,`locked`) VALUES
@@ -220,3 +232,42 @@ INSERT IGNORE INTO `settings_permissions` (`id`,`module`,`action`,`description`,
 (NULL,'workflows','workflows_admin','Administer workflows and categories','0');
 
 -- --------------------------------------------------------
+
+--
+-- Constraints for table `workflows_actions`
+--
+
+ALTER TABLE `workflows_actions`
+  ADD CONSTRAINT `workflows_actions_ibfk_1` FOREIGN KEY (`idFlow`) REFERENCES `workflows_flows` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflows_actions_ibfk_2` FOREIGN KEY (`conditionedField`) REFERENCES `workflows_fields` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+--
+-- Constraints for table `workflows_fields`
+--
+
+ALTER TABLE `workflows_fields`
+  ADD CONSTRAINT `workflows_fields_ibfk_1` FOREIGN KEY (`idFlow`) REFERENCES `workflows_flows` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--
+-- Constraints for table `workflows_flows`
+--
+
+ALTER TABLE `workflows_flows`
+  ADD CONSTRAINT `workflows_flows_ibfk_1` FOREIGN KEY (`idCategory`) REFERENCES `workflows_categories` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+--
+-- Constraints for table `workflows_tickets`
+--
+
+ALTER TABLE `workflows_tickets`
+  ADD CONSTRAINT `workflows_tickets_ibfk_1` FOREIGN KEY (`idWorkflow`) REFERENCES `workflows_workflows` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `workflows_tickets_ibfk_2` FOREIGN KEY (`idCategory`) REFERENCES `workflows_categories` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `workflows_tickets_ibfk_3` FOREIGN KEY (`requiredAction`) REFERENCES `workflows_actions` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;
+
+--
+-- Constraints for table `workflows_workflows`
+--
+
+ALTER TABLE `workflows_workflows`
+  ADD CONSTRAINT `workflows_workflows_ibfk_1` FOREIGN KEY (`idCategory`) REFERENCES `workflows_categories` (`id`) ON DELETE SET NULL ON UPDATE SET NULL,
+  ADD CONSTRAINT `workflows_workflows_ibfk_2` FOREIGN KEY (`idFlow`) REFERENCES `workflows_flows` (`id`) ON DELETE SET NULL ON UPDATE SET NULL;

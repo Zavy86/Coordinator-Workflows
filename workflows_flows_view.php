@@ -151,14 +151,14 @@ function content(){
  foreach($typologies as $value=>$label){$form_body->addFieldOption($value,api_text($label),($value==$selected_action->typology)?TRUE:FALSE);}
  $form_body->addField("text","mail",api_text("flows_view-actions-ff-mail"),stripslashes($selected_action->mail),"input-xlarge",api_text("flows_view-actions-ff-mail-placeholder"));
  $form_body->addField("select","requiredAction",api_text("flows_view-actions-ff-requiredAction"),NULL,"input-large");
- $form_body->addFieldOption(0,api_text("flows_view-actions-ff-requiredAction-null"));
+ $form_body->addFieldOption('',api_text("flows_view-actions-ff-requiredAction-null"));
  $actions=$GLOBALS['db']->query("SELECT * FROM workflows_actions WHERE idFlow='".$flow->id."' ORDER BY requiredAction ASC,subject ASC");
  while($action=$GLOBALS['db']->fetchNextObject($actions)){
   if($action->id==$selected_action->id){continue;}
   $form_body->addFieldOption($action->id,"[".$action->id."] ".stripslashes($action->subject),($action->id==$selected_action->requiredAction)?TRUE:FALSE);
  }
  $form_body->addField("select","conditionedField",api_text("flows_view-actions-ff-conditionedField"),NULL,"input-large");
- $form_body->addFieldOption(0,api_text("flows_view-actions-ff-conditionedField-null"));
+ $form_body->addFieldOption('',api_text("flows_view-actions-ff-conditionedField-null"));
  $fields=$GLOBALS['db']->query("SELECT * FROM workflows_fields WHERE idFlow='".$flow->id."'");
  while($field=$GLOBALS['db']->fetchNextObject($fields)){
   $form_body->addFieldOption($field->id,stripslashes($field->label)." (".stripslashes($field->name).")",($field->id==$selected_action->conditionedField)?TRUE:FALSE);
