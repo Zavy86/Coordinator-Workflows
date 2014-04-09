@@ -559,6 +559,7 @@ function flow_field_save(){
  if($p_options_method=="none"){$p_options_method="";$p_options_values="";$p_options_query="";}
  if($p_options_method=="values"){$p_options_query="";}
  if($p_options_method=="query"){$p_options_values="";}
+  if(!$p_required){$p_required=0;}
  // check flow
  if(!$g_idFlow>0){
   $alert="?alert=flowError&alert_class=alert-error";
