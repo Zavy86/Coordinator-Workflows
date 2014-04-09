@@ -309,7 +309,7 @@ function api_workflows_flowAction($idAction){
 function api_workflows_flowFieldOptions($field){
  $return=array();
  // if no preset value
- if(!$field->value){
+ if(!$field->value && $field->required){
   $option_obj=new stdClass();
   $option_obj->value="";
   $option_obj->label=api_text("api-option-undefined");
