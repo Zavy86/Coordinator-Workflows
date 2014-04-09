@@ -179,7 +179,7 @@ function content(){
  if($selected_action->id){$form_body->addControl("button",api_text("flows_view-actions-fc-delete"),"btn-danger","submit.php?act=flow_action_delete&idFlow=".$flow->id."&idAction=".$selected_action->id,api_text("flows_view-actions-fc-delete-confirm"));}
  $action_modal->body($form_body->render(FALSE));
  // show flow
- echo "<h5>".api_text("flows_view-flow")." - <a href='workflows_flows_edit.php?idFlow=".$flow->id."'>".api_text("flows_view-flow-edit")."</a></h5>\n";
+ echo "<h5>".api_text("flows_view-flow")." - <a href='workflows_flows_edit.php?idFlow=".$flow->id."'>".api_text("flows_view-flow-edit")."</a> - <a href='workflows_add.php?idFlow=".$flow->id."' target='_blank'>".api_text("flows_view-flow-preview")."</a></h5>\n";
  // open split
  $GLOBALS['html']->split_open();
  $GLOBALS['html']->split_span(6);

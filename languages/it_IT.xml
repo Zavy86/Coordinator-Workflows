@@ -242,6 +242,7 @@
  <!-- workflows_flows_view.php -->
  <text key="flows_view-flow">WORKFLOW</text>
  <text key="flows_view-flow-edit">Modifica workflow</text>
+ <text key="flows_view-flow-preview">Anteprima workflow</text>
  <text key="flows_view-dt-category">Categoria</text>
  <text key="flows_view-dt-subject">Oggetto</text>
  <text key="flows_view-dt-typology">Tipologia</text>
