@@ -33,7 +33,7 @@ function content(){
  $details_dl->addElement(api_text("view-dt-details"),nl2br(stripslashes($workflow->description)));
  if(strlen($workflow->note)>0){$details_dl->addElement(api_text("view-dt-note"),nl2br(stripslashes($workflow->note)));}
  $details_dl->addElement(api_text("view-dt-hostname"),stripslashes($workflow->hostname));
- $details_dl->addElement(api_text("view-dt-guide"),"<a href='#' onClick=\"window.prompt('".api_text("view-dd-guide")."','".addslashes($flow->guide)."');\">".addslashes($flow->guide)."</a>",NULL);
+ $details_dl->addElement(api_text("view-dt-guide"),"<a href='#' onClick=\"window.prompt('".api_text("view-dd-guide")."','".addslashes($flow->guide)."');\">".$flow->guide."</a>",NULL);
  // build tickets table
  $tickets_table=new str_table(api_text("view-tr-unvalued"),TRUE);
  $tickets_table->addHeader("&nbsp;",NULL,"16");
@@ -91,7 +91,7 @@ function content(){
   }
   $tickets_table->addField($ticket->priority,"nowarp text-center");
   $tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
-  $tickets_table->addField($notes_modal->link(api_icon("icon-comment")),"nowarp");
+  $tickets_table->addField($notes_modal->link(api_icon("icon-comment",api_text("view-td-note"))),"nowarp");
   $tickets_table->addField(stripslashes($ticket->subject));
   $tickets_table->addField($italic.(($ticket->idAssigned>0)?api_accountFirstName($ticket->idAssigned):"&nbsp;").$unitalic,"nowarp text-right");
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
@@ -138,7 +138,7 @@ function content(){
   $body_form->addFieldOption(1,api_text("difficulty-low"),($selected_ticket->difficulty==1)?TRUE:FALSE);
   $body_form->addFieldOption(2,api_text("difficulty-medium"),($selected_ticket->difficulty==2)?TRUE:FALSE);
   $body_form->addFieldOption(3,api_text("difficulty-high"),($selected_ticket->difficulty==3)?TRUE:FALSE);
-  //$body_form->addField("textarea","note",api_text("view-ff-note"),stripslashes($selected_ticket->note),"input-xlarge",NULL,FALSE,3);
+  $body_form->addField("textarea","note",api_text("view-ff-note"),stripslashes($selected_ticket->note),"input-xlarge",NULL,FALSE,3);
   $body_form->addControl("submit",api_text("view-fc-submit"));
   $ticket_modal->body($body_form->render(FALSE));
  }elseif($g_act=="addTicket"){
