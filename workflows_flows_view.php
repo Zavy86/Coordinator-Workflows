@@ -30,7 +30,7 @@ function content(){
  $details_dl=new str_dl("br","dl-horizontal");
  $details_dl->addElement(api_text("flows_view-dt-description"),nl2br(stripslashes($flow->description)));
  $details_dl->addElement(api_text("flows_view-dt-advice"),nl2br(stripslashes($flow->advice)));
- $details_dl->addElement(api_text("view-dt-guide"),"<a href='#' onClick=\"window.prompt('".api_text("view-dd-guide")."','".$flow->guide."');\">".stripslashes($flow->guide)."</a>",NULL);
+ $details_dl->addElement(api_text("view-dt-guide"),"<a href='#' onClick=\"window.prompt('".api_text("view-dd-guide")."','".addslashes($flow->guide)."');\">".$flow->guide."</a>",NULL);
  // build fields table
  $fields_table=new str_table(api_text("flows_view-fields-tr-unvalued"));
  // build fields table headers
