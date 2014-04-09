@@ -230,6 +230,7 @@
  <text key="flows_edit-ff-advice-placeholder">Suggerimenti, requisiti o prove da eseguire prima di aprire il workflow</text>
  <text key="flows_edit-ff-sla">SLA</text>
  <text key="flows_edit-ff-guide">Procedura</text>
+ <text key="flows_edit-ff-guide-placeholder">Link diretto alla procedura</text>
  <text key="flows_edit-ff-typology">Tipologia</text>
  <text key="flows_edit-fo-pinned">In evidenza</text>
  <text key="flows_edit-ff-priority">Priorità</text>
