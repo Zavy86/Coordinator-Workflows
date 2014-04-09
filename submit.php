@@ -318,6 +318,7 @@ function ticket_process(){
  $p_idAssigned=$_POST['idAssigned'];
  $p_priority=$_POST['priority'];
  $p_difficulty=$_POST['difficulty'];
+ $p_note=addslashes($_POST['note']);
  // switch status
  switch($p_status){
   case 1: // opened
@@ -356,6 +357,15 @@ function ticket_process(){
    WHERE id='".$g_idTicket."'";
   // execute query
   $GLOBALS['db']->execute($query);
+  // if is set note
+  if(strlen($p_note)>0){
+   // build query
+   $query="INSERT INTO workflows_tickets_notes
+    (idTicket,note,addDate,addIdAccount) VALUES
+    ('".$g_idTicket."','".$p_note."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+   // execute query
+   $GLOBALS['db']->execute($query);
+  }
   // unlock locked tickets
   if($p_status==4){
    $locked_tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE requiredTicket='".$g_idTicket."' AND status='5'");

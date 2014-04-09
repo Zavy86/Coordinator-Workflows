@@ -158,6 +158,7 @@
  <text key="view-td-process">Processa il ticket</text>
  <text key="view-td-unlock">Sblocca manualmente il ticket</text>
  <text key="view-td-reopen">Riapri il ticket</text>
+ <text key="view-td-note">Note</text>
  <text key="view-tr-unvalued">Non è presente nessun ticket..</text>
  <text key="view-ticketAdd">Nuovo ticket</text>
  <text key="view-dd-notesNull">Non è presente nessuna nota..</text>
@@ -177,6 +178,7 @@
  <text key="view-ff-assigned-placeholder">Seleziona un utente</text>
  <text key="view-ff-priority">Priorità</text>
  <text key="view-ff-difficulty">Difficoltà</text>
+ <text key="view-ff-note">Note</text>
  <text key="view-ff-slaAssignment">SLA Assegnamento</text>
  <text key="view-ff-slaClosure">SLA Chiusura</text>
  <text key="view-fc-submit">Salva</text>
