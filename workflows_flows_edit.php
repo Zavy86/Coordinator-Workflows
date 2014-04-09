@@ -42,7 +42,7 @@ function content(){
  $form->addField("text","description",api_text("flows_edit-ff-description"),stripslashes($flow->description),"input-xxlarge",api_text("flows_edit-ff-description-placeholder"));
  $form->addField("textarea","advice",api_text("flows_edit-ff-advice"),stripslashes($flow->advice),"input-xxlarge",api_text("flows_edit-ff-advice-placeholder"));
  $form->addField("text","sla",api_text("flows_edit-ff-sla"),stripslashes($flow->sla),"input-mini",NULL,FALSE,NULL,api_text("minutes"));
- $form->addField("text","guide",api_text("flows_edit-ff-guide"),stripslashes($flow->guide),"input-xxlarge",api_text("flows_edit-ff-guide-placeholder"));
+ $form->addField("text","guide",api_text("flows_edit-ff-guide"),$flow->guide,"input-xxlarge",api_text("flows_edit-ff-guide-placeholder"));
  $form->addField("radio","typology",api_text("flows_edit-ff-typology"));
  $form->addFieldOption(1,api_text("typology-request"),($flow->typology==1 || !$flow->id)?TRUE:FALSE);
  $form->addFieldOption(2,api_text("typology-incident"),($flow->typology==2)?TRUE:FALSE);
