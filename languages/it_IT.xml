@@ -143,8 +143,10 @@
  <text key="view-dt-endDate">Conclusione</text>
  <text key="view-dt-sla">SLA</text>
  <text key="view-dt-details">Dettagli</text>
- <text key="view-dt-hostname">Hostname</text>
  <text key="view-dt-note">Note</text>
+ <text key="view-dt-hostname">Hostname</text>
+ <text key="view-dt-guide">Procedura</text>
+ <text key="view-dd-guide">Link diretto alla procedura: (Ctrl+C per copiare)</text>
  <text key="view-th-idTicket">Ticket</text>
  <text key="view-th-sla">SLA</text>
  <text key="view-th-subject">Oggetto</text>
@@ -227,6 +229,7 @@
  <text key="flows_edit-ff-advice">Suggerimento</text>
  <text key="flows_edit-ff-advice-placeholder">Suggerimenti, requisiti o prove da eseguire prima di aprire il workflow</text>
  <text key="flows_edit-ff-sla">SLA</text>
+ <text key="flows_edit-ff-guide">Procedura</text>
  <text key="flows_edit-ff-typology">Tipologia</text>
  <text key="flows_edit-fo-pinned">In evidenza</text>
  <text key="flows_edit-ff-priority">Priorità</text>

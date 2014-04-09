@@ -487,7 +487,9 @@ function flow_save(){
  $p_advice=addslashes($_POST['advice']);
  $p_priority=$_POST['priority'];
  $p_sla=$_POST['sla'];
- //$p_procedure=$_POST['procedure']; <- da implementare
+ $p_guide=addslashes($_POST['guide']);
+ // convert
+ if(!$p_pinned){$p_pinned=0;}
  // build query
  if($g_idFlow>0){
   $query="UPDATE workflows_flows SET
@@ -499,6 +501,7 @@ function flow_save(){
    advice='".$p_advice."',
    priority='".$p_priority."',
    sla='".$p_sla."',
+   guide='".$p_guide."',
    updDate='".date("Y-m-d H:i:s")."',
    updIdAccount='".$_SESSION['account']->id."'
    WHERE id='".$g_idFlow."'";
@@ -509,9 +512,11 @@ function flow_save(){
   exit(header("location: workflows_flows_view.php?idFlow=".$g_idFlow.$alert));
  }else{
   $query="INSERT INTO workflows_flows
-   (idCategory,typology,pinned,subject,description,advice,priority,sla,addDate,addIdAccount) VALUES
-   ('".$p_idCategory."','".$p_typology."','".$p_pinned."','".$p_subject."','".$p_description."',
-    '".$p_advice."','".$p_priority."','".$p_sla."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+   (idCategory,typology,pinned,subject,description,advice,priority,sla,guide,
+    addDate,addIdAccount) VALUES
+   ('".$p_idCategory."','".$p_typology."','".$p_pinned."','".$p_subject."',
+    '".$p_description."','".$p_advice."','".$p_priority."','".$p_sla."',
+    '".$p_guide."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
   // execute query
   $GLOBALS['db']->execute($query);
   // set id to last inserted id
