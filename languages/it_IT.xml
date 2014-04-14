@@ -99,6 +99,39 @@
  <text key="api-details-dt-note">Note</text>
  <text key="api-option-undefined">Non definito</text>
 
+ <!-- logs.inc.php -->
+
+ <!-- workflowCreated -->
+ <text key="logs_workflows_workflowCreated">Apri un workflow</text>
+ <text key="logs_workflows_workflowCreated-description">Quando tu apri un nuovo workflow</text>
+ <text key="logs_workflows_workflowCreated-subject">Workflows - Workflow {0} [Aperto] {1}</text>
+ <text key="logs_workflows_workflowCreated-message">{2}</text>
+ <!-- workflowAssigned -->
+ <text key="logs_workflows_workflowAssigned">Workflow assegnato</text>
+ <text key="logs_workflows_workflowAssigned-description">Quando un tuo workflow viene preso in carico</text>
+ <text key="logs_workflows_workflowAssigned-subject">Workflows - Workflow {0} [Preso in carico] {1}</text>
+ <text key="logs_workflows_workflowAssigned-message">Il workflow in oggetto è stato preso in carico da {2}.</text>
+ <!-- workflowClosed -->
+ <text key="logs_workflows_workflowClosed">Workflow chiuso</text>
+ <text key="logs_workflows_workflowClosed-description">Quando un tuo workflow viene chiuso</text>
+ <text key="logs_workflows_workflowClosed-subject">Workflows - Workflow {0} [Chiuso] {1}</text>
+ <text key="logs_workflows_workflowClosed-message">Il workflow in oggetto è stato chiuso.</text>
+ <!-- ticketDisponible -->
+ <text key="logs_workflows_ticketDisponible">Ticket Disponibile</text>
+ <text key="logs_workflows_ticketDisponible-description">Quando è disponibile un ticket che puoi prendere in carico</text>
+ <text key="logs_workflows_ticketDisponible-subject">Workflows - Ticket {0} [Aperto] {1}</text>
+ <text key="logs_workflows_ticketDisponible-message">{2}</text>
+ <!-- ticketStandby -->
+ <text key="logs_workflows_ticketStandby">Ticket sospeso</text>
+ <text key="logs_workflows_ticketStandby-description">Quando un tuo ticket viene sospeso</text>
+ <text key="logs_workflows_ticketStandby-subject">Workflows - Ticket {0} [Sospeso] {1}</text>
+ <text key="logs_workflows_ticketStandby-message">Il ticket in oggetto è stato sospeso da {2}.&#xD;&#xD;Note: {3}</text>
+ <!-- ticketClosed -->
+ <text key="logs_workflows_ticketClosed">Ticket chiuso</text>
+ <text key="logs_workflows_ticketClosed-description">Quando un tuo ticket viene chiuso</text>
+ <text key="logs_workflows_ticketClosed-subject">Workflows - Ticket {0} [Chiuso] {1}</text>
+ <text key="logs_workflows_ticketClosed-message">Il ticket in oggetto è stato chiuso come {2} da {3}.&#xD;&#xD;Note: {4}</text>
+
  <!-- template.inc.php -->
  <text key="nav-workflows">Workflows</text>
  <text key="nav-open">Apri un workflow</text>

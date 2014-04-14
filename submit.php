@@ -2,8 +2,8 @@
 /* -------------------------------------------------------------------------- *\
 |* -[ Workflows - Submit ]---------------------------------------------------- *|
 \* -------------------------------------------------------------------------- */
-include('../core/api.inc.php');
-include('api.inc.php');
+require_once('../core/api.inc.php');
+require_once('api.inc.php');
 api_loadLocaleFile("./");
 $act=$_GET['act'];
 switch($act){
@@ -59,13 +59,13 @@ function workflow_save(){
  // execute query
  $GLOBALS['db']->execute($query);
  // set id to last inserted id
- $g_id=$GLOBALS['db']->lastInsertedId();
+ $q_idWorkflow=$GLOBALS['db']->lastInsertedId();
  // alert
  $alert="?alert=workflowCreated&alert_class=alert-success";
  // get fields
- if(!workflow_get_fields($g_id,$flow->id)){$alert="?alert=workflowError&alert_class=alert-error";}
+ if(!workflow_get_fields($q_idWorkflow,$flow->id)){$alert="?alert=workflowError&alert_class=alert-error";}
  // process actions
- if(!workflow_process_actions($g_id,$flow->id)){$alert="?alert=workflowError&alert_class=alert-error";}
+ if(!workflow_process_actions($q_idWorkflow,$flow->id)){$alert="?alert=workflowError&alert_class=alert-error";}
  // redirect
  exit(header("location: workflows_list.php".$alert));
 }
@@ -141,6 +141,13 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
  $description.=api_text("add-ff-phone").": ".$p_phone;
  // execute query
  $GLOBALS['db']->execute("UPDATE workflows_workflows SET description='".$description."',note='".$p_note."' WHERE id='".$idWorkflow."'");
+
+ // log event
+ $workflow=api_workflows_workflow($idWorkflow);
+ api_log(API_LOG_NOTICE,"workflows","workflowCreated",
+  "{logs_workflows_workflowCreated|".$workflow->number."|".$workflow->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
+  $idWorkflow,"workflows/workflows_view.php?id=".$workflow->id);
+
  return TRUE;
 }
 
@@ -201,6 +208,14 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
     $q_idTicket=$GLOBALS['db']->lastInsertedId();
     // if ticket is not locked
     if($status<>5){
+
+     // log event
+     $workflow=api_workflows_workflow($idWorkflow);
+     $ticket=api_workflows_ticket($q_idTicket);
+     api_log(API_LOG_NOTICE,"workflows","ticketCreated",
+      "{logs_workflows_ticketCreated|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
+      $idWorkflow,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
+
      // send notification
      api_workflows_notifications($q_idTicket);
     }
@@ -286,13 +301,29 @@ function ticket_assign(){
  // acquire variables
  $g_idWorkflow=$_GET['idWorkflow'];
  if(!$g_idWorkflow){$g_idWorkflow=0;}
+ $workflow=api_workflows_workflow($g_idWorkflow);
  $g_idTicket=$_GET['idTicket'];
  if(!$g_idTicket){$g_idTicket=0;}
+ $ticket=api_workflows_ticket($g_idTicket);
  // check id
- if($g_idWorkflow>0 && $g_idTicket>0){
+ if($workflow->id>0 && $ticket->id>0){
   // execute queries
   $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='2',idAssigned='".$_SESSION['account']->id."',assDate='".date("Y-m-d H:i:s")."',updDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idTicket."'");
-  $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='2' WHERE id='".$g_idWorkflow."'");
+
+  // log event
+  api_log(API_LOG_NOTICE,"workflows","ticketAssigned",
+   "{logs_workflows_ticketAssigned|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
+   $g_idWorkflow,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
+
+  if($workflow->status<>2){
+   $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='2' WHERE id='".$g_idWorkflow."'");
+
+   // log event
+   api_log(API_LOG_NOTICE,"workflows","workflowAssigned",
+    "{logs_workflows_workflowAssigned|".$workflow->number."|".$workflow->subject."|".api_accountName()."}",
+    $g_idWorkflow,"workflows/workflows_view.php?id=".$workflow->id);
+  }
+
   // change group
   if(api_accountMainGroup()!==FALSE){$GLOBALS['db']->execute("UPDATE workflows_tickets SET idGroup='".api_accountMainGroup()->id."' WHERE id='".$g_idTicket."'");}
   // alert
@@ -311,8 +342,10 @@ function ticket_process(){
  // acquire variables
  $g_idWorkflow=$_GET['idWorkflow'];
  if(!$g_idWorkflow){$g_idWorkflow=0;}
+ $workflow=api_workflows_workflow($g_idWorkflow);
  $g_idTicket=$_GET['idTicket'];
  if(!$g_idTicket){$g_idTicket=0;}
+ $ticket=api_workflows_ticket($g_idTicket);
  $p_status=$_POST['status'];
  $p_idGroup=$_POST['idGroup'];
  $p_idAssigned=$_POST['idAssigned'];
@@ -328,14 +361,17 @@ function ticket_process(){
   case 40: // unsolved
    $p_status=4;
    $solved=0;
+   $solved_txt=strtolower(api_text("solved-unexecuted"));
    break;
   case 41: // solved
    $p_status=4;
    $solved=1;
+   $solved_txt=strtolower(api_text("solved-executed"));
    break;
   case 42: // unnecessary
    $p_status=4;
    $solved=2;
+   $solved_txt=strtolower(api_text("solved-unnecessary"));
    break;
   default:
    $solved=0;
@@ -345,7 +381,7 @@ function ticket_process(){
  // if change assigned account reset status
  if($p_status==2 && $p_idAssigned<>$_SESSION['account']->id){$p_status=1;}
  // check
- if($g_idWorkflow>0 && $g_idTicket>0){
+ if($workflow->id>0 && $ticket->id>0){
   $query="UPDATE workflows_tickets SET
    status='".$p_status."',
    idGroup='".$p_idGroup."',
@@ -372,19 +408,50 @@ function ticket_process(){
    while($locked_ticket=$GLOBALS['db']->fetchNextObject($locked_tickets)){
     // send notification
     api_workflows_notifications($locked_ticket);
+    $unlocked_ticket=api_workflows_ticket($locked_ticket);
+
+    // log event
+    api_log(API_LOG_NOTICE,"workflows","ticketUnlocked",
+     "{logs_workflows_ticketUnlocked|".$unlocked_ticket->number."|".$unlocked_ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
+     $workflow->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$unlocked_ticket->id);
+
    }
    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".date("Y-m-d H:i:s")."' WHERE requiredTicket='".$g_idTicket."' AND status='5'");
   }
   // alert
-  if($p_status==4){$alert="&alert=ticketClosed&alert_class=alert-success";}
-  else{$alert="&alert=ticketUpdated&alert_class=alert-success";}
+  if($p_status==3){
+   // standby
+   $alert="&alert=ticketUpdated&alert_class=alert-success";
+
+   // log event
+   api_log(API_LOG_NOTICE,"workflows","ticketStandby",
+    "{logs_workflows_ticketStandby|".$ticket->number."|".$ticket->subject."|".api_accountName()."|".$p_note."}",
+    $g_idWorkflow,"workflows/workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket);
+
+  }elseif($p_status==4){
+   // closed
+   $alert="&alert=ticketClosed&alert_class=alert-success";
+
+   // log event
+   api_log(API_LOG_NOTICE,"workflows","ticketClosed",
+    "{logs_workflows_ticketClosed|".$ticket->number."|".$ticket->subject."|".$solved_txt."|".api_accountName()."|".$p_note."}",
+    $g_idWorkflow,"workflows/workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket);
+
+  }else{
+   // updated
+   $alert="&alert=ticketUpdated&alert_class=alert-success";
+  }
   // check if all activities are completed
   if($GLOBALS['db']->countOf("workflows_tickets","idWorkflow='".$g_idWorkflow."' AND (status<'4' OR status='5')")==0){
    // close workflow
    $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idWorkflow."'");
-   // notification
 
-   // -----!!!----- notifica che il workflow è chiuso
+   // eventualmente disabilitarlo in caso il ticket sia unico del workflow
+
+   // log event
+   api_log(API_LOG_NOTICE,"workflows","workflowClosed",
+    "{logs_workflows_workflowClosed|".$workflow->number."|".$workflow->subject."}",
+    $g_idWorkflow,"workflows/workflows_view.php?id=".$g_idWorkflow);
 
    // redirect
    $alert="?alert=workflowClosed&alert_class=alert-success";
