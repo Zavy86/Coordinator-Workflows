@@ -15,6 +15,9 @@ require_once("../materials/api.inc.php");
 echo "<h4>".api_text("widget-title")."</h4>\n";
 echo "<div class='well well-small well-white'>\n";
 
+// acquire variables
+$span=$_GET['span'];
+
 // -- pasted
 
 // definitions
@@ -26,11 +29,10 @@ if($GLOBALS['db']->countOf("workflows_workflows","addIdAccount='".$_SESSION['acc
  // build workflows table
  $workflows_table=new str_table(api_text("flows-tr-workflowsUnvalued"),TRUE);
  $workflows_table->addHeader("&nbsp;",NULL,"16");
- $workflows_table->addHeader(api_text("flows-th-idWorkflow"),"nowarp");
- $workflows_table->addHeader("&nbsp;",NULL,"16");
  $workflows_table->addHeader(api_text("flows-th-timestamp"),"nowarp");
- $workflows_table->addHeader("!","nowarp text-center");
- $workflows_table->addHeader(api_text("flows-th-category"),"nowarp");
+ $workflows_table->addHeader("&nbsp;",NULL,"16");
+ if($span>6){$workflows_table->addHeader("!","nowarp text-center");}
+ if($span>6){$workflows_table->addHeader(api_text("flows-th-category"),"nowarp");}
  $workflows_table->addHeader(api_text("flows-th-subject"),NULL,"100%");
  // build workflow table rows
  $workflows=$GLOBALS['db']->query("SELECT * FROM workflows_workflows WHERE addIdAccount='".$_SESSION['account']->id."' AND ".$workflows_query." ORDER BY addDate DESC");
@@ -38,11 +40,10 @@ if($GLOBALS['db']->countOf("workflows_workflows","addIdAccount='".$_SESSION['acc
   $workflows_table->addRow();
   // build workflows table fields
   $workflows_table->addField("<a href='../workflows/workflows_view.php?id=".$workflow->id."'>".api_icon("icon-search")."</a>","nowarp");
-  $workflows_table->addField(str_pad($workflow->id,5,"0",STR_PAD_LEFT),"nowarp");
+  $workflows_table->addField(api_timestampFormat($workflow->addDate,api_text("date")),"nowarp");
   $workflows_table->addField(api_workflows_status($workflow->status,TRUE),"nowarp text-center");
-  $workflows_table->addField(api_timestampFormat($workflow->addDate,api_text("datetime")),"nowarp");
-  $workflows_table->addField($workflow->priority,"nowarp text-center");
-  $workflows_table->addField(api_workflows_categoryName($workflow->idCategory,TRUE,TRUE,TRUE),"nowarp");
+  if($span>6){$workflows_table->addField($workflow->priority,"nowarp text-center");}
+  if($span>6){$workflows_table->addField(api_workflows_categoryName($workflow->idCategory,TRUE,TRUE,TRUE),"nowarp");}
   $workflows_table->addField(stripslashes($workflow->subject));
  }
 }
@@ -59,9 +60,8 @@ $query_where.=" )";
 // build tickets table
 $tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
 $tickets_table->addHeader("&nbsp;",NULL,"16");
-$tickets_table->addHeader(api_text("flows-th-idTicket"),"nowarp");
-$tickets_table->addHeader("&nbsp;",NULL,"16");
 $tickets_table->addHeader(api_text("flows-th-timestamp"),"nowarp");
+$tickets_table->addHeader("&nbsp;",NULL,"16");
 $tickets_table->addHeader(api_text("flows-th-sla"),"nowarp text-center");
 $tickets_table->addHeader("!","nowarp text-center");
 $tickets_table->addHeader(api_text("flows-th-account"),"nowarp");
@@ -81,9 +81,8 @@ while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){
  $details_modals_array[]=$details_modal;
  // build tickets table fields
  $tickets_table->addField("<a href='../workflows/workflows_view.php?id=".$ticket->idWorkflow."&idTicket=".$ticket->id."'>".api_icon("icon-search")."</a>","nowarp");
- $tickets_table->addField(str_pad($ticket->idWorkflow,5,"0",STR_PAD_LEFT)."-".str_pad($ticket->id,5,"0",STR_PAD_LEFT),"nowarp");
- $tickets_table->addField(api_workflows_status($ticket->status,TRUE),"nowarp text-center");
  $tickets_table->addField(api_timestampFormat($ticket->addDate,api_text("datetime")),"nowarp");
+ $tickets_table->addField(api_workflows_status($ticket->status,TRUE),"nowarp text-center");
  $tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
  $tickets_table->addField($ticket->priority,"nowarp text-center");
  $tickets_table->addField(api_accountFirstname($ticket->addIdAccount),"nowarp");
