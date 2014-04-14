@@ -3,7 +3,7 @@
 |* -[ Workflows - Flow View ]------------------------------------------------ *|
 \* -------------------------------------------------------------------------- */
 $checkPermission="workflows_admin";
-include("template.inc.php");
+require_once("template.inc.php");
 function content(){
  // acquire variables
  $g_idField=$_GET['idField'];

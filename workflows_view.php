@@ -3,7 +3,7 @@
 |* -[ Workflows - View ]----------------------------------------------------- *|
 \* -------------------------------------------------------------------------- */
 $checkPermission="workflows_view";
-include("template.inc.php");
+require_once("template.inc.php");
 function content(){
  // definitions
  $notes_modals_array=array();

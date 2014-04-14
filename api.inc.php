@@ -207,11 +207,13 @@ function api_workflows_ticketDetailsModal($ticket){
 
 /* -[ Ticket check process permission ]-------------------------------------- */
 // @object $ticket : ticket object or ticket id
-function api_workflows_ticketProcessPermission($ticket){
+// @integer $idAccount : account id
+function api_workflows_ticketProcessPermission($ticket,$idAccount=NULL){
+ if($idAccount===NULL){$idAccount=$_SESSION['account']->id;}
  if(!$ticket->id){$ticket=api_workflows_ticket($ticket);}
  if(!$ticket->id){return FALSE;}
- if($ticket->idAssigned==$_SESSION['account']->id){return TRUE;}
- if(api_accountGrouprole($ticket->idGroup,$_SESSION['account']->id,TRUE)>1){return TRUE;}
+ if($ticket->idAssigned==$idAccount){return TRUE;}
+ if(api_accountGrouprole($ticket->idGroup,$idAccount,TRUE)>1){return TRUE;}
  if($ticket->idGroup==0 && api_accountGroupMember(api_groupId("SIS"))){return TRUE;}
  return FALSE;
 }
@@ -309,7 +311,7 @@ function api_workflows_flowAction($idAction){
 function api_workflows_flowFieldOptions($field){
  $return=array();
  // if no preset value
- if(!$field->value){
+ if(!$field->value && $field->required){
   $option_obj=new stdClass();
   $option_obj->value="";
   $option_obj->label=api_text("api-option-undefined");

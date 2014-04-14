@@ -3,8 +3,8 @@
 |* -[ Workflows - External Submit ]------------------------------------------ *|
 \* -------------------------------------------------------------------------- */
 $dontCheckSession=TRUE;
-include('../core/api.inc.php');
-include('api.inc.php');
+require_once('../core/api.inc.php');
+require_once('api.inc.php');
 api_loadLocaleFile("./");
 $act=$_GET['act'];
 switch($act){
