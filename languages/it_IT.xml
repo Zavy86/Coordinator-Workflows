@@ -30,6 +30,57 @@
  <text key="actionDeleted">L'azione è stata eliminata</text>
  <text key="actionRequired">Non è possibile eliminare questa azione in quanto richiesta da altre azioni</text>
 
+ <!-- logs -->
+ <text key="logs_workflows_workflowCreated">Workflows - Workflow {0} [Aperto] {1}&#xA;&#xA;{2}</text>
+ <text key="logs_workflows_workflowAssigned">Workflows - Workflow {0} [Preso in carico] {1}</text>
+ <text key="logs_workflows_workflowClosed">Workflows - Workflow {0} [Chiuso] {1}</text>
+ <text key="logs_workflows_ticketCreated">Workflows - Ticket {0} [Aperto] {1}</text>
+ <text key="logs_workflows_ticketAssigned">Workflows - Ticket {0} [Preso in carico] {1}</text>
+ <text key="logs_workflows_ticketStandby">Workflows - Ticket {0} [Sospeso] {1}</text>
+ <text key="logs_workflows_ticketClosed">Workflows - Ticket {0} [Chiuso] {1}</text>
+ <text key="logs_workflows_ticketAssigned">Workflows - Ticket {0} [Preso in carico] {1}</text>
+ <text key="logs_workflows_categoryCreated">Workflows - Categoria {0} creata</text>
+ <text key="logs_workflows_categoryUpdated">Workflows - Categoria {0} aggiornata</text>
+ <text key="logs_workflows_flowCreated">Workflows - Flusso {0} creato</text>
+ <text key="logs_workflows_flowUpdated">Workflows - Flusso {0} aggiornato</text>
+ <text key="logs_workflows_fieldCreated">Workflows - Flusso {0} - Campo {1} creato</text>
+ <text key="logs_workflows_fieldUpdated">Workflows - Flusso {0} - Campo {1} aggiornato</text>
+ <text key="logs_workflows_fieldMoved">Workflows - Flusso {0} - Campo {1} spostato</text>
+ <text key="logs_workflows_fieldDeleted">Workflows - Flusso {0} - Campo {1} eliminato</text>
+ <text key="logs_workflows_actionCreated">Workflows - Flusso {0} - Azione {1} creata</text>
+ <text key="logs_workflows_actionUpdated">Workflows - Flusso {0} - Azione {1} aggiornata</text>
+ <text key="logs_workflows_actionDeleted">Workflows - Flusso {0} - Azione {1} eliminata</text>
+ <!-- workflowCreated -->
+ <text key="logs_workflows_workflowCreated-label">Apri un workflow</text>
+ <text key="logs_workflows_workflowCreated-description">Quando tu apri un nuovo workflow</text>
+ <text key="logs_workflows_workflowCreated-subject">Workflows - Workflow {0} [Aperto] {1}</text>
+ <text key="logs_workflows_workflowCreated-message">{2}</text>
+ <!-- workflowAssigned -->
+ <text key="logs_workflows_workflowAssigned-label">Workflow assegnato</text>
+ <text key="logs_workflows_workflowAssigned-description">Quando un tuo workflow viene preso in carico</text>
+ <text key="logs_workflows_workflowAssigned-subject">Workflows - Workflow {0} [Preso in carico] {1}</text>
+ <text key="logs_workflows_workflowAssigned-message">Il workflow in oggetto è stato preso in carico da {2}.</text>
+ <!-- workflowClosed -->
+ <text key="logs_workflows_workflowClosed-label">Workflow chiuso</text>
+ <text key="logs_workflows_workflowClosed-description">Quando un tuo workflow viene chiuso</text>
+ <text key="logs_workflows_workflowClosed-subject">Workflows - Workflow {0} [Chiuso] {1}</text>
+ <text key="logs_workflows_workflowClosed-message">Il workflow in oggetto è stato chiuso.</text>
+ <!-- ticketDisponible -->
+ <text key="logs_workflows_ticketDisponible-label">Ticket Disponibile</text>
+ <text key="logs_workflows_ticketDisponible-description">Quando è disponibile un ticket che puoi prendere in carico</text>
+ <text key="logs_workflows_ticketDisponible-subject">Workflows - Ticket {0} [Aperto] {1}</text>
+ <text key="logs_workflows_ticketDisponible-message">{2}</text>
+ <!-- ticketStandby -->
+ <text key="logs_workflows_ticketStandby-label">Ticket sospeso</text>
+ <text key="logs_workflows_ticketStandby-description">Quando un tuo ticket viene sospeso</text>
+ <text key="logs_workflows_ticketStandby-subject">Workflows - Ticket {0} [Sospeso] {1}</text>
+ <text key="logs_workflows_ticketStandby-message">Il ticket in oggetto è stato sospeso da {2}.&#xA;&#xA;Note: {3}</text>
+ <!-- ticketClosed -->
+ <text key="logs_workflows_ticketClosed-label">Ticket chiuso</text>
+ <text key="logs_workflows_ticketClosed-description">Quando un tuo ticket viene chiuso</text>
+ <text key="logs_workflows_ticketClosed-subject">Workflows - Ticket {0} [Chiuso] {1}</text>
+ <text key="logs_workflows_ticketClosed-message">Il ticket in oggetto è stato chiuso come {2} da {3}.&#xA;&#xA;Note: {4}</text>
+
  <!-- status -->
  <text key="status">Stato</text>
  <text key="status-opened">Aperto</text>
@@ -98,39 +149,6 @@
  <text key="api-details-dt-hostname">Hostname</text>
  <text key="api-details-dt-note">Note</text>
  <text key="api-option-undefined">Non definito</text>
-
- <!-- logs.inc.php -->
-
- <!-- workflowCreated -->
- <text key="logs_workflows_workflowCreated">Apri un workflow</text>
- <text key="logs_workflows_workflowCreated-description">Quando tu apri un nuovo workflow</text>
- <text key="logs_workflows_workflowCreated-subject">Workflows - Workflow {0} [Aperto] {1}</text>
- <text key="logs_workflows_workflowCreated-message">{2}</text>
- <!-- workflowAssigned -->
- <text key="logs_workflows_workflowAssigned">Workflow assegnato</text>
- <text key="logs_workflows_workflowAssigned-description">Quando un tuo workflow viene preso in carico</text>
- <text key="logs_workflows_workflowAssigned-subject">Workflows - Workflow {0} [Preso in carico] {1}</text>
- <text key="logs_workflows_workflowAssigned-message">Il workflow in oggetto è stato preso in carico da {2}.</text>
- <!-- workflowClosed -->
- <text key="logs_workflows_workflowClosed">Workflow chiuso</text>
- <text key="logs_workflows_workflowClosed-description">Quando un tuo workflow viene chiuso</text>
- <text key="logs_workflows_workflowClosed-subject">Workflows - Workflow {0} [Chiuso] {1}</text>
- <text key="logs_workflows_workflowClosed-message">Il workflow in oggetto è stato chiuso.</text>
- <!-- ticketDisponible -->
- <text key="logs_workflows_ticketDisponible">Ticket Disponibile</text>
- <text key="logs_workflows_ticketDisponible-description">Quando è disponibile un ticket che puoi prendere in carico</text>
- <text key="logs_workflows_ticketDisponible-subject">Workflows - Ticket {0} [Aperto] {1}</text>
- <text key="logs_workflows_ticketDisponible-message">{2}</text>
- <!-- ticketStandby -->
- <text key="logs_workflows_ticketStandby">Ticket sospeso</text>
- <text key="logs_workflows_ticketStandby-description">Quando un tuo ticket viene sospeso</text>
- <text key="logs_workflows_ticketStandby-subject">Workflows - Ticket {0} [Sospeso] {1}</text>
- <text key="logs_workflows_ticketStandby-message">Il ticket in oggetto è stato sospeso da {2}.&#xD;&#xD;Note: {3}</text>
- <!-- ticketClosed -->
- <text key="logs_workflows_ticketClosed">Ticket chiuso</text>
- <text key="logs_workflows_ticketClosed-description">Quando un tuo ticket viene chiuso</text>
- <text key="logs_workflows_ticketClosed-subject">Workflows - Ticket {0} [Chiuso] {1}</text>
- <text key="logs_workflows_ticketClosed-message">Il ticket in oggetto è stato chiuso come {2} da {3}.&#xD;&#xD;Note: {4}</text>
 
  <!-- template.inc.php -->
  <text key="nav-workflows">Workflows</text>

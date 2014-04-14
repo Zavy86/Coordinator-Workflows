@@ -1,6 +1,6 @@
 <?php
 /* -------------------------------------------------------------------------- *\
-|* -[ Workflows - Submit ]---------------------------------------------------- *|
+|* -[ Workflows - Submit ]--------------------------------------------------- *|
 \* -------------------------------------------------------------------------- */
 require_once('../core/api.inc.php');
 require_once('api.inc.php');
@@ -799,7 +799,7 @@ function flow_field_delete(){
   echo $GLOBALS['db']->execute("UPDATE workflows_fields SET position=position-1 WHERE position>'".$field->position."' AND idFlow='".$g_idFlow."'");
 
   // log and notifications
-  api_log(API_LOG_NOTICE,"workflows","fieldDeleted",
+  api_log(API_LOG_WARNING,"workflows","fieldDeleted",
    "{logs_workflows_fieldDeleted|".$flow->subject."|".$field->label."}",
    $g_idField,"workflows/workflows_flows_view.php?id=".$g_idFlow);
 
@@ -921,7 +921,7 @@ function flow_action_delete(){
    $GLOBALS['db']->execute("DELETE FROM workflows_actions WHERE id='".$g_idAction."'");
 
    // log and notifications
-   api_log(API_LOG_NOTICE,"workflows","actionDeleted",
+   api_log(API_LOG_WARNING,"workflows","actionDeleted",
     "{logs_workflows_actionDeleted|".$flow->subject."|".$action->subject."}",
     $g_idAction,"workflows/workflows_flows_view.php?id=".$g_idFlow);
 
