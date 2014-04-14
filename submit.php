@@ -313,7 +313,7 @@ function ticket_assign(){
   // log event
   api_log(API_LOG_NOTICE,"workflows","ticketAssigned",
    "{logs_workflows_ticketAssigned|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
-   $g_idWorkflow,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
+   $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
 
   if($workflow->status<>2){
    $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='2' WHERE id='".$g_idWorkflow."'");
@@ -413,7 +413,7 @@ function ticket_process(){
     // log event
     api_log(API_LOG_NOTICE,"workflows","ticketUnlocked",
      "{logs_workflows_ticketUnlocked|".$unlocked_ticket->number."|".$unlocked_ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
-     $workflow->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$unlocked_ticket->id);
+     $unlocked_ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$unlocked_ticket->id);
 
    }
    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".date("Y-m-d H:i:s")."' WHERE requiredTicket='".$g_idTicket."' AND status='5'");
@@ -426,7 +426,7 @@ function ticket_process(){
    // log event
    api_log(API_LOG_NOTICE,"workflows","ticketStandby",
     "{logs_workflows_ticketStandby|".$ticket->number."|".$ticket->subject."|".api_accountName()."|".$p_note."}",
-    $g_idWorkflow,"workflows/workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket);
+    $g_idTicket,"workflows/workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket);
 
   }elseif($p_status==4){
    // closed
@@ -435,7 +435,7 @@ function ticket_process(){
    // log event
    api_log(API_LOG_NOTICE,"workflows","ticketClosed",
     "{logs_workflows_ticketClosed|".$ticket->number."|".$ticket->subject."|".$solved_txt."|".api_accountName()."|".$p_note."}",
-    $g_idWorkflow,"workflows/workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket);
+    $g_idTicket,"workflows/workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket);
 
   }else{
    // updated
