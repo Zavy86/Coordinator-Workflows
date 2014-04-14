@@ -3,7 +3,7 @@
 |* -[ Workflows - Add ]------------------------------------------------------ *|
 \* -------------------------------------------------------------------------- */
 $checkPermission="workflows_add";
-include("template.inc.php");
+require_once("template.inc.php");
 function content(){
  // acquire variables
  $g_category=$_GET['idCategory'];

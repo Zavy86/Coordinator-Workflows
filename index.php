@@ -1,6 +1,6 @@
 <?php
 /* -[ Redirect ]------------------------------------------------------------- */
-include("../core/api.inc.php");
+require_once("../core/api.inc.php");
 $alert=$_GET['alert'];
 if(isset($alert)){$alert="?alert=".$alert;}
 $act=$_GET['act'];

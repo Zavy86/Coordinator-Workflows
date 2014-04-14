@@ -2,8 +2,8 @@
 /* -------------------------------------------------------------------------- *\
 |* -[ Workflows - Template ]------------------------------------------------- *|
 \* -------------------------------------------------------------------------- */
-include("module.inc.php");
-include("../core/api.inc.php");
+require_once("module.inc.php");
+require_once("../core/api.inc.php");
 api_loadModule(array("registries","materials"));
 // print header
 $html->header(api_text("module-title"),$module_name);
