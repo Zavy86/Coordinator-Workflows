@@ -41,7 +41,7 @@ function content(){
  foreach($categories_array as $category){
   $table->addRow();
   // build table fields
-  $table->addField("<a href='workflows_flows.php?c=".$category->id."'>".api_icon("icon-search")."</a>");
+  $table->addField("<a href='workflows_flows_list.php?filtered=1&idCategory[]=".$category->id."'>".api_icon("icon-search")."</a>");
   $table->addField(stripslashes($category->name),"nowarp");
   $table->addField("<small><i>".stripslashes($category->description)."</i><small>");
   $table->addField("<a href='workflows_categories.php?id=".$category->id."'>".api_icon("icon-edit")."</a>");
