@@ -90,6 +90,7 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
 
    // --- da rifare magari in un api
 
+   $value=NULL;
    // prepare options array
    $field->options=api_workflows_flowFieldOptions($field);
    // acquire field values by typology
@@ -104,8 +105,17 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
      }
      $value=substr($values,2);
      break;
-    // checkbox and radio have text value
+    // checkbox have array text values
     case "checkbox":
+     $values=NULL;
+     if(is_array($_POST[$field->name])){
+      foreach($_POST[$field->name] as $g_option){
+       $values.=", ".$field->options[$g_option]->label;
+      }
+     }
+     $value=substr($values,2);
+     break;
+    // radio have text value
     case "radio":
      if($_POST[$field->name]<>NULL){$value=$field->options[$_POST[$field->name]]->label;}
      break;
@@ -121,7 +131,6 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
      if($_POST[$field->name."_to"]<>NULL){$value.=api_text("form-range-to")." ".$_POST[$field->name."_to"];}
      break;
     case "file":
-     $value=NULL;
      $file=api_file_upload($_FILES[$field->name],"workflows_attachments",NULL,NULL,NULL,NULL,FALSE,NULL,FALSE);
      if($file->id){
       $value=addslashes("<a href='submit.php?act=attachments_download&id=".$file->id."'>".$file->name."</a>");
