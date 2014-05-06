@@ -237,14 +237,14 @@ INSERT IGNORE INTO `settings_permissions` (`id`,`module`,`action`,`description`,
 -- Dumping data for table `logs_triggers`
 --
 
-INSERT INTO `logs_triggers` (`id`,`module`,`action`,`name`,`condition`) VALUES
-(NULL,'workflows','workflowCreated','logs_workflows_workflowCreated','workflows_conditions_workflowOwner'),
-(NULL,'workflows','workflowAssigned','logs_workflows_workflowAssigned','workflows_conditions_workflowOwner'),
-(NULL,'workflows','workflowClosed','logs_workflows_workflowClosed','workflows_conditions_workflowOwner'),
-(NULL,'workflows','ticketCreated','logs_workflows_ticketDisponible','workflows_conditions_ticketProcessable'),
-(NULL,'workflows','ticketClosed','logs_workflows_ticketClosed','workflows_conditions_ticketOwner'),
-(NULL,'workflows','ticketStandby','logs_workflows_ticketStandby','workflows_conditions_ticketOwner');
-
+INSERT INTO `logs_triggers` (`id`, `trigger`, `module`, `action`, `condition`) VALUES
+(NULL, 'logs_workflows_workflowCreated', 'workflows', 'workflowCreated', 'workflows_conditions_workflowOwner'),
+(NULL, 'logs_workflows_workflowAssigned', 'workflows', 'workflowAssigned', 'workflows_conditions_workflowOwner'),
+(NULL, 'logs_workflows_workflowClosed', 'workflows', 'workflowClosed', 'workflows_conditions_workflowOwner'),
+(NULL, 'logs_workflows_ticketDisponible', 'workflows', 'ticketCreated', 'workflows_conditions_ticketProcessable'),
+(NULL, 'logs_workflows_ticketDisponible', 'workflows', 'ticketUnlocked', 'workflows_conditions_ticketProcessable'),
+(NULL, 'logs_workflows_ticketClosed', 'workflows', 'ticketClosed', 'workflows_conditions_ticketOwner'),
+(NULL, 'logs_workflows_ticketStandby', 'workflows', 'ticketStandby', 'workflows_conditions_ticketOwner');
 
 -- --------------------------------------------------------
 
