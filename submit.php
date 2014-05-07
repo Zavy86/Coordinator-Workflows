@@ -108,10 +108,10 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
     // checkbox have array text values
     case "checkbox":
      $values=NULL;
-     if(is_array($_POST[$field->name])){
-      foreach($_POST[$field->name] as $g_option){
-       $values.=", ".$field->options[$g_option]->label;
-      }
+     if(substr($field->name,-2)=="[]"){$field->name=substr($field->name,0,-2);}
+     if(!is_array($_POST[$field->name])){$_POST[$field->name]=array($_POST[$field->name]);}
+     foreach($_POST[$field->name] as $g_option){
+      $values.=", ".$field->options[$g_option]->label;
      }
      $value=substr($values,2);
      break;
@@ -654,7 +654,7 @@ function flow_field_save(){
  $g_idField=$_GET['idField'];
  if(!$g_idField){$g_idField=0;}
  $p_typology=$_POST['typology'];
- $p_name=api_clearFileName(addslashes($_POST['name']));
+ $p_name=api_workflows_clearFieldName(addslashes($_POST['name']));
  $p_label=addslashes($_POST['label']);
  $p_value=addslashes($_POST['value']);
  $p_class=addslashes($_POST['class']);

@@ -4,6 +4,14 @@
 \* -------------------------------------------------------------------------- */
 
 
+/* -[ Clear field name ]----------------------------------------------------- */
+// @param $field : Field name to clear
+function api_workflows_clearFieldName($field){
+ $field=str_replace(" ","-",$field);
+ $return=strtolower(preg_replace("/[^A-Za-z0-9-._[]]/", "",$field));
+ return $return;
+}
+
 /* -[ Workflow object by id ]------------------------------------------------ */
 // @integer $idWorkflow : workflow id
 // @boolean $subobjects : load also feasibility subobjects
