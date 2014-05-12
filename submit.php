@@ -48,7 +48,7 @@ function workflow_save(){
   $idFlow=$flow->id;
   $sla=$flow->sla;
  }else{
-  $idFlow=0;
+  $idFlow='';
   $sla=480;
  }
  // build query
