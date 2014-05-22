@@ -40,15 +40,22 @@ function content(){
   }
  }
  // generate tickets query
- $query_where=$GLOBALS['navigation']->filtersQuery("1");
- // only assignable tickets
- $query_where.=" AND ( ";
- $query_where.=" idAssigned='".$_SESSION['account']->id."'";
- foreach(api_accountGroups() as $group){
-  if($group->grouprole>1){$query_where.=" OR idGroup='".$group->id."'";}
+ //$query_where=$GLOBALS['navigation']->filtersQuery("1");
+ $query_where=$GLOBALS['navigation']->filtersParameterQuery("status","1");
+ $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idCategory","1");
+ // if user is admin and view all ticket is checked
+ if($_SESSION['account']->typology==1 && $GLOBALS['navigation']->filtersParameterQuery("show")=="show='1'"){
+  // show all tickets
+ }else{
+  // only assignable tickets
+  $query_where.=" AND ( ";
+  $query_where.=" idAssigned='".$_SESSION['account']->id."'";
+  foreach(api_accountGroups() as $group){
+   if($group->grouprole>1){$query_where.=" OR idGroup='".$group->id."'";}
+  }
+  if(api_accountGroupMember(api_groupId("SIS"))){$query_where.=" OR idGroup='0'";}
+  $query_where.=" )";
  }
- if(api_accountGroupMember(api_groupId("SIS"))){$query_where.=" OR idGroup='0'";}
- $query_where.=" )";
  // order tickets
  $query_order=api_queryOrder("addDate DESC");
  // pagination

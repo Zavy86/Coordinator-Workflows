@@ -125,6 +125,9 @@
 
  <!-- filters -->
  <text key="filter-status">Stato</text>
+ <text key="filter-show">Mostra</text>
+ <text key="filter-showProcessable">Tickets che puoi prendere in carico</text>
+ <text key="filter-showAll">Tutti i tickets</text>
  <text key="filter-opened">Aperti</text>
  <text key="filter-assigned">Assegnati</text>
  <text key="filter-standby">Sospesi</text>

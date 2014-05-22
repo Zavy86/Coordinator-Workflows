@@ -70,9 +70,14 @@ $navigation->addSubTab(api_text("nav-add"),"workflows_flows_edit.php");
 $navigation->addSubTab(api_text("nav-categories"),"workflows_categories.php");
 // filters
 if(api_baseName()=="workflows_list.php"){
+ // if is admin can show all ticket
+ if($_SESSION['account']->typology==1){
+  $navigation->addFilter("radio","show",api_text("filter-show"),array(0=>api_text("filter-showProcessable"),1=>api_text("filter-showAll")));
+ }
+ // status filter
  $navigation->addFilter("multiselect","status",api_text("filter-status"),array(1=>api_text("filter-opened"),2=>api_text("filter-assigned"),3=>api_text("filter-standby"),4=>api_text("filter-closed"),5=>api_text("filter-locked")));
  // if not filtered load default filters
- if($_GET['filtered']<>1){$_GET['status']=array(1,2,3);}
+ if($_GET['filtered']<>1){$_GET['show']="0";$_GET['status']=array(1,2,3);}
 }
 if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list.php"){
  $categories_array=array();
@@ -97,9 +102,9 @@ if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list
   // any default filters
  }
 }
-if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list.php"){
+/*if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list.php"){
  $navigation->addFilter("multiselect","typology",api_text("filter-typology"),array(1=>api_text("typology-request"),2=>api_text("typology-incident")),"input-xlarge");
-}
+}*/
 // show navigation
 $navigation->render();
 // check permissions before displaying module
