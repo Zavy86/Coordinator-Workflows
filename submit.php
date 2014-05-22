@@ -9,6 +9,7 @@ $act=$_GET['act'];
 switch($act){
  // workflows
  case "workflow_save":workflow_save();break;
+ case "workflow_update":workflow_update();break;
  // tickets
  case "ticket_save":ticket_save();break;
  case "ticket_assign":ticket_assign();break;
@@ -68,6 +69,66 @@ function workflow_save(){
  if(!workflow_process_actions($q_idWorkflow,$flow->id)){$alert="?alert=workflowError&alert_class=alert-error";}
  // redirect
  exit(header("location: workflows_list.php".$alert));
+}
+
+/* -[ Workflow Update ]------------------------------------------------------ */
+function workflow_update(){
+ //if(!api_checkPermission("workflows","workflows_add")){api_die("accessDenied");}
+ // get workflow object
+ $workflow=api_workflows_workflow($_GET['id'],TRUE);
+ // acquire variables
+ $p_idCategory=$_POST['idCategory'];
+ $p_idFlow=$_POST['idFlow'];
+ $p_typology=$_POST['typology'];
+ $p_subject=addslashes($_POST['subject']);
+ $p_priority=$_POST['priority'];
+ $p_description=addslashes($_POST['description']);
+ $p_tickets=$_POST['tickets'];
+ // assign flow variables
+ if($workflow->id>0){
+  // build query
+  $query="UPDATE workflows_workflows SET
+   idCategory='".$p_idCategory."',
+   idFlow='".$p_idFlow."',
+   typology='".$p_typology."',
+   subject='".$p_subject."',
+   priority='".$p_priority."',
+   description='".$p_description."'
+   WHERE id='".$workflow->id."'";
+  // execute query
+  $GLOBALS['db']->execute($query);
+  // alert
+  $alert="&alert=workflowUpdated&alert_class=alert-success";
+  // if need to open a new tickets
+  if($p_tickets==1){
+   // close all opened tickets
+   foreach($workflow->tickets as $ticket){
+    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='4',solved='2',endDate='".date("Y-m-d H:i:s")."' WHERE status<>'4' AND id='".$ticket->id."'");
+   }
+   // open standard ticket
+   $hash=md5(api_randomString(32));
+   $hostname=api_hostName();
+   // get group id by selected category
+   $idGroup=api_workflows_categoryGroup($p_idCategory);
+   // build query
+   $query="INSERT INTO workflows_tickets
+    (idWorkflow,idCategory,typology,hash,subject,idGroup,difficulty,priority,
+     slaAssignment,slaClosure,status,solved,approved,hostname,addDate,addIdAccount) VALUES
+    ('".$workflow->id."','".$p_idCategory."','".$p_typology."','".$hash."','".$p_subject."',
+     '".$idGroup."','2','".$p_priority."','0','480','1','0','0','".$hostname."',
+     '".date("Y-m-d H:i:s")."','".api_accountId()."')";
+   // execute query
+   $GLOBALS['db']->execute($query);
+   // set id to last inserted id
+   $q_idTicket=$GLOBALS['db']->lastInsertedId();
+   // send notification
+   api_workflows_notifications($q_idTicket);
+  }
+ }else{
+  $alert="&alert=workflowError&alert_class=alert-error";
+ }
+ // redirect
+ exit(header("location: workflows_view.php?id=".$workflow->id.$alert));
 }
 
 /* -[ Workflow Get Field ]----------------------------------------------------- */
