@@ -157,6 +157,7 @@
  <text key="nav-workflows">Workflows</text>
  <text key="nav-open">Apri un workflow</text>
  <text key="nav-operations">Operazioni</text>
+ <text key="nav-edit">Modifica</text>
  <text key="nav-sendmail">Inoltra per e-mail</text>
  <text key="nav-addTicket">Aggiungi ticket</text>
  <text key="nav-ticket">Ticket: {0}</text>
@@ -251,6 +252,19 @@
  <text key="add-ff-note">Note</text>
  <text key="add-fc-submit">Salva</text>
  <text key="add-fc-cancel">Annulla</text>
+
+ <!-- workflows_edit.php -->
+ <text key="edit-ff-category">Categoria</text>
+ <text key="edit-ff-flow">Flusso</text>
+ <text key="edit-ff-typology">Tipologia</text>
+ <text key="edit-ff-subject">Oggetto</text>
+ <text key="edit-ff-priority">Priorità</text>
+ <text key="edit-ff-description">Referente</text>
+ <text key="edit-ff-tickets">Tickets</text>
+ <text key="edit-fo-tickets-null">Lascia invariati</text>
+ <text key="edit-fo-tickets-open">Apri nuovo ticket</text>
+ <text key="edit-fc-submit">Salva</text>
+ <text key="edit-fc-cancel">Annulla</text>
 
  <!-- workflows_categories.php -->
  <text key="categories-th-category">Categoria</text>
