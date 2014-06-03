@@ -259,7 +259,8 @@
  <text key="edit-ff-typology">Tipologia</text>
  <text key="edit-ff-subject">Oggetto</text>
  <text key="edit-ff-priority">Priorità</text>
- <text key="edit-ff-description">Referente</text>
+ <text key="edit-ff-description">Dettagli</text>
+ <text key="edit-ff-note">Note</text>
  <text key="edit-ff-tickets">Tickets</text>
  <text key="edit-fo-tickets-null">Lascia invariati</text>
  <text key="edit-fo-tickets-open">Apri nuovo ticket</text>
