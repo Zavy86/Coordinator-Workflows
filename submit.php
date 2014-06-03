@@ -83,6 +83,7 @@ function workflow_update(){
  $p_subject=addslashes($_POST['subject']);
  $p_priority=$_POST['priority'];
  $p_description=addslashes($_POST['description']);
+ $p_note=addslashes($_POST['note']);
  $p_tickets=$_POST['tickets'];
  // assign flow variables
  if($workflow->id>0){
@@ -93,7 +94,8 @@ function workflow_update(){
    typology='".$p_typology."',
    subject='".$p_subject."',
    priority='".$p_priority."',
-   description='".$p_description."'
+   description='".$p_description."',
+   note='".$p_note."'
    WHERE id='".$workflow->id."'";
   // execute query
   $GLOBALS['db']->execute($query);

@@ -58,6 +58,7 @@ function content(){
 
  $form->addField("textarea","description",api_text("edit-ff-description"),stripslashes($workflow->description),"input-xxlarge",NULL,FALSE,10);
 
+ $form->addField("textarea","note",api_text("edit-ff-note"),stripslashes($workflow->note),"input-xxlarge",NULL,FALSE,10);
 
  $form->addField("radio","tickets",api_text("edit-ff-tickets"));
  $form->addFieldOption(0,api_text("edit-fo-tickets-null"),TRUE);
