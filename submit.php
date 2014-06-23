@@ -286,7 +286,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
      $ticket=api_workflows_ticket($q_idTicket);
      api_log(API_LOG_NOTICE,"workflows","ticketCreated",
       "{logs_workflows_ticketCreated|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
-      $idWorkflow,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
+      $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
 
      // send notification
      api_workflows_notifications($q_idTicket);
