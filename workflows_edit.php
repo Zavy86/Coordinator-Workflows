@@ -75,11 +75,11 @@ function content(){
 <script type="text/javascript">
  $(document).ready(function(){
   // idCategory Change
-  $("#workflows_edit_input_0").change(function(){
+  $("#workflows_edit_input_idCategory").change(function(){
    window.location.href="workflows_edit.php?id=<?php echo $workflow->id; ?>&idCategory="+this.value;
   });
   // idFlow Change
-  $("#workflows_edit_input_1").change(function(){
+  $("#workflows_edit_input_idFlow").change(function(){
    window.location.href="workflows_edit.php?id=<?php echo $workflow->id; ?>&idCategory=<?php echo $workflow->idCategory; ?>&idFlow="+this.value;
   });
  });
