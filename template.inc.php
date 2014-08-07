@@ -4,7 +4,7 @@
 \* -------------------------------------------------------------------------- */
 require_once("module.inc.php");
 require_once("../core/api.inc.php");
-api_loadModule(array("registries","materials"));
+api_loadModule();
 // print header
 $html->header(api_text("module-title"),$module_name);
 // acquire variables
