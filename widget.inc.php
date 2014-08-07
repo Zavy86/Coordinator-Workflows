@@ -7,10 +7,10 @@ require_once("../core/api.inc.php");
 api_loadLocaleFile("../workflows/");
 // include module api
 require_once("../workflows/api.inc.php");
-// include registries api
+/*// include registries api
 require_once("../registries/api.inc.php");
 // include materials api
-require_once("../materials/api.inc.php");
+require_once("../materials/api.inc.php");*/
 // widget title and well
 echo "<h4>".api_text("widget-title")."</h4>\n";
 echo "<div class='well well-small well-white'>\n";
