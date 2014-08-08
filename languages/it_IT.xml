@@ -3,7 +3,7 @@
 <locale language="IT">
 
  <!-- module -->
- <text key="module-title">Workflows</text>
+ <text key="module-title">Attività</text>
 
  <!-- alerts -->
  <text key="workflowNotFound">Il workflow non è stato trovato</text>
