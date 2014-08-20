@@ -6,10 +6,10 @@
  <text key="module-title">Attività</text>
 
  <!-- alerts -->
- <text key="workflowNotFound">Il workflow non è stato trovato</text>
- <text key="workflowCreated">Il workflow è stato creato</text>
- <text key="workflowClosed">Il workflow è stato chiuso</text>
- <text key="workflowError">Si è verificato un errore durante il salvataggio del workflow</text>
+ <text key="workflowNotFound">L'attività non è stata trovata</text>
+ <text key="workflowCreated">L'attività è stata creata</text>
+ <text key="workflowClosed">L'attività è stata chiusa</text>
+ <text key="workflowError">Si è verificato un errore durante il salvataggio dell'attività</text>
  <text key="ticketAssigned">Il ticket ti è stato assegnato</text>
  <text key="ticketUpdated">Il ticket è stato aggiornato</text>
  <text key="ticketClosed">Il ticket è stato chiuso</text>
@@ -31,54 +31,54 @@
  <text key="actionRequired">Non è possibile eliminare questa azione in quanto richiesta da altre azioni</text>
 
  <!-- logs -->
- <text key="logs_workflows_workflowCreated">Workflows - Workflow {0} [Aperto] {1}&#xA;&#xA;{2}</text>
- <text key="logs_workflows_workflowAssigned">Workflows - Workflow {0} [Preso in carico] {1}</text>
- <text key="logs_workflows_workflowClosed">Workflows - Workflow {0} [Chiuso] {1}</text>
- <text key="logs_workflows_ticketCreated">Workflows - Ticket {0} [Aperto] {1}</text>
- <text key="logs_workflows_ticketAssigned">Workflows - Ticket {0} [Preso in carico] {1}</text>
- <text key="logs_workflows_ticketStandby">Workflows - Ticket {0} [Sospeso] {1}</text>
- <text key="logs_workflows_ticketClosed">Workflows - Ticket {0} [Chiuso] {1}</text>
- <text key="logs_workflows_ticketAssigned">Workflows - Ticket {0} [Preso in carico] {1}</text>
- <text key="logs_workflows_categoryCreated">Workflows - Categoria {0} creata</text>
- <text key="logs_workflows_categoryUpdated">Workflows - Categoria {0} aggiornata</text>
- <text key="logs_workflows_flowCreated">Workflows - Flusso {0} creato</text>
- <text key="logs_workflows_flowUpdated">Workflows - Flusso {0} aggiornato</text>
- <text key="logs_workflows_fieldCreated">Workflows - Flusso {0} - Campo {1} creato</text>
- <text key="logs_workflows_fieldUpdated">Workflows - Flusso {0} - Campo {1} aggiornato</text>
- <text key="logs_workflows_fieldMoved">Workflows - Flusso {0} - Campo {1} spostato</text>
- <text key="logs_workflows_fieldDeleted">Workflows - Flusso {0} - Campo {1} eliminato</text>
- <text key="logs_workflows_actionCreated">Workflows - Flusso {0} - Azione {1} creata</text>
- <text key="logs_workflows_actionUpdated">Workflows - Flusso {0} - Azione {1} aggiornata</text>
- <text key="logs_workflows_actionDeleted">Workflows - Flusso {0} - Azione {1} eliminata</text>
+ <text key="logs_workflows_workflowCreated">Attività - Attività {0} [Aperta] {1}&#xA;&#xA;{2}</text>
+ <text key="logs_workflows_workflowAssigned">Attività - Attività {0} [Presa in carico] {1}</text>
+ <text key="logs_workflows_workflowClosed">Attività - Attività {0} [Chiusa] {1}</text>
+ <text key="logs_workflows_ticketCreated">Attività - Ticket {0} [Aperto] {1}</text>
+ <text key="logs_workflows_ticketAssigned">Attività - Ticket {0} [Preso in carico] {1}</text>
+ <text key="logs_workflows_ticketStandby">Attività - Ticket {0} [Sospeso] {1}</text>
+ <text key="logs_workflows_ticketClosed">Attività - Ticket {0} [Chiuso] {1}</text>
+ <text key="logs_workflows_ticketAssigned">Attività - Ticket {0} [Preso in carico] {1}</text>
+ <text key="logs_workflows_categoryCreated">Attività - Categoria {0} creata</text>
+ <text key="logs_workflows_categoryUpdated">Attività - Categoria {0} aggiornata</text>
+ <text key="logs_workflows_flowCreated">Attività - Flusso {0} creato</text>
+ <text key="logs_workflows_flowUpdated">Attività - Flusso {0} aggiornato</text>
+ <text key="logs_workflows_fieldCreated">Attività - Flusso {0} - Campo {1} creato</text>
+ <text key="logs_workflows_fieldUpdated">Attività - Flusso {0} - Campo {1} aggiornato</text>
+ <text key="logs_workflows_fieldMoved">Attività - Flusso {0} - Campo {1} spostato</text>
+ <text key="logs_workflows_fieldDeleted">Attività - Flusso {0} - Campo {1} eliminato</text>
+ <text key="logs_workflows_actionCreated">Attività - Flusso {0} - Azione {1} creata</text>
+ <text key="logs_workflows_actionUpdated">Attività - Flusso {0} - Azione {1} aggiornata</text>
+ <text key="logs_workflows_actionDeleted">Attività - Flusso {0} - Azione {1} eliminata</text>
  <!-- workflowCreated -->
- <text key="logs_workflows_workflowCreated-label">Apri un workflow</text>
- <text key="logs_workflows_workflowCreated-description">Quando tu apri un nuovo workflow</text>
- <text key="logs_workflows_workflowCreated-subject">Workflows - Workflow {0} [Aperto] {1}</text>
+ <text key="logs_workflows_workflowCreated-label">Apri un'attività</text>
+ <text key="logs_workflows_workflowCreated-description">Quando tu avvii un nuova attività</text>
+ <text key="logs_workflows_workflowCreated-subject">Attività - Attività {0} [Aperta] {1}</text>
  <text key="logs_workflows_workflowCreated-message">{2}</text>
  <!-- workflowAssigned -->
- <text key="logs_workflows_workflowAssigned-label">Workflow assegnato</text>
- <text key="logs_workflows_workflowAssigned-description">Quando un tuo workflow viene preso in carico</text>
- <text key="logs_workflows_workflowAssigned-subject">Workflows - Workflow {0} [Preso in carico] {1}</text>
- <text key="logs_workflows_workflowAssigned-message">Il workflow in oggetto è stato preso in carico da {2}.</text>
+ <text key="logs_workflows_workflowAssigned-label">Attività assegnata</text>
+ <text key="logs_workflows_workflowAssigned-description">Quando una tua attività viene presa in carico</text>
+ <text key="logs_workflows_workflowAssigned-subject">Attività - Attività {0} [Presa in carico] {1}</text>
+ <text key="logs_workflows_workflowAssigned-message">L'attività in oggetto è stata presa in carico da {2}.</text>
  <!-- workflowClosed -->
- <text key="logs_workflows_workflowClosed-label">Workflow chiuso</text>
- <text key="logs_workflows_workflowClosed-description">Quando un tuo workflow viene chiuso</text>
- <text key="logs_workflows_workflowClosed-subject">Workflows - Workflow {0} [Chiuso] {1}</text>
- <text key="logs_workflows_workflowClosed-message">Il workflow in oggetto è stato chiuso.</text>
+ <text key="logs_workflows_workflowClosed-label">Attività chiusa</text>
+ <text key="logs_workflows_workflowClosed-description">Quando una tua attività viene chiusa</text>
+ <text key="logs_workflows_workflowClosed-subject">Attività - Attività {0} [Chiusa] {1}</text>
+ <text key="logs_workflows_workflowClosed-message">L'attività in oggetto è stata chiusa.</text>
  <!-- ticketDisponible -->
  <text key="logs_workflows_ticketDisponible-label">Ticket Disponibile</text>
  <text key="logs_workflows_ticketDisponible-description">Quando è disponibile un ticket che puoi prendere in carico</text>
- <text key="logs_workflows_ticketDisponible-subject">Workflows - Ticket {0} [Aperto] {1}</text>
+ <text key="logs_workflows_ticketDisponible-subject">Attività - Ticket {0} [Aperto] {1}</text>
  <text key="logs_workflows_ticketDisponible-message">{2}</text>
  <!-- ticketStandby -->
  <text key="logs_workflows_ticketStandby-label">Ticket sospeso</text>
  <text key="logs_workflows_ticketStandby-description">Quando un tuo ticket viene sospeso</text>
- <text key="logs_workflows_ticketStandby-subject">Workflows - Ticket {0} [Sospeso] {1}</text>
+ <text key="logs_workflows_ticketStandby-subject">Attività - Ticket {0} [Sospeso] {1}</text>
  <text key="logs_workflows_ticketStandby-message">Il ticket in oggetto è stato sospeso da {2}.&#xA;&#xA;Note: {3}</text>
  <!-- ticketClosed -->
  <text key="logs_workflows_ticketClosed-label">Ticket chiuso</text>
  <text key="logs_workflows_ticketClosed-description">Quando un tuo ticket viene chiuso</text>
- <text key="logs_workflows_ticketClosed-subject">Workflows - Ticket {0} [Chiuso] {1}</text>
+ <text key="logs_workflows_ticketClosed-subject">Attività - Ticket {0} [Chiuso] {1}</text>
  <text key="logs_workflows_ticketClosed-message">Il ticket in oggetto è stato chiuso come {2} da {3}.&#xA;&#xA;Note: {4}</text>
 
  <!-- status -->
@@ -154,8 +154,8 @@
  <text key="api-option-undefined">Non definito</text>
 
  <!-- template.inc.php -->
- <text key="nav-workflows">Workflows</text>
- <text key="nav-open">Apri un workflow</text>
+ <text key="nav-workflows">Attività</text>
+ <text key="nav-open">Apri un'attività</text>
  <text key="nav-operations">Operazioni</text>
  <text key="nav-edit">Modifica</text>
  <text key="nav-sendmail">Inoltra per e-mail</text>
@@ -171,9 +171,9 @@
  <text key="nav-categories">Gestione Categorie</text>
 
  <!-- workflows_flows.php -->
- <text key="flows-workflows">Workflow personali</text>
+ <text key="flows-workflows">Attività personali</text>
  <text key="flows-tickets">Tickets disponibili</text>
- <text key="flows-th-idWorkflow"> </text>
+ <text key="flows-th-idWorkflow">Attività</text>
  <text key="flows-th-idTicket">Ticket</text>
  <text key="flows-th-timestamp">Data</text>
  <text key="flows-th-sla">SLA</text>
@@ -183,11 +183,11 @@
  <text key="flows-th-group">Gruppo</text>
  <text key="flows-th-assigned">Incaricato</text>
  <text key="flows-th-update">Aggiornamento</text>
- <text key="flows-tr-workflowsUnvalued">Non è presente nessun workflow aperto da te..</text>
+ <text key="flows-tr-workflowsUnvalued">Non è presente nessuna attività aperto da te..</text>
  <text key="flows-tr-ticketsUnvalued">Non è presente nessun ticket..</text>
 
  <!-- workflows_view.php -->
- <text key="view-dt-idWorkflow">Workflow</text>
+ <text key="view-dt-idAttività">Attività</text>
  <text key="view-dt-category">Categoria</text>
  <text key="view-dt-subject">Oggetto</text>
  <text key="view-dt-account">Utente</text>
@@ -286,19 +286,19 @@
 
  <!-- workflows_flows_list.php -->
  <text key="flows_list-th-category">Categoria</text>
- <text key="flows_list-th-flow">Workflow</text>
+ <text key="flows_list-th-flow">Attività</text>
  <text key="flows_list-th-description">Descrizione</text>
  <text key="flows_list-th-counter">Utilizzi</text>
- <text key="flows_list-tr-unvalued">Non è presente nessun workflow..</text>
+ <text key="flows_list-tr-unvalued">Non è presente nessuna attività..</text>
 
  <!-- workflows_flows_edit.php -->
  <text key="flows_edit-ff-category">Categoria</text>
  <text key="flows_edit-ff-subject">Oggetto</text>
- <text key="flows_edit-ff-subject-placeholder">Oggetto del workflow</text>
+ <text key="flows_edit-ff-subject-placeholder">Oggetto dell'attività</text>
  <text key="flows_edit-ff-description">Descrizione</text>
- <text key="flows_edit-ff-description-placeholder">Descrizione sintetica del workflow</text>
+ <text key="flows_edit-ff-description-placeholder">Descrizione sintetica dell'attività</text>
  <text key="flows_edit-ff-advice">Suggerimento</text>
- <text key="flows_edit-ff-advice-placeholder">Suggerimenti, requisiti o prove da eseguire prima di aprire il workflow</text>
+ <text key="flows_edit-ff-advice-placeholder">Suggerimenti, requisiti o prove da eseguire prima di avviare l'attività</text>
  <text key="flows_edit-ff-sla">SLA</text>
  <text key="flows_edit-ff-guide">Procedura</text>
  <text key="flows_edit-ff-guide-placeholder">Link diretto alla procedura</text>
@@ -309,9 +309,9 @@
  <text key="flows_edit-fc-cancel">Annulla</text>
 
  <!-- workflows_flows_view.php -->
- <text key="flows_view-flow">WORKFLOW</text>
- <text key="flows_view-flow-edit">Modifica workflow</text>
- <text key="flows_view-flow-preview">Anteprima workflow</text>
+ <text key="flows_view-flow">ATTIVITÀ</text>
+ <text key="flows_view-flow-edit">Modifica attività</text>
+ <text key="flows_view-flow-preview">Anteprima attività</text>
  <text key="flows_view-dt-category">Categoria</text>
  <text key="flows_view-dt-subject">Oggetto</text>
  <text key="flows_view-dt-typology">Tipologia</text>
@@ -383,6 +383,6 @@
  <text key="flows_view-actions-fc-delete-confirm">Eliminare definitivamente questa azione?</text>
 
  <!-- widget.inc.php -->
- <text key="widget-title">Workflows</text>
+ <text key="widget-title">Attività</text>
 
 </locale>
