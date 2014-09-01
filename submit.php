@@ -125,6 +125,9 @@ function workflow_update(){
    $q_idTicket=$GLOBALS['db']->lastInsertedId();
    // send notification
    api_workflows_notifications($q_idTicket);
+  }else{
+   // update category
+   $GLOBALS['db']->execute("UPDATE workflows_tickets SET idCategory='".$p_idCategory."' WHERE idWorkflow='".$workflow->id."'");
   }
  }else{
   $alert="&alert=workflowError&alert_class=alert-error";
