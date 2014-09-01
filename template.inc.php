@@ -72,7 +72,9 @@ $navigation->addSubTab(api_text("nav-categories"),"workflows_categories.php");
 // filters
 if(api_baseName()=="workflows_list.php"){
  // if is admin can show all ticket
- if($_SESSION['account']->typology==1){
+ //if($_SESSION['account']->typology==1){
+ // correggere mettendo impostazione come permesso   <----------------------------------------
+ if(api_accountGroupMember(api_groupId("SIS"))){
   $navigation->addFilter("radio","show",api_text("filter-show"),array(0=>api_text("filter-showProcessable"),1=>api_text("filter-showAll")));
  }
  // status filter
@@ -81,6 +83,7 @@ if(api_baseName()=="workflows_list.php"){
  if($_GET['filtered']<>1){$_GET['show']="0";$_GET['status']=array(1,2,3);}
 }
 if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list.php"){
+ // idCategory
  $categories_array=array();
  $categories=$GLOBALS['db']->query("SELECT * FROM workflows_categories WHERE idCategory='0' ORDER BY name ASC");
  while($category=$GLOBALS['db']->fetchNextObject($categories)){
@@ -98,6 +101,15 @@ if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list
   }
  }
  $navigation->addFilter("multiselect","idCategory",api_text("filter-category"),$categories_array,"input-xlarge");
+ // addIdAccount
+ $accounts_array=array();
+ $accounts=$GLOBALS['db']->query("SELECT * FROM accounts_accounts WHERE id>'1' ORDER BY name ASC");
+ while($account=$GLOBALS['db']->fetchNextObject($accounts)){
+  $accounts_array[$account->id]=api_accountName($account->id);
+ }
+ $navigation->addFilter("multiselect","addIdAccount",api_text("filter-addIdAccount"),$accounts_array,"input-xlarge");
+ // idAssigned
+ $navigation->addFilter("multiselect","idAssigned",api_text("filter-idAssigned"),$accounts_array,"input-xlarge");
  // if not filtered load default filters
  if($_GET['filtered']<>1){
   // any default filters

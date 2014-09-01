@@ -17,7 +17,7 @@ function content(){
  // check for personal workflows
  if($g_page==1 && $GLOBALS['db']->countOf("workflows_workflows","addIdAccount='".$_SESSION['account']->id."' AND ".$workflows_query)>0){
   // build workflows table
-  $workflows_table=new str_table(api_text("flows-tr-workflowsUnvalued"),TRUE);
+  $workflows_table=new str_table(api_text("flows-tr-workflowsUnvalued"),FALSE);
   $workflows_table->addHeader("&nbsp;",NULL,"16");
   $workflows_table->addHeader(api_text("flows-th-idWorkflow"),"nowarp");
   $workflows_table->addHeader("&nbsp;",NULL,"16");
@@ -43,6 +43,8 @@ function content(){
  //$query_where=$GLOBALS['navigation']->filtersQuery("1");
  $query_where=$GLOBALS['navigation']->filtersParameterQuery("status","1");
  $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idCategory","1");
+ $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("addIdAccount","1");
+ $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idAssigned","1");
  // if user is admin and view all ticket is checked
  if($_SESSION['account']->typology==1 && $GLOBALS['navigation']->filtersParameterQuery("show")=="show='1'"){
   // show all tickets
@@ -64,14 +66,14 @@ function content(){
  // build tickets table
  $tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
  $tickets_table->addHeader("&nbsp;",NULL,"16");
- $tickets_table->addHeader(api_text("flows-th-idTicket"),"nowarp");
+ $tickets_table->addHeader(api_text("flows-th-idTicket"),"nowarp",NULL,"id");
  $tickets_table->addHeader("&nbsp;",NULL,"16");
- $tickets_table->addHeader(api_text("flows-th-timestamp"),"nowarp");
- $tickets_table->addHeader(api_text("flows-th-sla"),"nowarp text-center");
- $tickets_table->addHeader("!","nowarp text-center");
+ $tickets_table->addHeader(api_text("flows-th-timestamp"),"nowarp",NULL,"addDate");
+ $tickets_table->addHeader(api_text("flows-th-sla"),"nowarp text-center",NULL);
+ $tickets_table->addHeader("!","nowarp text-center",NULL,"priority");
  $tickets_table->addHeader(api_text("flows-th-account"),"nowarp");
  $tickets_table->addHeader(api_text("flows-th-category"),"nowarp");
- $tickets_table->addHeader(api_text("flows-th-subject"),NULL,"100%");
+ $tickets_table->addHeader(api_text("flows-th-subject"),NULL,"100%","subject");
  $tickets_table->addHeader(api_text("flows-th-assigned"),"nowarp");
  $tickets_table->addHeader(api_text("flows-th-group"),"nowarp text-center");
  $tickets_table->addHeader("&nbsp;",NULL,"16");
