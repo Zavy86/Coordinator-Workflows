@@ -71,10 +71,10 @@ function content(){
    echo "</li>\n";
   }
   if($selected_category->id==$category->id){
-   if(!$subcategories_count){
+   //if(!$subcategories_count){
     echo "</ul>\n<ul>\n";
     echo "<li><a href='workflows_add.php?idCategory=".$category->id."'>".api_text("search-li-other")."</a></li>\n";
-   }
+   //}
   }else{
    echo "<li><a href='workflows_search.php?idCategory=".$category->id."'>".api_text("search-li-show",stripslashes($category->name))."</a></li>\n";
   }
