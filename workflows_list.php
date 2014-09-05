@@ -32,7 +32,7 @@ function content(){
    // build workflows table fields
    $workflows_table->addField("<a href='workflows_view.php?id=".$workflow->id."'>".api_icon("icon-search")."</a>","nowarp");
    $workflows_table->addField(str_pad($workflow->id,5,"0",STR_PAD_LEFT),"nowarp");
-   $workflows_table->addField(api_workflows_status($workflow->status,TRUE),"nowarp text-center");
+   $workflows_table->addField(api_workflows_status($workflow->status,TRUE),"nowarp text-center'");
    $workflows_table->addField(api_timestampFormat($workflow->addDate,api_text("datetime")),"nowarp");
    $workflows_table->addField($workflow->priority,"nowarp text-center");
    $workflows_table->addField(api_workflows_categoryName($workflow->idCategory,TRUE,TRUE,TRUE),"nowarp");

@@ -78,9 +78,12 @@ function api_workflows_workflowSLA($workflow,$popup=FALSE){
 // @integer $onlyIcon : Show only icon
 function api_workflows_status($status,$onlyIcon=FALSE,$solved=NULL){
  switch($status){
-  case 1:$return=api_icon("icon-map-marker",api_text("status-opened"));if(!$onlyIcon){$return.=" ".api_text("status-opened");}break;
-  case 2:$return=api_icon("icon-eye-open",api_text("status-assigned"));if(!$onlyIcon){$return.=" ".api_text("status-assigned");}break;
-  case 3:$return=api_icon("icon-tint",api_text("status-standby"));if(!$onlyIcon){$return.=" ".api_text("status-standby");}break;
+  //case 1:$return=api_icon("icon-map-marker",api_text("status-opened"));if(!$onlyIcon){$return.=" ".api_text("status-opened");}break;
+  case 1:$return="<span title='".api_text("status-opened")."' style=\"background:url('images/bullet-red.png') no-repeat top left;background-size:20px 20px;display: inline-block;height:16px;width:20px\"></span>";if(!$onlyIcon){$return.=" ".api_text("status-opened");}break;
+  //case 2:$return=api_icon("icon-eye-open",api_text("status-assigned"));if(!$onlyIcon){$return.=" ".api_text("status-assigned");}break;
+  case 2:$return="<span title='".api_text("status-assigned")."' style=\"background:url('images/bullet-green.png') no-repeat top left;background-size:20px 20px;display: inline-block;height:16px;width:20px\"></span>";if(!$onlyIcon){$return.=" ".api_text("status-assigned");}break;
+  //case 3:$return=api_icon("icon-tint",api_text("status-standby"));if(!$onlyIcon){$return.=" ".api_text("status-standby");}break;
+  case 3:$return="<span title='".api_text("status-standby")."' style=\"background:url('images/bullet-yellow.png') no-repeat top left;background-size:20px 20px;display: inline-block;height:16px;width:20px\"></span>";if(!$onlyIcon){$return.=" ".api_text("status-standby");}break;
   case 4:
    $statusIcon="icon-ok";
    if($solved!==NULL){
