@@ -90,7 +90,7 @@ function content(){
   // build tickets table fields
   $tickets_table->addField("<a href='workflows_view.php?id=".$ticket->idWorkflow."&idTicket=".$ticket->id."'>".api_icon("icon-search")."</a>","nowarp");
   $tickets_table->addField(str_pad($ticket->idWorkflow,5,"0",STR_PAD_LEFT)."-".str_pad($ticket->id,5,"0",STR_PAD_LEFT),"nowarp");
-  $tickets_table->addField(api_workflows_status($ticket->status,TRUE),"nowarp text-center");
+  $tickets_table->addField(api_workflows_status($ticket->status,TRUE,$ticket->solved),"nowarp text-center");
   $tickets_table->addField(api_timestampFormat($ticket->addDate,api_text("datetime")),"nowarp");
   $tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
   $tickets_table->addField($ticket->priority,"nowarp text-center");

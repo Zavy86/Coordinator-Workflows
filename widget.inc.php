@@ -82,7 +82,7 @@ while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){
  // build tickets table fields
  $tickets_table->addField("<a href='../workflows/workflows_view.php?id=".$ticket->idWorkflow."&idTicket=".$ticket->id."'>".api_icon("icon-search")."</a>","nowarp");
  $tickets_table->addField(api_timestampFormat($ticket->addDate,api_text("datetime")),"nowarp");
- $tickets_table->addField(api_workflows_status($ticket->status,TRUE),"nowarp text-center");
+ $tickets_table->addField(api_workflows_status($ticket->status,TRUE,$ticket->solved),"nowarp text-center");
  $tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
  $tickets_table->addField($ticket->priority,"nowarp text-center");
  $tickets_table->addField(api_accountFirstname($ticket->addIdAccount),"nowarp");
