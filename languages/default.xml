@@ -384,17 +384,17 @@
 
  <!-- widget.inc.php -->
  <text key="widget-title">Attività</text>
- <text key="widget-workflows">Attività</text>
- <text key="widget-tickets">Tickets</text>
+ <text key="widget-workflows">Attività personali</text>
+ <text key="widget-tickets">Tickets disponibili</text>
  <text key="widget-tickets-null">Nessun ticket da processare</text>
- <text key="widget-showAll">Visualizza tutte le Attività</text>
+ <text key="widget-showAll">Visualizza tutti i tickets</text>
  <text key="widget-workflows-opened">Attività aperte</text>
- <text key="widget-workflows-assigned">Attività assegnate</text>
+ <text key="widget-workflows-assigned">Attività prese in carico</text>
  <text key="widget-workflows-standby">Attività sospese</text>
  <text key="widget-workflows-closed">Attività completate</text>
- <text key="widget-tickets-opened">Ticket aperti</text>
- <text key="widget-tickets-assigned">Ticket assegnati</text>
- <text key="widget-tickets-standby">Ticket sospesi</text>
- <text key="widget-tickets-closed">Ticket completati</text>
+ <text key="widget-tickets-opened">Ticket disponibili</text>
+ <text key="widget-tickets-assigned">Ticket assegnati a te</text>
+ <text key="widget-tickets-standby">Ticket sospesi da te</text>
+ <text key="widget-tickets-closed">Ticket completati da te</text>
 
 </locale>
