@@ -384,5 +384,17 @@
 
  <!-- widget.inc.php -->
  <text key="widget-title">Attività</text>
+ <text key="widget-workflows">Attività</text>
+ <text key="widget-tickets">Tickets</text>
+ <text key="widget-tickets-null">Nessun ticket da processare</text>
+ <text key="widget-showAll">Visualizza tutte le Attività</text>
+ <text key="widget-workflows-opened">Attività aperte</text>
+ <text key="widget-workflows-assigned">Attività assegnate</text>
+ <text key="widget-workflows-standby">Attività sospese</text>
+ <text key="widget-workflows-closed">Attività completate</text>
+ <text key="widget-tickets-opened">Ticket aperti</text>
+ <text key="widget-tickets-assigned">Ticket assegnati</text>
+ <text key="widget-tickets-standby">Ticket sospesi</text>
+ <text key="widget-tickets-closed">Ticket completati</text>
 
 </locale>
