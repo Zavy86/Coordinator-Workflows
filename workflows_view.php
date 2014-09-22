@@ -28,6 +28,13 @@ function content(){
  $workflow_dl->addElement(api_text("view-dt-addDate"),api_timestampFormat($workflow->addDate,api_text("datetime")));
  if($workflow->endDate<>NULL){$workflow_dl->addElement(api_text("view-dt-endDate"),api_timestampFormat($workflow->endDate,api_text("datetime")));}
  $workflow_dl->addElement(api_text("view-dt-sla"),api_workflows_workflowSLA($workflow),NULL);
+
+
+
+ $host_modal=api_workflows_ocs($workflow->hostname);
+ if($host_modal<>FALSE){$workflow->hostname=$host_modal->link($workflow->hostname);}
+
+
  // build details dynamic list
  $details_dl=new str_dl("br","dl-horizontal");
  $details_dl->addElement(api_text("view-dt-details"),nl2br(stripslashes($workflow->description)));
@@ -182,6 +189,8 @@ function content(){
  if(is_object($ticket_modal)){$ticket_modal->render();}
  // show notes modal windows
  foreach($notes_modals_array as $notes_modal){$notes_modal->render();}
+ // show host modal windows
+ if(is_object($host_modal)){$host_modal->render();}
 ?>
 <script type="text/javascript">
  $(document).ready(function(){
