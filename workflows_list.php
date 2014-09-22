@@ -40,6 +40,7 @@ function content(){
  $query_limit=$pagination->queryLimit();*/
 
 
+ if($GLOBALS['db']->countOf("workflows_tickets"," idAssigned='".api_accountId()."' AND ".$query_where)>0){
  // build tickets table
  $assigned_tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
  $assigned_tickets_table->addHeader("&nbsp;",NULL,"16");
@@ -77,8 +78,10 @@ function content(){
   $assigned_tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $assigned_tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
  }
+ }
 
 
+ if($GLOBALS['db']->countOf("workflows_tickets"," idAssigned<>'".api_accountId()."' AND ".$query_where)>0){
  // build tickets table
  $tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
  $tickets_table->addHeader("&nbsp;",NULL,"16");
@@ -115,6 +118,7 @@ function content(){
   $tickets_table->addField(api_accountFirstname($ticket->idAssigned),"nowarp text-right");
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
+ }
  }
 
  // acquire workflows status filter
