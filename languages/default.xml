@@ -152,6 +152,16 @@
  <text key="api-details-dt-hostname">Hostname</text>
  <text key="api-details-dt-note">Note</text>
  <text key="api-option-undefined">Non definito</text>
+ <text key="api-ocs-dt-tag">TAG</text>
+ <text key="api-ocs-dt-manufacturer">Costruttore</text>
+ <text key="api-ocs-dt-model">Modello</text>
+ <text key="api-ocs-dt-serial">Numero di serie</text>
+ <text key="api-ocs-dt-ip">Indirizzo IP</text>
+ <text key="api-ocs-dt-osname">Sistema Operativo</text>
+ <text key="api-ocs-dt-osversion">Versione</text>
+ <text key="api-ocs-dt-processor">Processore</text>
+ <text key="api-ocs-dt-memory">Memoria</text>
+ <text key="api-ocs-dt-monitor">Monitor</text>
 
  <!-- template.inc.php -->
  <text key="nav-workflows">Attività</text>

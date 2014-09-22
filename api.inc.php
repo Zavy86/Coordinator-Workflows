@@ -511,4 +511,46 @@ function api_workflows_notifications($ticket){
  return TRUE;
 }
 
+
+/* -[ OCS Inventory ]-------------------------------------------------------- */
+// @string $hostname : device hostname
+function api_workflows_ocs($hostname){
+ // connect to ocs inventory database
+ $ocs=new DB("sis-mysql","mysql-read","u0zK96jhwb","ocsweb"); //    <<<<<--------------- rifare con i dati nei settings
+ // acquire device informations
+ $host_hardware=$ocs->queryUniqueObject("SELECT * FROM hardware WHERE name='".strtoupper(substr($hostname,0,strpos($hostname,".")))."'");
+ if(!$host_hardware->ID){return FALSE;}
+ $host_bios=$ocs->queryUniqueObject("SELECT * FROM bios WHERE HARDWARE_ID='".$host_hardware->ID."'");
+ $host_tag=$ocs->queryUniqueObject("SELECT * FROM accountinfo WHERE HARDWARE_ID='".$host_hardware->ID."'");
+ // build dynamic list
+ $host_dl=new str_dl("br","dl-horizontal");
+ $host_dl->addElement(api_text("api-ocs-dt-tag"),$host_tag->TAG);
+ $host_dl->addElement(api_text("api-ocs-dt-manufacturer"),$host_bios->SMANUFACTURER);
+ $host_dl->addElement(api_text("api-ocs-dt-model"),$host_bios->SMODEL);
+ $host_dl->addElement(api_text("api-ocs-dt-serial"),$host_bios->SSN);
+ $host_dl->addElement(api_text("api-ocs-dt-ip"),$host_hardware->IPADDR);
+ $host_dl->addElement(api_text("api-ocs-dt-osname"),$host_hardware->OSNAME);
+ $host_dl->addElement(api_text("api-ocs-dt-osversion"),$host_hardware->OSVERSION." ".$host_hardware->OSCOMMENTS);
+ $host_dl->addElement(api_text("api-ocs-dt-processor"),$host_hardware->PROCESSORT);
+ // acquire memories informations
+ $host_memories=$ocs->query("SELECT * FROM memories WHERE HARDWARE_ID='".$host_hardware->ID."'");
+ while($host_memory=$GLOBALS['db']->fetchNextObject($host_memories)){
+  $host_dl->addElement(api_text("api-ocs-dt-memory"),$host_memory->CAPACITY." MB ".$host_memory->TYPE);
+ }
+ // acquire monitors informations
+ $host_monitors=$ocs->query("SELECT * FROM monitors WHERE HARDWARE_ID='".$host_hardware->ID."'");
+ while($host_monitor=$GLOBALS['db']->fetchNextObject($host_monitors)){
+  $host_monitor_tag=$ocs->queryUniqueObject("SELECT * FROM accountinfo_monitors WHERE MONITOR_ID='".$host_monitor->ID."'");
+  $host_dl->addElement(api_text("api-ocs-dt-monitor"),$host_monitor_tag->TAG);
+  $host_dl->addElement(api_text("api-ocs-dt-model"),$host_monitor->MANUFACTURER." ".$host_monitor->CAPTION);
+  $host_dl->addElement(api_text("api-ocs-dt-serial"),$host_monitor->SERIAL);
+ }
+ // build host modal window
+ $host_modal=new str_modal($host_hardware->ID);
+ $host_modal->header($host_hardware->NAME.".".$host_hardware->WORKGROUP);
+ $host_modal->body($host_dl->render(FALSE));
+ // return
+ return $host_modal;
+}
+
 ?>
