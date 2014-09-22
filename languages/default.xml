@@ -182,6 +182,7 @@
 
  <!-- workflows_flows.php -->
  <text key="flows-workflows">Attività personali</text>
+ <text key="flows-assigned-tickets">Tickets incaricati</text>
  <text key="flows-tickets">Tickets disponibili</text>
  <text key="flows-th-idWorkflow">Attività</text>
  <text key="flows-th-idTicket">Ticket</text>

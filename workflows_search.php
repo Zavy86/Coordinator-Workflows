@@ -63,7 +63,7 @@ function content(){
   echo "<ul>\n";
   // query
   //echo $query_where;
-  $workflows=$GLOBALS['db']->query("SELECT * FROM workflows_flows WHERE ".$query_where." ORDER BY pinned DESC,subject ASC");
+  $workflows=$GLOBALS['db']->query("SELECT workflows_flows.* FROM workflows_flows JOIN workflows_actions ON workflows_flows.id=workflows_actions.idFlow WHERE workflows_actions.id>'0' AND ".$query_where." ORDER BY subject ASC");
   while($workflow=$GLOBALS['db']->fetchNextObject($workflows)){
    if($workflow->pinned==1){$bold="<strong>";$unbold="</strong>";}else{$bold=NULL;$unbold=NULL;}
    echo "<li>".$bold."<a href='workflows_add.php?idFlow=".$workflow->id."&idCategory=".$category->id."'>".stripslashes($workflow->subject)."</a>".$unbold."\n";
