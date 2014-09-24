@@ -81,7 +81,7 @@ function content(){
  }
 
 
- if($GLOBALS['db']->countOf("workflows_tickets"," idAssigned<>'".api_accountId()."' AND ".$query_where)>0){
+ if($GLOBALS['db']->countOf("workflows_tickets","idAssigned<>'".api_accountId()."' AND ".$query_where)>0){
  // build tickets table
  $tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
  $tickets_table->addHeader("&nbsp;",NULL,"16");
@@ -173,7 +173,7 @@ function content(){
 
 
  // show the pagination
- if(is_object($pagination)){$pagination->render();}
+ //if(is_object($pagination)){$pagination->render();}
  // show status modal windows
  foreach($details_modals_array as $modal){$modal->render();}
 ?>
