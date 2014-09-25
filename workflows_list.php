@@ -8,6 +8,7 @@ require_once("template.inc.php");
 function content(){
  // definitions
  $details_modals_array=array();
+ $tickets_array=array();
  // acquire variabled
  $g_page=$_GET['p'];
  if(!$g_page){$g_page=1;}
@@ -38,9 +39,62 @@ function content(){
  // pagination
  /*$pagination=new str_pagination("workflows_tickets",$query_where,$GLOBALS['navigation']->filtersGet());
  $query_limit=$pagination->queryLimit();*/
+ // acquire tickets
+ $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where.$query_order.$query_limit);
+ while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){$tickets_array[]=$ticket;}
 
 
- if($GLOBALS['db']->countOf("workflows_tickets"," idAssigned='".api_accountId()."' AND ".$query_where)>0){
+
+
+/*
+ // build tickets table
+ $tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
+ $tickets_table->addHeader("&nbsp;",NULL,"16");
+ $tickets_table->addHeader(api_text("flows-th-idTicket"),"nowarp",NULL,"id");
+ $tickets_table->addHeader("&nbsp;",NULL,"16");
+ $tickets_table->addHeader(api_text("flows-th-timestamp"),"nowarp",NULL,"addDate");
+ $tickets_table->addHeader(api_text("flows-th-sla"),"nowarp text-center",NULL);
+ $tickets_table->addHeader("!","nowarp text-center",NULL,"priority");
+ $tickets_table->addHeader(api_text("flows-th-account"),"nowarp");
+ $tickets_table->addHeader(api_text("flows-th-category"),"nowarp");
+ $tickets_table->addHeader(api_text("flows-th-subject"),NULL,"100%","subject");
+ $tickets_table->addHeader(api_text("flows-th-assigned"),"nowarp");
+ $tickets_table->addHeader(api_text("flows-th-group"),"nowarp text-center");
+ $tickets_table->addHeader("&nbsp;",NULL,"16");
+ // build tickets table rows
+ $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where.$query_order.$query_limit);
+ foreach($tickets_array as $ticket){
+  //
+  if($ticket->idAssigned==api_accountId()){continue;}
+  //
+  $tickets_table->addRow();
+  // assigned id
+  if(!$ticket->idAssigned){$ticket->idAssigned=0;}
+  // details modal windows
+  $details_modal=api_workflows_ticketDetailsModal($ticket);
+  $details_modals_array[]=$details_modal;
+  // build tickets table fields
+  $tickets_table->addField("<a href='workflows_view.php?id=".$ticket->idWorkflow."&idTicket=".$ticket->id."'>".api_icon("icon-search")."</a>","nowarp");
+  $tickets_table->addField(str_pad($ticket->idWorkflow,5,"0",STR_PAD_LEFT)."-".str_pad($ticket->id,5,"0",STR_PAD_LEFT),"nowarp");
+  $tickets_table->addField(api_workflows_status($ticket->status,TRUE,$ticket->solved),"nowarp text-center");
+  $tickets_table->addField(api_timestampFormat($ticket->addDate,api_text("datetime")),"nowarp");
+  $tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
+  $tickets_table->addField($ticket->priority,"nowarp text-center");
+  $tickets_table->addField(api_accountFirstname($ticket->addIdAccount),"nowarp");
+  $tickets_table->addField(api_workflows_categoryName($ticket->idCategory,TRUE,TRUE,TRUE),"nowarp");
+  $tickets_table->addField(stripslashes($ticket->subject));
+  $tickets_table->addField(api_accountFirstname($ticket->idAssigned),"nowarp text-right");
+  $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
+  $tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
+ }*/
+
+
+
+
+
+
+
+
  // build tickets table
  $assigned_tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
  $assigned_tickets_table->addHeader("&nbsp;",NULL,"16");
@@ -56,8 +110,10 @@ function content(){
  $assigned_tickets_table->addHeader(api_text("flows-th-group"),"nowarp text-center");
  $assigned_tickets_table->addHeader("&nbsp;",NULL,"16");
  // build tickets table rows
- $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE idAssigned='".api_accountId()."' AND ".$query_where.$query_order.$query_limit);
- while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){
+ foreach($tickets_array as $ticket){
+  //
+  if($ticket->idAssigned<>api_accountId()){continue;}
+  //
   $assigned_tickets_table->addRow();
   // assigned id
   if(!$ticket->idAssigned){$ticket->idAssigned=0;}
@@ -78,10 +134,8 @@ function content(){
   $assigned_tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $assigned_tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
  }
- }
 
 
- if($GLOBALS['db']->countOf("workflows_tickets","idAssigned<>'".api_accountId()."' AND ".$query_where)>0){
  // build tickets table
  $tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
  $tickets_table->addHeader("&nbsp;",NULL,"16");
@@ -97,8 +151,10 @@ function content(){
  $tickets_table->addHeader(api_text("flows-th-group"),"nowarp text-center");
  $tickets_table->addHeader("&nbsp;",NULL,"16");
  // build tickets table rows
- $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE idAssigned<>'".api_accountId()."' AND ".$query_where.$query_order.$query_limit);
- while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){
+ foreach($tickets_array as $ticket){
+  //
+  if($ticket->idAssigned==api_accountId()){continue;}
+  //
   $tickets_table->addRow();
   // assigned id
   if(!$ticket->idAssigned){$ticket->idAssigned=0;}
@@ -119,7 +175,12 @@ function content(){
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
  }
- }
+
+
+
+
+
+
 
  // acquire workflows status filter
  $workflows_query=$GLOBALS['navigation']->filtersParameterQuery("status","1");
