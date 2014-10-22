@@ -30,7 +30,7 @@ function content(){
  $workflow_dl->addElement(api_text("view-dt-sla"),api_workflows_workflowSLA($workflow),NULL);
 
 
-
+ // OCS inventory integration
  $host_modal=api_workflows_ocs($workflow->hostname);
  if($host_modal<>FALSE){$workflow->hostname=$host_modal->link($workflow->hostname);}
 
