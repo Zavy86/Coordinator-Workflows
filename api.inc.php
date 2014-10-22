@@ -515,8 +515,10 @@ function api_workflows_notifications($ticket){
 /* -[ OCS Inventory ]-------------------------------------------------------- */
 // @string $hostname : device hostname
 function api_workflows_ocs($hostname){
+ include_once('ocs_config.inc.php');
+ if(!$ocs_db_host){return FALSE;}
  // connect to ocs inventory database
- $ocs=new DB("sis-mysql","mysql-read","u0zK96jhwb","ocsweb"); //    <<<<<--------------- rifare con i dati nei settings
+ $ocs=new DB($ocs_db_host,$ocs_db_user,$ocs_db_pass,$ocs_db_name);
  // acquire device informations
  $host_hardware=$ocs->queryUniqueObject("SELECT * FROM hardware WHERE name='".strtoupper(substr($hostname,0,strpos($hostname,".")))."'");
  if(!$host_hardware->ID){return FALSE;}
@@ -533,10 +535,20 @@ function api_workflows_ocs($hostname){
  $host_dl->addElement(api_text("api-ocs-dt-osversion"),$host_hardware->OSVERSION." ".$host_hardware->OSCOMMENTS);
  $host_dl->addElement(api_text("api-ocs-dt-processor"),$host_hardware->PROCESSORT);
  // acquire memories informations
+ $host_memories_slots=0;
+ $host_memories_slots_used=0;
+ $host_memories_total=0;
  $host_memories=$ocs->query("SELECT * FROM memories WHERE HARDWARE_ID='".$host_hardware->ID."'");
  while($host_memory=$GLOBALS['db']->fetchNextObject($host_memories)){
-  $host_dl->addElement(api_text("api-ocs-dt-memory"),$host_memory->CAPACITY." MB ".$host_memory->TYPE);
+  //$host_dl->addElement(api_text("api-ocs-dt-memory"),$host_memory->CAPACITY." MB ".$host_memory->TYPE);
+  $host_memories_slots++;
+  if($host_memory->CAPACITY){
+   $host_memories_total+=$host_memory->CAPACITY;
+   $host_memories_type=$host_memory->TYPE;
+   $host_memories_slots_used++;
+  }
  }
+ $host_dl->addElement(api_text("api-ocs-dt-memory"),$host_memories_total." MB ".$host_memories_type." (".$host_memories_slots_used."/".$host_memories_slots.")");
  // acquire monitors informations
  $host_monitors=$ocs->query("SELECT * FROM monitors WHERE HARDWARE_ID='".$host_hardware->ID."'");
  while($host_monitor=$GLOBALS['db']->fetchNextObject($host_monitors)){
