@@ -1,0 +1,9 @@
+<?php
+
+/* -[ OCS Database parameter ]----------------------------------------------- */
+$ocs_db_host="hostname";
+$ocs_db_user="username";
+$ocs_db_pass="password";
+$ocs_db_name="database";
+
+?>
