@@ -541,11 +541,13 @@ function api_workflows_ocs($hostname){
  $host_memories=$ocs->query("SELECT * FROM memories WHERE HARDWARE_ID='".$host_hardware->ID."'");
  while($host_memory=$GLOBALS['db']->fetchNextObject($host_memories)){
   //$host_dl->addElement(api_text("api-ocs-dt-memory"),$host_memory->CAPACITY." MB ".$host_memory->TYPE);
-  $host_memories_slots++;
-  if($host_memory->CAPACITY){
-   $host_memories_total+=$host_memory->CAPACITY;
-   $host_memories_type=$host_memory->TYPE;
-   $host_memories_slots_used++;
+  if($host_memory->PURPOSE=="System Memory"){
+   $host_memories_slots++;
+   if($host_memory->CAPACITY){
+    $host_memories_total+=$host_memory->CAPACITY;
+    $host_memories_type=$host_memory->TYPE;
+    $host_memories_slots_used++;
+   }
   }
  }
  $host_dl->addElement(api_text("api-ocs-dt-memory"),$host_memories_total." MB ".$host_memories_type." (".$host_memories_slots_used."/".$host_memories_slots.")");
