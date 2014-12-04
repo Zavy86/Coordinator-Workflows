@@ -1,5 +1,11 @@
 <?php
 
+/* -[ Mail parameters ]------------------------------------------------------ */
+$mail_host="mailserver";
+$mail_user="mail@address";
+$mail_pass="password";
+$mail_filters=array();
+
 /* -[ OCS Database parameter ]----------------------------------------------- */
 $ocs_db_host="hostname";
 $ocs_db_user="username";
