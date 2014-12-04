@@ -136,11 +136,11 @@ function content(){
   $body_form->addField("hidden","idGroup",api_text("view-ff-idGroup"),$selected_ticket->idGroup,"input-large");
   $body_form->addField("hidden","idAssigned",api_text("view-ff-idAssigned"),$selected_ticket->idAssigned,"input-large");
   $body_form->addField("select","priority",api_text("priority"),NULL,"input-medium");
-  $body_form->addFieldOption(1,api_text("priority-highest"),($selected_ticket->periority==1)?TRUE:FALSE);
-  $body_form->addFieldOption(2,api_text("priority-high"),($selected_ticket->periority==2)?TRUE:FALSE);
-  $body_form->addFieldOption(3,api_text("priority-medium"),($selected_ticket->periority==3)?TRUE:FALSE);
-  $body_form->addFieldOption(4,api_text("priority-low"),($selected_ticket->periority==4)?TRUE:FALSE);
-  $body_form->addFieldOption(5,api_text("priority-lowest"),($selected_ticket->periority==5)?TRUE:FALSE);
+  $body_form->addFieldOption(1,api_text("priority-highest"),($selected_ticket->priority==1)?TRUE:FALSE);
+  $body_form->addFieldOption(2,api_text("priority-high"),($selected_ticket->priority==2)?TRUE:FALSE);
+  $body_form->addFieldOption(3,api_text("priority-medium"),($selected_ticket->priority==3)?TRUE:FALSE);
+  $body_form->addFieldOption(4,api_text("priority-low"),($selected_ticket->priority==4)?TRUE:FALSE);
+  $body_form->addFieldOption(5,api_text("priority-lowest"),($selected_ticket->priority==5)?TRUE:FALSE);
   $body_form->addField("select","difficulty",api_text("difficulty"),NULL,"input-medium");
   $body_form->addFieldOption(1,api_text("difficulty-low"),($selected_ticket->difficulty==1)?TRUE:FALSE);
   $body_form->addFieldOption(2,api_text("difficulty-medium"),($selected_ticket->difficulty==2)?TRUE:FALSE);

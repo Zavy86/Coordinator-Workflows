@@ -515,7 +515,7 @@ function api_workflows_notifications($ticket){
 /* -[ OCS Inventory ]-------------------------------------------------------- */
 // @string $hostname : device hostname
 function api_workflows_ocs($hostname){
- include_once('ocs_config.inc.php');
+ include_once('config.inc.php');
  if(!$ocs_db_host){return FALSE;}
  // connect to ocs inventory database
  $ocs=new DB($ocs_db_host,$ocs_db_user,$ocs_db_pass,$ocs_db_name);

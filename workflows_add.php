@@ -7,9 +7,10 @@ require_once("template.inc.php");
 function content(){
  // acquire variables
  $g_category=$_GET['idCategory'];
- if(!$g_category){$g_category=0;}
+ $g_mail=$_GET['mail'];
  // get flow object
  $flow=api_workflows_flow($_GET['idFlow'],TRUE);
+ if($g_mail){$mail=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_mails WHERE id='".$g_mail."'");}
  // show workflow informations
  if($flow->id>0){
   echo "<h4>".stripslashes($flow->subject);
@@ -22,7 +23,9 @@ function content(){
  $form=new str_form("submit.php?act=workflow_save&idFlow=".$flow->id,"post","workflows_add");
  if(!$flow->id){
   // flow fields
+  $form->addField("hidden","idMail",NULL,$mail->id);
   $form->addField("select","idCategory",api_text("add-ff-category"));
+  $form->addFieldOption("",ucfirst(api_text("undefined")));
   $categories=$GLOBALS['db']->query("SELECT * FROM workflows_categories WHERE idCategory='0' ORDER BY name ASC");
   while($category=$GLOBALS['db']->fetchNextObject($categories)){
    $form->addFieldOption($category->id,stripslashes($category->name),($category->id==$g_category)?TRUE:FALSE);
@@ -38,9 +41,9 @@ function content(){
   $form->addField("radio","typology",api_text("add-ff-typology"));
   $form->addFieldOption(1,api_text("typology-request"),TRUE);
   $form->addFieldOption(2,api_text("typology-incident"));
-  $form->addField("text","subject",api_text("add-ff-subject"),NULL,"input-xxlarge");
+  $form->addField("text","subject",api_text("add-ff-subject"),str_replace(array("I: ","R: "),"",stripslashes($mail->subject)),"input-xxlarge");
   $form->addField("radio","priority",api_text("add-ff-priority"));
-  $form->addFieldOption(1,api_text("priority-highest"));
+  //$form->addFieldOption(1,api_text("priority-highest"));
   $form->addFieldOption(2,api_text("priority-high"));
   $form->addFieldOption(3,api_text("priority-medium"),TRUE);
   $form->addFieldOption(4,api_text("priority-low"));
@@ -64,9 +67,11 @@ function content(){
   }
  }
  // defaults fields
- $form->addField("text","referent",api_text("add-ff-referent"),api_accountName(),"input-medium");
+ $referent=api_accountName();
+ if($mail->id){$referent=NULL;}
+ $form->addField("text","referent",api_text("add-ff-referent"),$referent,"input-medium");
  $form->addField("text","phone",api_text("add-ff-phone"),NULL,"input-small");
- $form->addField("textarea","note",api_text("add-ff-note"),NULL,"input-xxlarge");
+ $form->addField("textarea","note",api_text("add-ff-note"),stripslashes($mail->message),"input-xxlarge");
  // controls
  $form->addControl("submit",api_text("add-fc-submit"));
  $form->addControl("button",api_text("add-fc-cancel"),NULL,"workflows_search.php?idCategory=".$g_category);
@@ -76,13 +81,17 @@ function content(){
 <script type="text/javascript">
  $(document).ready(function(){
   // validation
-  $('form').validate({
+  $("form[name='workflows_add']").validate({
    rules:{
+    idCategory:{required:true},
 <?php
-    foreach($flow->fields as $field){
-     if($field->required){echo "    ".$field->name.":{required:true},\n";}
-    }
+ if(is_array($flow->fields)){
+  foreach($flow->fields as $field){
+   if($field->required){echo "    ".$field->name.":{required:true},\n";}
+  }
+ }
 ?>
+    referent:{required:true},
     phone:{required:true}
    },
    submitHandler:function(form){form.submit();}

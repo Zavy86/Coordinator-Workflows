@@ -65,10 +65,15 @@ if(api_baseName()=="workflows_flows_list.php" ||
  $class=NULL;
 }
 // administration
-$navigation->addTab(api_text("nav-administration"),NULL,NULL,$class);
-$navigation->addSubTab(api_text("nav-list"),"workflows_flows_list.php");
-$navigation->addSubTab(api_text("nav-add"),"workflows_flows_edit.php");
-$navigation->addSubTab(api_text("nav-categories"),"workflows_categories.php");
+if(api_checkPermission("workflows","workflows_admin")){
+ if(api_baseName()<>"workflows_mails_list.php"){$mails=$GLOBALS['db']->countOfAll("workflows_mails");}
+ if($mails){$mails="&nbsp;<span class='badge badge-warning'>".$mails."</span>";}else{$mails=" ";}
+ $navigation->addTab(api_text("nav-ticket-mails",$mails),"workflows_mails_list.php");
+ $navigation->addTab(api_text("nav-administration"),NULL,NULL,$class);
+ $navigation->addSubTab(api_text("nav-list"),"workflows_flows_list.php");
+ $navigation->addSubTab(api_text("nav-add"),"workflows_flows_edit.php");
+ $navigation->addSubTab(api_text("nav-categories"),"workflows_categories.php");
+}
 // filters
 if(api_baseName()=="workflows_list.php"){
  // if is admin can show all ticket

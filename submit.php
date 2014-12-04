@@ -15,6 +15,8 @@ switch($act){
  case "ticket_assign":ticket_assign();break;
  case "ticket_process":ticket_process();break;
  case "ticket_note":ticket_note();break;
+ // mails
+ case "mail_delete":mail_delete();break;
  // categories
  case "category_save":category_save();break;
  // flows
@@ -37,9 +39,10 @@ switch($act){
 /* -[ Workflow Save ]--------------------------------------------------------- */
 function workflow_save(){
  if(!api_checkPermission("workflows","workflows_add")){api_die("accessDenied");}
- // get flow object
+ // get object
  $flow=api_workflows_flow($_GET['idFlow'],FALSE);
  // acquire variables
+ $p_idMail=$_POST['idMail'];
  $p_idCategory=$_POST['idCategory'];
  $p_typology=$_POST['typology'];
  $p_subject=addslashes($_POST['subject']);
@@ -61,6 +64,8 @@ function workflow_save(){
  $GLOBALS['db']->execute($query);
  // set id to last inserted id
  $q_idWorkflow=$GLOBALS['db']->lastInsertedId();
+ // delete mail if exist
+ if($p_idMail){$GLOBALS['db']->execute("DELETE FROM workflows_mails WHERE id='".$p_idMail."'");}
  // alert
  $alert="?alert=workflowCreated&alert_class=alert-success";
  // get fields
@@ -68,7 +73,11 @@ function workflow_save(){
  // process actions
  if(!workflow_process_actions($q_idWorkflow,$flow->id)){$alert="?alert=workflowError&alert_class=alert-error";}
  // redirect
- exit(header("location: workflows_list.php".$alert));
+ if($p_idMail && $q_idWorkflow){
+  exit(header("location: workflows_view.php".$alert."&id=".$q_idWorkflow));
+ }else{
+  exit(header("location: workflows_list.php".$alert));
+ }
 }
 
 /* -[ Workflow Update ]------------------------------------------------------ */
@@ -568,6 +577,23 @@ function ticket_note(){
  // redirect
  $alert="&alert=ticketUpdated&alert_class=alert-success";
  exit(header("location: workflows_view.php?id=".$workflow->id.$alert));
+}
+
+/* -[ Mail Delete ]---------------------------------------------------------- */
+function mail_delete(){
+ if(!api_checkPermission("workflows","workflows_admin")){api_die("accessDenied");}
+ // get workflow object
+ $g_idMail=$_GET['idMail'];
+ // check id
+ if($g_idMail){
+  $GLOBALS['db']->execute("DELETE FROM workflows_mails WHERE id='".$g_idMail."'");
+  // redirect
+  $alert="?alert=mailDeleted&alert_class=alert-warning";
+ }else{
+  $alert="?alert=mailError&alert_class=alert-error";
+ }
+ // redirect
+ exit(header("location: workflows_mails_list.php".$alert));
 }
 
 

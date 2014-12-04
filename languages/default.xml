@@ -14,6 +14,8 @@
  <text key="ticketUpdated">Il ticket è stato aggiornato</text>
  <text key="ticketClosed">Il ticket è stato chiuso</text>
  <text key="ticketError">Si è verificato un errore durante il salvataggio del ticket</text>
+ <text key="mailDeleted">La mail è stata eliminata</text>
+ <text key="mailError">Si è verificato un errore con questa mail</text>
  <text key="flowNotFound">Il flusso non è stato trovato</text>
  <text key="flowCreated">Il flusso è stato creato</text>
  <text key="flowUpdated">Il flusso è stato aggiornato</text>
@@ -175,6 +177,7 @@
  <text key="nav-process">Processa il ticket</text>
  <text key="nav-unlock">Sblocca il ticket</text>
  <text key="nav-reopen">Riapri il ticket</text>
+ <text key="nav-ticket-mails">Mail {0}</text>
  <text key="nav-administration">Amministrazione</text>
  <text key="nav-list">Lista flussi</text>
  <text key="nav-add">Nuovo flusso</text>
@@ -392,6 +395,13 @@
  <text key="flows_view-actions-fc-submit">Salva azione</text>
  <text key="flows_view-actions-fc-delete">Elimina azione</text>
  <text key="flows_view-actions-fc-delete-confirm">Eliminare definitivamente questa azione?</text>
+
+ <!-- workflows_mails_list.php -->
+ <text key="mails-tr-unvalued">Non è presente nessuna mail da importare..</text>
+ <text key="mails-th-timestamp">Data</text>
+ <text key="mails-th-sender">Mittente</text>
+ <text key="mails-th-subject">Oggetto</text>
+ <text key="mails-delete-confirm">Confermi l'eliminazione di questa mail?</text>
 
  <!-- widget.inc.php -->
  <text key="widget-title">Attività</text>

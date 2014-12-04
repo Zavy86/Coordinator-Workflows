@@ -1,5 +1,5 @@
 # ignore configuration file
-ocs_config.inc.php
+config.inc.php
 
 # Never ignore index.php files
 !index.php
