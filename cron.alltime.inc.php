@@ -13,7 +13,7 @@ $log="CRON - MAIL RECEIVED FOR TICKET\n";
 // check mail host
 if($mail_host<>"mailserver"){
  // open imap connection
- $mailbox=@imap_open("{".$mail_host.":143}INBOX",$mail_user,$mail_pass);
+ $mailbox=@imap_open("{".$mail_host.":143/novalidate-cert}INBOX",$mail_user,$mail_pass);
  // check connection
  if($mailbox){
   // get mails number
