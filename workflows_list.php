@@ -36,17 +36,11 @@ function content(){
  }
  // order tickets
  $query_order=api_queryOrder("addDate DESC");
- // pagination
- /*$pagination=new str_pagination("workflows_tickets",$query_where,$GLOBALS['navigation']->filtersGet());
- $query_limit=$pagination->queryLimit();*/
+ 
  // acquire tickets
- $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where.$query_order.$query_limit);
+ $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where.$query_order);
  while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){$tickets_array[]=$ticket;}
 
-
-
-
-/*
  // build tickets table
  $tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
  $tickets_table->addHeader("&nbsp;",NULL,"16");
@@ -62,10 +56,7 @@ function content(){
  $tickets_table->addHeader(api_text("flows-th-group"),"nowarp text-center");
  $tickets_table->addHeader("&nbsp;",NULL,"16");
  // build tickets table rows
- $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where.$query_order.$query_limit);
  foreach($tickets_array as $ticket){
-  //
-  if($ticket->idAssigned==api_accountId()){continue;}
   //
   $tickets_table->addRow();
   // assigned id
@@ -86,16 +77,9 @@ function content(){
   $tickets_table->addField(api_accountFirstname($ticket->idAssigned),"nowarp text-right");
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
- }*/
+ }
 
-
-
-
-
-
-
-
- // build tickets table
+ /*// build tickets table
  $assigned_tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
  $assigned_tickets_table->addHeader("&nbsp;",NULL,"16");
  $assigned_tickets_table->addHeader(api_text("flows-th-idTicket"),"nowarp",NULL,"id");
@@ -153,7 +137,7 @@ function content(){
  // build tickets table rows
  foreach($tickets_array as $ticket){
   //
-  if($ticket->idAssigned==api_accountId()){continue;}
+  if($ticket->idAssigned==api_accountId()||$ticket->status<>1){continue;}
   //
   $tickets_table->addRow();
   // assigned id
@@ -174,13 +158,7 @@ function content(){
   $tickets_table->addField(api_accountFirstname($ticket->idAssigned),"nowarp text-right");
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
- }
-
-
-
-
-
-
+ }*/
 
  // acquire workflows status filter
  $workflows_query=$GLOBALS['navigation']->filtersParameterQuery("status","1");
