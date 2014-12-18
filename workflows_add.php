@@ -74,7 +74,8 @@ function content(){
  $form->addField("textarea","note",api_text("add-ff-note"),stripslashes($mail->message),"input-xxlarge");
  // controls
  $form->addControl("submit",api_text("add-fc-submit"));
- $form->addControl("button",api_text("add-fc-cancel"),NULL,"workflows_search.php?idCategory=".$g_category);
+ if($mail->id){$form->addControl("button",api_text("add-fc-cancel"),NULL,"workflows_mails_list.php");}
+ else{$form->addControl("button",api_text("add-fc-cancel"),NULL,"workflows_search.php?idCategory=".$g_category);}
  // show form
  $form->render();
 ?>

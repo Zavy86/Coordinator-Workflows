@@ -24,8 +24,17 @@ if($mail_host<>"mailserver"){
    $sender=addslashes($headers->from[0]->mailbox."@".$headers->from[0]->host);
    $subject=addslashes($headers->subject);
    $timestamp=date("Y-m-d H:i:s",strtotime($headers->date));
-   $body=imap_fetchbody($mailbox,$mail,1.1);
-   if(!$body){$body=imap_fetchbody($mailbox,$mail,1);}
+   $structure=imap_fetchstructure($mailbox,$mail);
+   if(isset($structure->parts) && is_array($structure->parts) && isset($structure->parts[1])){
+    $body=imap_fetchbody($mailbox,$mail,1.1);
+    if(!$body){$body=imap_fetchbody($mailbox,$mail,1);}
+    $part=$structure->parts[1];
+    if($part->encoding==3){$body=imap_base64($body);}
+     elseif($part->encoding==1){$body=imap_8bit($body);}
+     else{$body=imap_qprint($body);}
+   }else{
+    $body=imap_body($mailbox,$mail);
+   }
    $message=addslashes(trim(preg_replace('/(\r\n|\r|\n)+/',"\n",$body)));
    // check filters
    if(count($mail_filters)){
