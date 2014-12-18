@@ -50,8 +50,8 @@ function content(){
   // query search
   if(strlen($g_search)>0){
    $query_where.=" AND (";
-   $query_where.=" subject LIKE '%".$g_search."%'";
-   $query_where.=" OR description LIKE '%".$g_search."%'";
+   $query_where.=" workflows_flows.subject LIKE '%".$g_search."%'";
+   $query_where.=" OR workflows_flows.description LIKE '%".$g_search."%'";
    $query_where.=" )";
   }elseif($selected_category->idCategory==0){
    $query_where="0";
