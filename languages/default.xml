@@ -36,6 +36,7 @@
  <text key="logs_workflows_workflowCreated">Attività - Attività {0} [Aperta] {1}&#xA;&#xA;{2}</text>
  <text key="logs_workflows_workflowAssigned">Attività - Attività {0} [Presa in carico] {1}</text>
  <text key="logs_workflows_workflowClosed">Attività - Attività {0} [Chiusa] {1}</text>
+ <text key="logs_workflows_workflowsCron">Attività - Mail disponibili&#xA;&#xA;{1}</text>
  <text key="logs_workflows_ticketCreated">Attività - Ticket {0} [Aperto] {1}</text>
  <text key="logs_workflows_ticketAssigned">Attività - Ticket {0} [Preso in carico] {1}</text>
  <text key="logs_workflows_ticketStandby">Attività - Ticket {0} [Sospeso] {1}</text>
