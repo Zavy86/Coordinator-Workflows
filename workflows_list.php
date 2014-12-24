@@ -31,12 +31,12 @@ function content(){
   foreach(api_accountGroups() as $group){
    if($group->grouprole>1){$query_where.=" OR idGroup='".$group->id."'";}
   }
-  if(api_accountGroupMember(api_groupId("SIS"))){$query_where.=" OR idGroup='0'";}
+  if(api_accountGroupMember(api_groupId("SIS"))){$query_where.=" OR idGroup='0' OR idGroup IS NULL";}
   $query_where.=" )";
  }
  // order tickets
  $query_order=api_queryOrder("addDate DESC");
- 
+
  // acquire tickets
  $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where.$query_order);
  while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){$tickets_array[]=$ticket;}
