@@ -32,9 +32,9 @@ if($mail_host<>"mailserver"){
     if($part->encoding==3){$body=imap_base64($body);}
      elseif($part->encoding==1){$body=imap_8bit($body);}
      else{$body=imap_qprint($body);}
-   }else{
-    $body=imap_body($mailbox,$mail);
    }
+   if(!strlen($body)){$body=imap_body($mailbox,$mail);}
+   $body=str_replace(array("=A0","=20"),"",$body);
    $message=addslashes(trim(preg_replace('/(\r\n|\r|\n)+/',"\n",$body)));
    // check filters
    if(count($mail_filters)){
