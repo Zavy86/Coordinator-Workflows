@@ -486,7 +486,7 @@ function ticket_process(){
    while($locked_ticket=$GLOBALS['db']->fetchNextObject($locked_tickets)){
     // send notification
     api_workflows_notifications($locked_ticket);
-    $unlocked_ticket=api_workflows_ticket($locked_ticket);
+    $unlocked_ticket=api_workflows_ticket($locked_ticket->id);
     // log event
     api_log(API_LOG_NOTICE,"workflows","ticketUnlocked",
      "{logs_workflows_ticketUnlocked|".$unlocked_ticket->number."|".$unlocked_ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
