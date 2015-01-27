@@ -204,7 +204,7 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
      if($_POST[$field->name."_to"]<>NULL){$value.=api_text("form-range-to")." ".$_POST[$field->name."_to"];}
      break;
     case "file":
-     $file=api_file_upload($_FILES[$field->name],"workflows_attachments",NULL,NULL,NULL,NULL,FALSE,NULL,FALSE);
+     $file=api_file_upload($_FILES[$field->name],"workflows_attachments",NULL,NULL,NULL,NULL,FALSE,NULL,TRUE,"workflows");
      if($file->id){
       $value=addslashes("<a href='submit.php?act=attachments_download&id=".$file->id."'>".$file->name."</a>");
      }
@@ -1015,5 +1015,5 @@ function attachments_download(){
  $g_id=$_GET['id'];
  if(!$g_id){$g_id=0;}
  // download file from database
- api_file_download($g_id,"workflows_attachments");
+ api_file_download($g_id,"workflows_attachments",NULL,FALSE,"workflows");
 }
