@@ -471,7 +471,7 @@ function ticket_process(){
    WHERE id='".$g_idTicket."'";
   // execute query
   $GLOBALS['db']->execute($query);
-  // if is set note
+  // save note
   if(strlen($p_note)>0){
    // build query
    $query="INSERT INTO workflows_tickets_notes
@@ -479,6 +479,13 @@ function ticket_process(){
     ('".$g_idTicket."','".$p_note."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
    // execute query
    $GLOBALS['db']->execute($query);
+   // send message to user if mail is setted
+   $user=api_account($ticket->addIdAccount);
+   if(strlen($user->account)>4){
+    $subject="Ticket ".$ticket->number." - ".$ticket->subject;
+    $message=$p_note."\n\nLink: http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id;
+    api_sendmail($user->account,$message,$subject);
+   }
   }
   // unlock locked tickets
   if($p_status==4){
