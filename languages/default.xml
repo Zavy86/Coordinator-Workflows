@@ -39,8 +39,8 @@
  <text key="logs_workflows_workflowsCron">Attività - Mail disponibili&#xA;&#xA;{1}</text>
  <text key="logs_workflows_ticketCreated">Attività - Ticket {0} [Aperto] {1}</text>
  <text key="logs_workflows_ticketAssigned">Attività - Ticket {0} [Preso in carico] {1}</text>
- <text key="logs_workflows_ticketStandby">Attività - Ticket {0} [Sospeso] {1}</text>
- <text key="logs_workflows_ticketClosed">Attività - Ticket {0} [Chiuso] {1}</text>
+ <text key="logs_workflows_ticketStandby">Attività - Ticket {0} [Sospeso] {1}&#xA;&#xA;Note: {3}</text>
+ <text key="logs_workflows_ticketClosed">Attività - Ticket {0} [Chiuso] {1}&#xA;&#xA;Note: {4}</text>
  <text key="logs_workflows_ticketAssigned">Attività - Ticket {0} [Preso in carico] {1}</text>
  <text key="logs_workflows_categoryCreated">Attività - Categoria {0} creata</text>
  <text key="logs_workflows_categoryUpdated">Attività - Categoria {0} aggiornata</text>
@@ -249,6 +249,7 @@
  <text key="view-ff-priority">Priorità</text>
  <text key="view-ff-difficulty">Difficoltà</text>
  <text key="view-ff-note">Note</text>
+ <text key="view-ff-message">Messagio utente</text>
  <text key="view-ff-slaAssignment">SLA Assegnamento</text>
  <text key="view-ff-slaClosure">SLA Chiusura</text>
  <text key="view-fc-submit">Salva</text>
