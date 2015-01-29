@@ -85,7 +85,7 @@ if(api_baseName()=="workflows_list.php"){
  // status filter
  $navigation->addFilter("multiselect","status",api_text("filter-status"),array(1=>api_text("filter-opened"),2=>api_text("filter-assigned"),3=>api_text("filter-standby"),4=>api_text("filter-closed"),5=>api_text("filter-locked")));
  // if not filtered load default filters
- if($_GET['filtered']<>1){$_GET['show']="0";$_GET['status']=array(1,2,3);}
+ if($_GET['resetFilters']||($_GET['filtered']<>1 && $_SESSION['filters'][api_baseName()]['filtered']<>1)){$_GET['show']="0";$_GET['status']=array(1,2,3);}
 }
 if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list.php"){
  // idCategory
@@ -116,9 +116,7 @@ if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list
  // idAssigned
  $navigation->addFilter("multiselect","idAssigned",api_text("filter-idAssigned"),$accounts_array,"input-xlarge");
  // if not filtered load default filters
- if($_GET['filtered']<>1){
-  // any default filters
- }
+ if($_GET['resetFilters']||($_GET['filtered']<>1 && $_SESSION['filters'][api_baseName()]['filtered']<>1)){if(api_baseName()=="workflows_list.php"){$_GET['show']="0";$_GET['status']=array(1,2,3);}}
 }
 /*if(api_baseName()=="workflows_list.php" || api_baseName()=="workflows_flows_list.php"){
  $navigation->addFilter("multiselect","typology",api_text("filter-typology"),array(1=>api_text("typology-request"),2=>api_text("typology-incident")),"input-xlarge");
