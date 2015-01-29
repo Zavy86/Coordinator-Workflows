@@ -138,6 +138,8 @@
  <text key="filter-locked">Bloccati</text>
  <text key="filter-category">Categoria</text>
  <text key="filter-typology">Tipologia</text>
+ <text key="filter-addIdAccount">Utente</text>
+ <text key="filter-idAssigned">Incaricato</text>
 
  <!-- api.inc.php -->
  <text key="api-sla">{0} minuti</text>
