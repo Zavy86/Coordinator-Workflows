@@ -10,6 +10,7 @@ switch($act){
  // workflows
  case "workflow_save":workflow_save();break;
  case "workflow_update":workflow_update();break;
+ case "workflow_sendmail":workflow_sendmail();break;
  // tickets
  case "ticket_save":ticket_save();break;
  case "ticket_assign":ticket_assign();break;
@@ -143,6 +144,27 @@ function workflow_update(){
  }
  // redirect
  exit(header("location: workflows_view.php?id=".$workflow->id.$alert));
+}
+
+/* -[ Workflow Sendmail ]---------------------------------------------------- */
+function workflow_sendmail(){
+ // get objects
+ $workflow=api_workflows_workflow($_GET['id'],TRUE);
+ if(!$workflow->id){echo api_text("workflowNotFound");return FALSE;}
+ // acquire variables
+ $p_to=$_POST['to'];
+ $p_cc=$_POST['cc'];
+ $p_subject=$_POST['subject'];
+ $p_message=$_POST['message'];
+ // sendmail
+ $sendmail=api_sendmail($p_to,$p_message,$p_subject,FALSE,NULL,NULL,$p_cc);
+ if($sendmail){
+  $alert="&alert=sendmailSuccess&alert_class=alert-success";
+ }else{
+  $alert="&alert=sendmailError&alert_class=alert-error";
+ }
+ // redirect
+ header("location: workflows_view.php?id=".$workflow->id.$alert);
 }
 
 /* -[ Workflow Get Field ]----------------------------------------------------- */
