@@ -21,8 +21,8 @@ function content(){
  $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idCategory","1");
  $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("addIdAccount","1");
  $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idAssigned","1");
- // if user is admin and view all ticket is checked
- if($_SESSION['account']->typology==1 && $GLOBALS['navigation']->filtersParameterQuery("show")=="show='1'"){
+ // if all ticket is checked
+ if($GLOBALS['navigation']->filtersParameterQuery("show")=="show='1'"){
   // show all tickets
  }else{
   // only assignable tickets
