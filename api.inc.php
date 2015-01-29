@@ -223,12 +223,12 @@ function api_workflows_ticketDetailsModal($ticket){
 // @object $ticket : ticket object or ticket id
 // @integer $idAccount : account id
 function api_workflows_ticketProcessPermission($ticket,$idAccount=NULL){
- if($idAccount===0 || $idAccount==="0"){$idAccount=api_accountId();}
+ if(!$idAccount>0){$idAccount=api_accountId();}
  if(!$ticket->id){$ticket=api_workflows_ticket($ticket);}
  if(!$ticket->id){return FALSE;}
  if($ticket->idAssigned==$idAccount){return TRUE;}
  if(api_accountGrouprole($ticket->idGroup,$idAccount,TRUE)>0){return TRUE;}
- if($ticket->idGroup==0 && api_accountGroupMember(api_groupId("SIS"))){return TRUE;}
+ if(api_accountGroupMember(api_groupId("SIS"),$idAccount,TRUE)){return TRUE;}
  return FALSE;
 }
 

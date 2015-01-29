@@ -31,6 +31,8 @@
  <text key="actionUpdated">L'azione è stata aggiornata</text>
  <text key="actionDeleted">L'azione è stata eliminata</text>
  <text key="actionRequired">Non è possibile eliminare questa azione in quanto richiesta da altre azioni</text>
+ <text key="sendmailSuccess">Il ticket è stato inoltrato con successo</text>
+ <text key="sendmailError">Si è verificato un errore durante l'inoltro del ticket</text>
 
  <!-- logs -->
  <text key="logs_workflows_workflowCreated">Attività - Attività {0} [Aperta] {1}&#xA;&#xA;{2}</text>
@@ -284,6 +286,16 @@
  <text key="edit-fo-tickets-open">Apri nuovo ticket</text>
  <text key="edit-fc-submit">Salva</text>
  <text key="edit-fc-cancel">Annulla</text>
+
+ <!-- workflows_sendmail.php -->
+ <text key="sendmail-ff-to">Destinatario</text>
+ <text key="sendmail-ff-to-placeholder">Indirizzo e-mail del destinatario</text>
+ <text key="sendmail-ff-cc">Copia conoscenza</text>
+ <text key="sendmail-ff-cc-placeholder">Indirizzi e-mail separati da una virgola</text>
+ <text key="sendmail-ff-subject">Oggetto</text>
+ <text key="sendmail-ff-message">Messaggio</text>
+ <text key="sendmail-fc-submit">Invia</text>
+ <text key="sendmail-fc-cancel">Annulla</text>
 
  <!-- workflows_categories.php -->
  <text key="categories-th-category">Categoria</text>

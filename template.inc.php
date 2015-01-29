@@ -36,7 +36,7 @@ $navigation->addTab(api_text("nav-workflows"),"workflows_list.php");
 if($workflow->id){
  $navigation->addTab(api_text("nav-operations"),NULL,NULL,"active");
  if(api_accountGroupMember(api_groupId("SIS"))){$navigation->addSubTab(api_text("nav-edit"),"workflows_edit.php?id=".$workflow->id);}
- $navigation->addSubTab(api_text("nav-sendmail"),"submit.php?act=ticket_sendmail&idWorkflow=".$workflow->id);
+ $navigation->addSubTab(api_text("nav-sendmail"),"workflows_sendmail.php?idWorkflow=".$workflow->id);
  $navigation->addSubTab(api_text("nav-addTicket"),"workflows_view.php?id=".$workflow->id."&act=addTicket");
  if($ticket->id &&api_workflows_ticketProcessPermission($ticket)){
   $navigation->addSubTabDivider();
