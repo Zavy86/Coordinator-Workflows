@@ -384,8 +384,8 @@ function api_workflows_replaceTagCodes($string){
  // acquire Flow
  $idFlow=$_GET['idFlow'];
 
- // dynamic tag field values
- while(($posStart=strpos($string,"[field-"))>0){
+ // dynamic tag field value or label
+ while(($posStart=strpos($string,"[field-"))!==FALSE){
   //$tagcodes_array=array();
   $tag=substr($string,$posStart,strpos($string,"]",$posStart)-$posStart+1);
   $field=substr($string,$posStart+7,strpos($string,"]",$posStart)-$posStart-7);
@@ -431,6 +431,40 @@ function api_workflows_replaceTagCodes($string){
   }
   //if(!$value){$value="[not-found-field-".$field."]";}
   //$tagcodes_array[$tag]=$value;
+
+  // replace tags
+  $string=str_replace($tag,$value,$string);
+ }
+
+  // dynamic tag field value (for select, multiselect, radio and checkbox
+ while(($posStart=strpos($string,"[fieldvalue-"))!==FALSE){
+  //$tagcodes_array=array();
+  $tag=substr($string,$posStart,strpos($string,"]",$posStart)-$posStart+1);
+  $field=substr($string,$posStart+12,strpos($string,"]",$posStart)-$posStart-12);
+  $field_obj=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_fields WHERE idFlow='".$idFlow."' AND name='".$field."' ORDER BY position ASC");
+  $field_obj->options=api_workflows_flowFieldOptions($field_obj);
+  // acquire field values by typology
+  switch($field_obj->typology){
+   // multiselect have array values
+   case "multiselect":
+    $values=NULL;
+    if(is_array($_POST[$field_obj->name])){
+     foreach($_POST[$field_obj->name] as $g_option){
+      $values.=", ".$field_obj->options[$g_option]->value;
+     }
+    }
+    $value=substr($values,2);
+    break;
+   // checkbox and radio have text value
+   case "checkbox":
+   case "radio":
+    if($_POST[$field_obj->name]<>NULL){$value=$field_obj->options[$_POST[$field_obj->name]]->value;}
+    break;
+   // select value is in array
+   case "select":
+    if($_POST[$field_obj->name]<>NULL){$value=$field_obj->options[$_POST[$field_obj->name]]->value;}
+    break;
+  }
 
   // replace tags
   $string=str_replace($tag,$value,$string);
@@ -500,7 +534,7 @@ function api_workflows_notifications($ticket){
     $message.=stripslashes($workflow->note)."\n\n\n";
    }
    $message.="<strong>Autorizzazione</strong>:\n\n";
-   $message.="<a href='http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/external_submit.php?act=ticket_authorize&idTicket=".$ticket->id."&idWorkflow=".$ticket->idWorkflow."&authorization=1&hash=".$ticket->hash."'>Premi qui per <u>AUTORIZZARE</u> la richiesta</a>\n";
+   $message.="<a href='http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/external_submit.php?act=ticket_authorize&idTicket=".$ticket->id."&idWorkflow=".$ticket->idWorkflow."&authorization=1&hash=".$ticket->hash."'>Premi qui per <u>AUTORIZZARE</u> la richiesta</a>\n\n";
    $message.="<a href='http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/external_submit.php?act=ticket_authorize&idTicket=".$ticket->id."&idWorkflow=".$ticket->idWorkflow."&authorization=0&hash=".$ticket->hash."'>Premi qui per <u>NON AUTORIZZARE</u> la richiesta</a>\n";
    // sendmail
    api_sendmail($ticket->mail,$message,$subject,TRUE);

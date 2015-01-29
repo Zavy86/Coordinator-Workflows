@@ -256,7 +256,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
     $requiredAction=$action->id;
     $typology=$action->typology;
     if($typology<>1){$hash=md5(api_randomString(32));}else{$hash=NULL;}
-    $mail=api_workflows_replaceTagCodes($action->mail);
+    $mail=addslashes(api_workflows_replaceTagCodes($action->mail));
     $subject=addslashes(api_workflows_replaceTagCodes($action->subject));
     $idGroup=$action->idGroup;
     $idAssigned=$action->idAssigned;
