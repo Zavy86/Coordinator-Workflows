@@ -24,7 +24,7 @@ function workflows_conditions_ticketOwner($idAccount,$idTicket){
 // @integer $idAccount : account id
 // @integer $idTicket : ticket id
 function workflows_conditions_ticketProcessable($idAccount,$idTicket){
- return api_workflows_ticketProcessPermission($idTicket,$idAccount);
+ return api_workflows_ticketProcessPermission($idTicket,$idAccount,FALSE);
 }
 
 
