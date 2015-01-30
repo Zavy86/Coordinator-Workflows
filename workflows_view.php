@@ -78,7 +78,8 @@ function content(){
   foreach($ticket->notes as $note){
    $dl_body->addElement(api_accountName($note->addIdAccount)."<br>".api_timestampFormat($note->addDate),nl2br(stripslashes($note->note)));
   }
-  if(!count($ticket->notes)){$dl_body->addElement("&nbsp;",api_text("view-dd-notesNull"));}
+  if(!count($ticket->notes)){$dl_body->addElement("&nbsp;",api_text("view-dd-notesNull"));$note_count=NULL;}
+   else{$note_count=count($ticket->notes)." ";}
   $notes_modal->body($form_body->render(FALSE).$dl_body->render(FALSE));
   $notes_modals_array[]=$notes_modal;
   // assigned
@@ -98,7 +99,7 @@ function content(){
   }
   $tickets_table->addField($ticket->priority,"nowarp text-center");
   $tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
-  $tickets_table->addField($notes_modal->link(api_icon("icon-comment",api_text("view-td-note"))),"nowarp");
+  $tickets_table->addField($note_count.$notes_modal->link(api_icon("icon-comment",api_text("view-td-note"))),"nowarp");
   $tickets_table->addField(stripslashes($ticket->subject));
   $tickets_table->addField($italic.(($ticket->idAssigned>0)?api_accountFirstName($ticket->idAssigned):"&nbsp;").$unitalic,"nowarp text-right");
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
