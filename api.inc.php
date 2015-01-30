@@ -222,13 +222,13 @@ function api_workflows_ticketDetailsModal($ticket){
 /* -[ Ticket check process permission ]-------------------------------------- */
 // @object $ticket : ticket object or ticket id
 // @integer $idAccount : account id
-function api_workflows_ticketProcessPermission($ticket,$idAccount=NULL){
+function api_workflows_ticketProcessPermission($ticket,$idAccount=NULL,$forceSIS=TRUE){
  if(!$idAccount>0){$idAccount=api_accountId();}
  if(!$ticket->id){$ticket=api_workflows_ticket($ticket);}
  if(!$ticket->id){return FALSE;}
  if($ticket->idAssigned==$idAccount){return TRUE;}
  if(api_accountGrouprole($ticket->idGroup,$idAccount,TRUE)>0){return TRUE;}
- if(api_accountGroupMember(api_groupId("SIS"),$idAccount,TRUE)){return TRUE;}
+ if($forceSIS){if(api_accountGroupMember(api_groupId("SIS"),$idAccount,TRUE)){return TRUE;}}
  return FALSE;
 }
 
