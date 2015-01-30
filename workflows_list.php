@@ -35,7 +35,7 @@ function content(){
   $query_where.=" )";
  }
  // order tickets
- $query_order=api_queryOrder("status ASC,addDate ASC");
+ $query_order=api_queryOrder("status ASC,addDate DESC");
 
  // acquire tickets
  $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where.$query_order);
