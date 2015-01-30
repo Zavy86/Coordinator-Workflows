@@ -294,6 +294,7 @@
  <text key="sendmail-ff-cc-placeholder">Indirizzi e-mail separati da una virgola</text>
  <text key="sendmail-ff-subject">Oggetto</text>
  <text key="sendmail-ff-message">Messaggio</text>
+ <text key="sendmail-ff-note">Note</text>
  <text key="sendmail-fc-submit">Invia</text>
  <text key="sendmail-fc-cancel">Annulla</text>
 
