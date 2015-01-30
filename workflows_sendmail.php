@@ -14,7 +14,9 @@ function content(){
  $form->addField("text","to",api_text("sendmail-ff-to"),NULL,"input-xlarge",api_text("sendmail-ff-to-placeholder"));
  $form->addField("text","cc",api_text("sendmail-ff-cc"),NULL,"input-xxlarge",api_text("sendmail-ff-cc-placeholder"));
  $form->addField("text","subject",api_text("sendmail-ff-subject"),stripslashes($workflow->subject),"input-xxlarge");
- $form->addField("textarea","message",api_text("sendmail-ff-message"),stripslashes($workflow->description),"input-xxlarge",NULL,FALSE,16);
+ $message=stripslashes($workflow->description);
+ if(strlen($workflow->note)){$message.="\n\n".api_text("sendmail-ff-note").": ".stripslashes($workflow->note);}
+ $form->addField("textarea","message",api_text("sendmail-ff-message"),$message,"input-xxlarge",NULL,FALSE,16);
  // controls
  $form->addControl("submit",api_text("sendmail-fc-submit"),NULL,NULL,api_text("sendmail-fc-submit-confirm"));
  $form->addControl("button",api_text("sendmail-fc-cancel"),NULL,"workflows_view.php?id=".$workflow->id);
