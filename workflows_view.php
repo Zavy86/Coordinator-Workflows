@@ -76,7 +76,8 @@ function content(){
   $form_body->addField("textarea","note",api_accountName()."<br>".api_timestampFormat(date("Y-m-d H:i:s"))."<br><br><input type='submit' class='btn btn-primary' value='Salva'>",NULL,"input-xlarge",api_text("view-ff-note-placeholder"),FALSE,5);
   $dl_body=new str_dl("br","dl-horizontal");
   foreach($ticket->notes as $note){
-   $dl_body->addElement(api_accountName($note->addIdAccount)."<br>".api_timestampFormat($note->addDate),nl2br(stripslashes($note->note)));
+   if($note->addIdAccount==api_accountId()){$notes_del=api_link("submit.php?act=ticket_note_delete&idNote=".$note->id."&idWorkflow=".$workflow->id."&idTicket=".$ticket->id,api_icon("icon-trash"),api_text("view-ff-note-delete"),NULL,FALSE,api_text("view-ff-note-delete-confirm"))." ";}else{$notes_del=NULL;}
+   $dl_body->addElement(api_accountName($note->addIdAccount)."<br>".api_timestampFormat($note->addDate),$notes_del.nl2br(stripslashes($note->note)));
   }
   if(!count($ticket->notes)){$dl_body->addElement("&nbsp;",api_text("view-dd-notesNull"));$note_count=NULL;}
    else{$note_count=count($ticket->notes)." ";}

@@ -16,6 +16,9 @@
  <text key="ticketError">Si è verificato un errore durante il salvataggio del ticket</text>
  <text key="mailDeleted">La mail è stata eliminata</text>
  <text key="mailError">Si è verificato un errore con questa mail</text>
+ <text key="noteCreated">La nota è stata salvata</text>
+ <text key="noteDeleted">La nota è stata eliminata</text>
+ <text key="noteError">Si è verificato un errore con la nota</text>
  <text key="flowNotFound">Il flusso non è stato trovato</text>
  <text key="flowCreated">Il flusso è stato creato</text>
  <text key="flowUpdated">Il flusso è stato aggiornato</text>
@@ -237,6 +240,8 @@
  <text key="view-ticketAdd">Nuovo ticket</text>
  <text key="view-dd-notesNull">Non è presente nessuna nota..</text>
  <text key="view-ff-note-placeholder">Aggiungi una nota</text>
+ <text key="view-ff-note-delete">Elimina nota</text>
+ <text key="view-ff-note-delete-confirm">Confermi di voler eliminare definitivamente questa nota?</text>
  <text key="view-ff-idGroup">Gruppo</text>
  <text key="view-ff-idGroup-placeholder">Seleziona un gruppo</text>
  <text key="view-ff-idAssigned">Incaricato</text>
