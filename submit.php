@@ -16,6 +16,7 @@ switch($act){
  case "ticket_assign":ticket_assign();break;
  case "ticket_process":ticket_process();break;
  case "ticket_note":ticket_note();break;
+ case "ticket_note_delete":ticket_note_delete();break;
  // mails
  case "mail_delete":mail_delete();break;
  // categories
@@ -574,8 +575,7 @@ function ticket_process(){
 
 /* -[ Ticket Note ]---------------------------------------------------------- */
 function ticket_note(){
- if(!api_checkPermission("workflows","workflows_add")){api_die("accessDenied");}
- // get workflow object
+ // get objects
  $workflow=api_workflows_workflow($_GET['idWorkflow'],FALSE);
  $ticket=api_workflows_ticket($_GET['idTicket'],FALSE);
  // check id
@@ -604,8 +604,26 @@ function ticket_note(){
   "{logs_workflows_ticketNote|".$ticket->number."|".$ticket->subject."|".$q_idNote."|".$p_note."|".api_accountName()."}",
   $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
  // redirect
- $alert="&alert=ticketUpdated&alert_class=alert-success";
+ $alert="&alert=noteCreated&alert_class=alert-success";
  exit(header("location: workflows_view.php?id=".$workflow->id.$alert));
+}
+
+/* -[ Ticket Note Delete ]--------------------------------------------------- */
+function ticket_note_delete(){
+ // acquire variables
+ $g_idWorkflow=$_GET['idWorkflow'];
+ $g_idTicket=$_GET['idTicket'];
+ $g_idNote=$_GET['idNote'];
+ // check id
+ if($g_idNote){
+  $GLOBALS['db']->execute("DELETE FROM workflows_tickets_notes WHERE id='".$g_idNote."'");
+  // redirect
+  $alert="&alert=noteDeleted&alert_class=alert-warning";
+ }else{
+  $alert="&alert=noteError&alert_class=alert-error";
+ }
+ // redirect
+ exit(header("location: workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket.$alert));
 }
 
 /* -[ Mail Delete ]---------------------------------------------------------- */
