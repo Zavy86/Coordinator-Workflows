@@ -58,8 +58,9 @@ function content(){
  //}
  // build tickets table rows
  foreach($workflow->tickets as $ticket){
-  if($ticket->id==$selected_ticket->id){$tickets_table->addRow("info");}
-  else{$tickets_table->addRow();}
+  if($ticket->urged){$tickets_table->addRow("warning");}
+   elseif($ticket->id==$selected_ticket->id){$tickets_table->addRow("info");}
+   else{$tickets_table->addRow();}
   // ticket typology
   switch($ticket->typology){
    case 1:$typology=api_icon("icon-tag",api_text("ticket-standard"));break;
