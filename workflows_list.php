@@ -57,8 +57,9 @@ function content(){
  $tickets_table->addHeader("&nbsp;",NULL,"16");
  // build tickets table rows
  foreach($tickets_array as $ticket){
-  //
-  $tickets_table->addRow();
+  // check urged
+  if($ticket->urged){$tickets_table->addRow("warning");}
+   else{$tickets_table->addRow();}
   // assigned id
   if(!$ticket->idAssigned){$ticket->idAssigned=0;}
   // details modal windows

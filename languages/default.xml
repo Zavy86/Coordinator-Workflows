@@ -8,6 +8,7 @@
  <!-- alerts -->
  <text key="workflowNotFound">L'attività non è stata trovata</text>
  <text key="workflowCreated">L'attività è stata creata</text>
+ <text key="workflowUrged">L'attività è stata sollecitata</text>
  <text key="workflowClosed">L'attività è stata chiusa</text>
  <text key="workflowError">Si è verificato un errore durante il salvataggio dell'attività</text>
  <text key="ticketAssigned">Il ticket ti è stato assegnato</text>
@@ -47,6 +48,7 @@
  <text key="logs_workflows_ticketStandby">Attività - Ticket {0} [Sospeso] {1}&#xA;&#xA;Note: {3}</text>
  <text key="logs_workflows_ticketClosed">Attività - Ticket {0} [Chiuso] {1}&#xA;&#xA;Note: {4}</text>
  <text key="logs_workflows_ticketAssigned">Attività - Ticket {0} [Preso in carico] {1}</text>
+ <text key="logs_workflows_ticketUrged">Attività - Ticket {0} [Sollecitata] {1}&#xA;&#xA;{2}&#xA;&#xA;Note: {3}</text>
  <text key="logs_workflows_categoryCreated">Attività - Categoria {0} creata</text>
  <text key="logs_workflows_categoryUpdated">Attività - Categoria {0} aggiornata</text>
  <text key="logs_workflows_flowCreated">Attività - Flusso {0} creato</text>
@@ -177,7 +179,8 @@
  <text key="nav-workflows">Attività</text>
  <text key="nav-open">Apri un'attività</text>
  <text key="nav-operations">Operazioni</text>
- <text key="nav-edit">Modifica</text>
+ <text key="nav-urge">Sollecita</text>
+ <text key="nav-edit">Modifica attività</text>
  <text key="nav-sendmail">Inoltra per e-mail</text>
  <text key="nav-addTicket">Aggiungi ticket</text>
  <text key="nav-ticket">Ticket: {0}</text>

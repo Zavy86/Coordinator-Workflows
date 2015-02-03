@@ -9,6 +9,7 @@ $act=$_GET['act'];
 switch($act){
  // workflows
  case "workflow_save":workflow_save();break;
+ case "workflow_urge":workflow_urge();break;
  case "workflow_update":workflow_update();break;
  case "workflow_sendmail":workflow_sendmail();break;
  // tickets
@@ -80,6 +81,31 @@ function workflow_save(){
  }else{
   exit(header("location: workflows_list.php".$alert));
  }
+}
+
+/* -[ Workflow Urge ]-------------------------------------------------------- */
+function workflow_urge(){
+ // get workflow object
+ $workflow=api_workflows_workflow($_GET['id'],TRUE);
+ // check
+ if($workflow->id>0){
+  // execute query
+  $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE idWorkflow='".$workflow->id."' AND status<'4'");
+  while($ticket=api_workflows_ticket($GLOBALS['db']->fetchNextObject($tickets))){
+   api_log(API_LOG_NOTICE,"workflows","ticketUrged",
+    "{logs_workflows_ticketUrged|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
+    $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
+   // send notification
+   api_workflows_notifications($ticket->id);
+  }
+  $GLOBALS['db']->execute("UPDATE workflows_tickets SET urged='1' WHERE idWorkflow='".$workflow->id."' AND status<'4'");
+  // alert
+  $alert="&alert=workflowUrged&alert_class=alert-success";
+ }else{
+  $alert="&alert=workflowError&alert_class=alert-error";
+ }
+ // redirect
+ exit(header("location: workflows_view.php?id=".$workflow->id.$alert));
 }
 
 /* -[ Workflow Update ]------------------------------------------------------ */
