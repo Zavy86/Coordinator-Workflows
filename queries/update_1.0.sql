@@ -7,7 +7,7 @@
 -- --------------------------------------------------------
 
 --
--- Struttura della tabella `workflows_mails`
+-- Table structure for table `workflows_mails`
 --
 
 CREATE TABLE IF NOT EXISTS `workflows_mails` (
