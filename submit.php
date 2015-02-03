@@ -269,7 +269,7 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
  $description.=api_text("add-ff-referent").": ".$p_referent."\n\n";
  $description.=api_text("add-ff-phone").": ".$p_phone;
  // execute query
- $GLOBALS['db']->execute("UPDATE workflows_workflows SET description='".$description."',note='".$p_note."' WHERE id='".$idWorkflow."'");
+ $GLOBALS['db']->execute("UPDATE workflows_workflows SET description='".addslashes($description)."',note='".addslashes($p_note)."' WHERE id='".$idWorkflow."'");
  // log event
  $workflow=api_workflows_workflow($idWorkflow);
  api_log(API_LOG_NOTICE,"workflows","workflowCreated",
