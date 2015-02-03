@@ -12,11 +12,11 @@ function api_workflows_clearFieldName($field){
  return $return;
 }
 
-/* -[ Workflow object by id ]------------------------------------------------ */
-// @integer $idWorkflow : workflow id
+/* -[ Workflow object ]------------------------------------------------------ */
+// @mixed $workflow : workflow object or id
 // @boolean $subobjects : load also feasibility subobjects
-function api_workflows_workflow($idWorkflow,$subobjects=TRUE){
- $workflow=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_workflows WHERE id='".$idWorkflow."'");
+function api_workflows_workflow($workflow,$subobjects=TRUE){
+ if(is_numeric($workflow)){$workflow=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_workflows WHERE id='".$workflow."'");}
  if(!$workflow->id){return FALSE;}
  // build workflow number
  $workflow->number=str_pad($workflow->id,5,"0",STR_PAD_LEFT);
@@ -132,11 +132,11 @@ function api_workflows_priority($priority){
 }
 
 
-/* -[ Ticket object by id ]-------------------------------------------------- */
-// @integer $idTicket : ticket id
+/* -[ Ticket object ]-------------------------------------------------------- */
+// @mixed $ticket : ticket object or id
 // @boolean $subobjects : load also feasibility subobjects
-function api_workflows_ticket($idticket,$subobjects=TRUE){
- $ticket=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_tickets WHERE id='".$idticket."'");
+function api_workflows_ticket($ticket,$subobjects=TRUE){
+ if(is_numeric($ticket)){$ticket=$GLOBALS['db']->queryUniqueObject("SELECT * FROM workflows_tickets WHERE id='".$ticket."'");}
  if(!$ticket->id){return FALSE;}
  // build ticket number
  $ticket->number=str_pad($ticket->idWorkflow,5,"0",STR_PAD_LEFT)."-".str_pad($ticket->id,5,"0",STR_PAD_LEFT);
@@ -148,7 +148,7 @@ function api_workflows_ticket($idticket,$subobjects=TRUE){
  return $ticket;
 }
 
-/* -[ Ticket Typology ]--------------------------------------------------- */
+/* -[ Ticket Typology ]------------------------------------------------------ */
 // @integer $typology : ticket typology id
 // @integer $onlyIcon : show only icon
 function api_workflows_ticketTypology($typology,$onlyIcon=FALSE){
