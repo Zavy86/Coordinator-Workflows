@@ -19,7 +19,7 @@ function api_workflows_referentName($workflow){
  if(!$workflow->id){return FALSE;}
  $referent_start=strpos($workflow->description,"Referente:");
  if($referent_start!==FALSE){
-  echo $referent_end=strpos($workflow->description,"\n",$referent_start+11)-$referent_start-11;
+  $referent_end=strpos($workflow->description,"\n",$referent_start+11)-$referent_start-11;
   $referent=substr($workflow->description,$referent_start+11,$referent_end);
   if(strrpos($referent," ")!==FALSE){
    $referent=substr($referent,0,strrpos($referent," "));
