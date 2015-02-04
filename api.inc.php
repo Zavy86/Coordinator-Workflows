@@ -12,6 +12,24 @@ function api_workflows_clearFieldName($field){
  return $return;
 }
 
+/* -[ Referent firstname ]--------------------------------------------------- */
+// @param $workflow : workflow object or id
+function api_workflows_referentName($workflow){
+ if(is_numeric($workflow)){$workflow=api_workflows_workflow($workflow);}
+ if(!$workflow->id){return FALSE;}
+ $referent_start=strpos($workflow->description,"Referente:");
+ if($referent_start!==FALSE){
+  echo $referent_end=strpos($workflow->description,"\n",$referent_start+11)-$referent_start-11;
+  $referent=substr($workflow->description,$referent_start+11,$referent_end);
+  if(strrpos($referent," ")!==FALSE){
+   $referent=substr($referent,0,strrpos($referent," "));
+  }
+ }else{
+  $referent=api_accountFirstname($workflow->addIdAccount);
+ }
+ return $referent;
+}
+
 /* -[ Workflow object ]------------------------------------------------------ */
 // @mixed $workflow : workflow object or id
 // @boolean $subobjects : load also feasibility subobjects
