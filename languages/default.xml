@@ -8,6 +8,7 @@
  <!-- alerts -->
  <text key="workflowNotFound">L'attività non è stata trovata</text>
  <text key="workflowCreated">L'attività è stata creata</text>
+ <text key="workflowUpdated">L'attività è stata aggiornata</text>
  <text key="workflowUrged">L'attività è stata sollecitata</text>
  <text key="workflowClosed">L'attività è stata chiusa</text>
  <text key="workflowError">Si è verificato un errore durante il salvataggio dell'attività</text>
