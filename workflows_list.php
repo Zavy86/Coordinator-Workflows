@@ -72,7 +72,8 @@ function content(){
   $tickets_table->addField(api_timestampFormat($ticket->addDate,api_text("datetime")),"nowarp");
   $tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
   $tickets_table->addField($ticket->priority,"nowarp text-center");
-  $tickets_table->addField(api_accountFirstname($ticket->addIdAccount),"nowarp");
+  //$tickets_table->addField(api_accountFirstname($ticket->addIdAccount),"nowarp");
+  $tickets_table->addField(api_workflows_referentName($ticket->idWorkflow),"nowarp");
   $tickets_table->addField(api_workflows_categoryName($ticket->idCategory,TRUE,TRUE,TRUE),"nowarp");
   $tickets_table->addField(stripslashes($ticket->subject));
   $tickets_table->addField(api_accountFirstname($ticket->idAssigned),"nowarp text-right");
