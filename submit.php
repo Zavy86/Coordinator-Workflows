@@ -399,7 +399,7 @@ function ticket_save(){
  if($p_typology<>1){$hash=md5(api_randomString(32));}else{$hash=NULL;}
  $p_mail=addslashes($_POST['mail']);
  $p_subject=addslashes($_POST['subject']);
- //$p_note=addslashes($_POST['note']);
+ $p_note=addslashes($_POST['note']);
  $p_idGroup=$_POST['idGroup'];
  $p_idAssigned=$_POST['idAssigned'];
  $p_difficulty=$_POST['difficulty'];
@@ -419,8 +419,21 @@ function ticket_save(){
  $GLOBALS['db']->execute($query);
  // set id to last inserted id
  $q_idTicket=$GLOBALS['db']->lastInsertedId();
+ // log event
+ $ticket=api_workflows_ticket($q_idTicket);
+ api_log(API_LOG_NOTICE,"workflows","ticketCreated",
+  "{logs_workflows_ticketCreated|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$p_note."}",
+  $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
  // send notification
  api_workflows_notifications($q_idTicket);
+ // check and save note
+ if(strlen($p_note)>0){
+  $query="INSERT INTO workflows_tickets_notes
+   (idTicket,note,addDate,addIdAccount) VALUES
+   ('".$ticket->id."','".$p_note."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+  // execute query
+  $GLOBALS['db']->execute($query);
+ }
  // redirect
  $alert="&alert=ticketCreated&alert_class=alert-success";
  exit(header("location: workflows_view.php?id=".$workflow->id.$alert));
