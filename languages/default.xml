@@ -13,6 +13,7 @@
  <text key="workflowClosed">L'attività è stata chiusa</text>
  <text key="workflowError">Si è verificato un errore durante il salvataggio dell'attività</text>
  <text key="ticketAssigned">Il ticket ti è stato assegnato</text>
+ <text key="ticketCreated">Il ticket ti è stato creato</text>
  <text key="ticketUpdated">Il ticket è stato aggiornato</text>
  <text key="ticketClosed">Il ticket è stato chiuso</text>
  <text key="ticketError">Si è verificato un errore durante il salvataggio del ticket</text>
