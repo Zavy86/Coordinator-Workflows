@@ -43,7 +43,7 @@ function content(){
   $query_where.=" OR addIdAccount='".api_accountId()."' )";
  }
  // order tickets
- $query_order=api_queryOrder("status ASC,addDate DESC");
+ $query_order=api_queryOrder("addDate DESC");
 
  // pagination
  $pagination=new str_pagination("workflows_tickets",$query_where,$GLOBALS['navigation']->filtersGet());
