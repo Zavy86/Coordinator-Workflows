@@ -52,6 +52,8 @@ function content(){
  // acquire tickets
  $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where.$query_order.$query_limit);
  while($ticket=api_workflows_ticket($GLOBALS['db']->fetchNextObject($tickets))){
+  // definitions
+  if(!$ticket->idAssigned){$ticket->idAssigned=0;}
   // details modal windows
   $details_modal=api_workflows_ticketDetailsModal($ticket);
   $details_modals_array[]=$details_modal;
