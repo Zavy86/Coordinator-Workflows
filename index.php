@@ -5,5 +5,5 @@ $alert=$_GET['alert'];
 if(isset($alert)){$alert="?alert=".$alert;}
 $act=$_GET['act'];
 if(isset($act)){$act="&act=".$act;}
-header("location: workflows_list.php".$alert.$act);
+header("location: workflows.php".$alert.$act);
 ?>
