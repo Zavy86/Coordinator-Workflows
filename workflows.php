@@ -78,7 +78,7 @@ function content(){
  $workflows_table->addHeader(api_text("workflows-th-subject"),NULL,"100%");
  $workflows_table->addHeader(api_text("workflows-th-status"),"nowarp text-right","16");
  // query where
- if($g_workflows<>"all"){$query_where=" AND addDate>=(NOW()-INTERVAL 1 MONTH)";}else{$query_where=NULL;}
+ if($g_workflows<>"all"){$query_where=" AND (status<='3' OR addDate>=(NOW()-INTERVAL 15 DAY))";}else{$query_where=NULL;}
  // build workflow table rows
  $workflows=$GLOBALS['db']->query("SELECT * FROM workflows_workflows WHERE addIdAccount='".api_accountId()."'".$query_where." ORDER BY addDate DESC");
  while($workflow=$GLOBALS['db']->fetchNextObject($workflows)){
