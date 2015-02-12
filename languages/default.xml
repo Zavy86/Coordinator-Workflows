@@ -194,7 +194,26 @@
  <text key="nav-administration">Amministrazione</text>
  <text key="nav-list">Lista flussi</text>
  <text key="nav-add">Nuovo flusso</text>
- <text key="nav-categories">Gestione Categorie</text>
+ <text key="nav-history">Storico attività</text>
+ <text key="nav-categories">Gestione categorie</text>
+
+ <!-- workflows.php -->
+ <text key="workflows-workflows">Attività personali</text>
+ <text key="workflows-workflows-all">Mostra tutte le attività personali</text>
+ <text key="workflows-workflows-recents">Mostra le attività personali più recenti</text>
+ <text key="workflows-tickets-opened">Tickets disponibili</text>
+ <text key="workflows-tickets-assigned">Tickets assegnati a te</text>
+ <text key="workflows-tickets-standby">Tickets sospesi da te</text>
+ <text key="workflows-th-timestamp">Data</text>
+ <text key="workflows-th-sla">SLA</text>
+ <text key="workflows-th-account">Utente</text>
+ <text key="workflows-th-status">Stato</text>
+ <text key="workflows-th-category">Categoria</text>
+ <text key="workflows-th-subject">Oggetto</text>
+ <text key="workflows-th-assigned">Incaricato</text>
+ <text key="workflows-th-group">Gruppo</text>
+ <text key="workflows-tr-workflowsUnvalued">Non è presente nessuna attività aperta da te recentemente..</text>
+ <text key="workflows-tr-ticketsUnvalued">Non è presente nessun ticket..</text>
 
  <!-- workflows_flows.php -->
  <text key="flows-workflows">Attività personali</text>

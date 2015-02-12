@@ -452,7 +452,7 @@ function ticket_assign(){
  // check id
  if($workflow->id>0 && $ticket->id>0){
   // execute queries
-  $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='2',idAssigned='".$_SESSION['account']->id."',assDate='".date("Y-m-d H:i:s")."',updDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idTicket."'");
+  $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='2',urged='0',idAssigned='".$_SESSION['account']->id."',assDate='".date("Y-m-d H:i:s")."',updDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idTicket."'");
   // log event
   api_log(API_LOG_NOTICE,"workflows","ticketAssigned",
    "{logs_workflows_ticketAssigned|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",

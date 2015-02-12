@@ -90,7 +90,6 @@ function api_workflows_workflowSLA($workflow,$popup=FALSE){
  return $return;
 }
 
-
 /* -[ Workflows Status ]----------------------------------------------------- */
 // @integer $status : Value of status
 // @integer $onlyIcon : Show only icon
@@ -119,6 +118,21 @@ function api_workflows_status($status,$onlyIcon=FALSE,$solved=NULL){
    break;
   case 5:$return=api_icon("icon-lock",api_text("status-locked"));if(!$onlyIcon){$return.=" ".api_text("status-locked");}break;
   default:$return="[Status not found]";
+ }
+ return $return;
+}
+
+/* -[ Workflows Priority ]----------------------------------------------------- */
+// @integer $priority : Value of priority
+// @integer $onlyIcon : Show only icon
+function api_workflows_ticketPriority($priority,$onlyIcon=FALSE){
+ switch($priority){
+  case 1:$return="<span title='".api_text("priority-highest")."' style=\"background:url('../workflows/images/bullet-red.png') no-repeat top left;background-size:20px 20px;display: inline-block;height:16px;width:20px\"></span>";if(!$onlyIcon){$return.=" ".api_text("priority-highest");}break;
+  case 2:$return="<span title='".api_text("priority-high")."' style=\"background:url('../workflows/images/bullet-red.png') no-repeat top left;background-size:20px 20px;display: inline-block;height:16px;width:20px\"></span>";if(!$onlyIcon){$return.=" ".api_text("priority-high");}break;
+  case 3:$return="<span title='".api_text("priority-medium")."' style=\"background:url('../workflows/images/bullet-yellow.png') no-repeat top left;background-size:20px 20px;display: inline-block;height:16px;width:20px\"></span>";if(!$onlyIcon){$return.=" ".api_text("priority-medium");}break;
+  case 4:$return="<span title='".api_text("priority-low")."' style=\"background:url('../workflows/images/bullet-green.png') no-repeat top left;background-size:20px 20px;display: inline-block;height:16px;width:20px\"></span>";if(!$onlyIcon){$return.=" ".api_text("priority-low");}break;
+  case 4:$return="<span title='".api_text("priority-lowest")."' style=\"background:url('../workflows/images/bullet-green.png') no-repeat top left;background-size:20px 20px;display: inline-block;height:16px;width:20px\"></span>";if(!$onlyIcon){$return.=" ".api_text("priority-lowest");}break;
+  default:$return="[Priority not found]";
  }
  return $return;
 }
