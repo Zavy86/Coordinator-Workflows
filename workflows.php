@@ -43,6 +43,7 @@ function content(){
  foreach($tickets_array as $ticket){
   // definitions
   $table=NULL;
+  if(!$ticket->idAssigned){$ticket->idAssigned=0;}
   // status
   if($ticket->status==1){$table="opened";}
   if($ticket->status==2&&$ticket->idAssigned==api_accountId()){$table="assigned";}

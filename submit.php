@@ -79,7 +79,7 @@ function workflow_save(){
  if($p_idMail && $q_idWorkflow){
   exit(header("location: workflows_view.php".$alert."&id=".$q_idWorkflow));
  }else{
-  exit(header("location: workflows_list.php".$alert));
+  exit(header("location: workflows.php".$alert));
  }
 }
 
@@ -391,7 +391,7 @@ function ticket_save(){
  if(!$workflow->id){
   // redirect
   $alert="?alert=workflowError&alert_class=alert-error";
-  exit(header("location: workflows_list.php".$alert));
+  exit(header("location: workflows.php".$alert));
  }
  // build and acquire variables
  $p_idCategory=$workflow->idCategory;
@@ -602,7 +602,7 @@ function ticket_process(){
     $g_idWorkflow,"workflows/workflows_view.php?id=".$g_idWorkflow);
    // redirect
    $alert="?alert=workflowClosed&alert_class=alert-success";
-   exit(header("location: workflows_list.php".$alert));
+   exit(header("location: workflows.php".$alert));
   }
  }else{
   // alert
@@ -621,7 +621,7 @@ function ticket_note(){
  if(!$workflow->id){
   // redirect
   $alert="?alert=workflowError&alert_class=alert-error";
-  exit(header("location: workflows_list.php".$alert));
+  exit(header("location: workflows.php".$alert));
  }
  if(!$ticket->id){
   // redirect
