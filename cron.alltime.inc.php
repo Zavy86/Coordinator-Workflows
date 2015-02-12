@@ -35,7 +35,7 @@ if($mail_host<>"mailserver"){
    }
    if(!strlen($body)){$body=imap_body($mailbox,$mail);}
    $body=str_replace(array("=A0","=20"),"",$body);
-   $message=addslashes(trim(preg_replace('/(\r\n|\r|\n)+/',"\n",$body)));
+   $message=utf8_encode(addslashes(trim(preg_replace('/(\r\n|\r|\n)+/',"\n",$body))));
    // check filters
    if(count($mail_filters)){
     if(!in_array($sender,$mail_filters)){
