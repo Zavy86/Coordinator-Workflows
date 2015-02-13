@@ -191,6 +191,7 @@
  <text key="nav-process">Processa il ticket</text>
  <text key="nav-unlock">Sblocca il ticket</text>
  <text key="nav-reopen">Riapri il ticket</text>
+ <text key="nav-clone">Clona il ticket</text>
  <text key="nav-ticket-mails">Mail {0}</text>
  <text key="nav-administration">Amministrazione</text>
  <text key="nav-list">Lista flussi</text>
@@ -284,9 +285,12 @@
  <text key="view-ff-difficulty">Difficoltà</text>
  <text key="view-ff-note">Note</text>
  <text key="view-ff-message">Messagio utente</text>
+ <text key="view-ff-referents">Referenti</text>
+ <text key="view-ff-referents-placeholder">Inserisci un referente per riga per ogni ticket che vuoi clonare.&#xA;Se non specifichi nessun referente il ticket verrà clonato una singola volta.</text>
  <text key="view-ff-slaAssignment">SLA Assegnamento</text>
  <text key="view-ff-slaClosure">SLA Chiusura</text>
  <text key="view-fc-submit">Salva</text>
+ <text key="view-fc-clone">Clona ticket</text>
 
  <!-- workflows_view.php -->
  <text key="search-li-show">Mostra tutta la categoria {0}</text>
