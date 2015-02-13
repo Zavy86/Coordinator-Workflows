@@ -16,6 +16,7 @@ switch($act){
  case "ticket_save":ticket_save();break;
  case "ticket_assign":ticket_assign();break;
  case "ticket_process":ticket_process();break;
+ case "ticket_clone":ticket_clone();break;
  case "ticket_note":ticket_note();break;
  case "ticket_note_delete":ticket_note_delete();break;
  // mails
@@ -609,6 +610,42 @@ function ticket_process(){
  }
  // redirect
  exit(header("location: workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket.$alert));
+}
+
+/* -[ Ticket Clone ]--------------------------------------------------------- */
+function ticket_clone(){
+ // acquire variables
+ $ticket=api_workflows_ticket($_GET['idTicket']);
+ $p_subject=addslashes($_POST['subject']);
+ $p_referents=addslashes($_POST['referents']);
+ $referents_array=explode("\n",$p_referents);
+ // check
+ if($ticket->id){
+  foreach($referents_array as $key=>$referent){
+   if($key>0 && strlen($referent)<3){continue;}
+   $subject=trim($p_subject." ".ucwords(strtolower($referent)));
+   // build query
+   $query="INSERT INTO workflows_tickets
+    (idWorkflow,idCategory,typology,subject,idGroup,difficulty,priority,status,
+     solved,approved,slaAssignment,slaClosure,hostname,addDate,addIdAccount) VALUES
+    ('".$ticket->idWorkflow."','".$ticket->idCategory."','1','".$subject."','".$ticket->idGroup."',
+     '".$ticket->difficulty."','".$ticket->priority."','1','0','0','".$ticket->slaAssignment."',
+     '".$ticket->slaClosure."','".$ticket->hostname."','".api_now()."','".api_accountId()."')";
+   // execute query
+   $GLOBALS['db']->execute($query);
+   // set id to last inserted id
+   $q_idTicket=$GLOBALS['db']->lastInsertedId();
+   // log event
+   $clonedTicket=api_workflows_ticket($q_idTicket);
+   api_log(API_LOG_NOTICE,"workflows","ticketCreated",
+    "{logs_workflows_ticketCreated|".$clonedTicket->number."|".$clonedTicket->subject."|".$clonedTicket->description."}",
+    $clonedTicket->id,"workflows/workflows_view.php?id=".$clonedTicket->idWorkflow."&idTicket=".$clonedTicket->id);
+   // send notification
+   api_workflows_notifications($q_idTicket);
+  }
+ }else{$alert="&alert=ticketError&alert_class=alert-error";}
+ // redirect
+ exit(header("location: workflows_view.php?id=".$ticket->idWorkflow.$alert));
 }
 
 /* -[ Ticket Note ]---------------------------------------------------------- */

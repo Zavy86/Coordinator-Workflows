@@ -44,6 +44,9 @@ if($workflow->id){
   }else{
    $navigation->addSubTab(api_text("nav-reopen"),"workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."&act=editTicket");
   }
+  if($ticket->status<4 && $ticket->typology==1 && api_accountGroupMember(api_groupId("SIS"))){
+   $navigation->addSubTab(api_text("nav-clone"),"workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."&act=cloneTicket");
+  }
  }
 }
 // open new workflow
