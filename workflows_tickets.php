@@ -58,7 +58,7 @@ function content(){
   $details_modal=api_workflows_ticketDetailsModal($ticket);
   $details_modals_array[]=$details_modal;
   // check urged
-  if($ticket->urged){$tr_class="warning";}else{$tr_class=NULL;}
+  if($ticket->urged){$tr_class="error";}else{$tr_class=NULL;}
   // build row
   $tickets_table->addRow($tr_class);
   // build tickets table fields
