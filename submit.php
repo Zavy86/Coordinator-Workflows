@@ -623,7 +623,7 @@ function ticket_clone(){
  if($ticket->id){
   foreach($referents_array as $key=>$referent){
    if($key>0 && strlen($referent)<3){continue;}
-   $subject=trim($p_subject." ".ucwords(strtolower($referent)));
+   $subject=str_replace("  "," ",trim($p_subject." ".$referent));
    // build query
    $query="INSERT INTO workflows_tickets
     (idWorkflow,idCategory,typology,subject,idGroup,difficulty,priority,status,
