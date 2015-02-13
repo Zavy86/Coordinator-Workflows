@@ -58,7 +58,7 @@ function content(){
  //}
  // build tickets table rows
  foreach($workflow->tickets as $ticket){
-  if($ticket->urged){$tickets_table->addRow("warning");}
+  if($ticket->urged){$tickets_table->addRow("error");}
    elseif($ticket->id==$selected_ticket->id){$tickets_table->addRow("info");}
    else{$tickets_table->addRow();}
   // ticket typology
