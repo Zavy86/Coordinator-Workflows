@@ -451,27 +451,26 @@ function ticket_assign(){
  $ticket=api_workflows_ticket($g_idTicket);
  // check id
  if($workflow->id>0 && $ticket->id>0){
-  // execute queries
-  $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='2',urged='0',idAssigned='".$_SESSION['account']->id."',assDate='".date("Y-m-d H:i:s")."',updDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idTicket."'");
-  // log event
-  api_log(API_LOG_NOTICE,"workflows","ticketAssigned",
-   "{logs_workflows_ticketAssigned|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
-   $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
-  if($workflow->status<>2){
-   $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='2' WHERE id='".$g_idWorkflow."'");
+  if($ticket->status<>2){
+   // execute queries
+   $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='2',urged='0',idAssigned='".$_SESSION['account']->id."',assDate='".date("Y-m-d H:i:s")."',updDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idTicket."'");
    // log event
-   api_log(API_LOG_NOTICE,"workflows","workflowAssigned",
-    "{logs_workflows_workflowAssigned|".$workflow->number."|".$workflow->subject."|".api_accountName()."}",
-    $g_idWorkflow,"workflows/workflows_view.php?id=".$workflow->id);
-  }
-  // change group
-  if(api_accountMainGroup()!==FALSE){$GLOBALS['db']->execute("UPDATE workflows_tickets SET idGroup='".api_accountMainGroup()->id."' WHERE id='".$g_idTicket."'");}
-  // alert
-  $alert="&alert=ticketAssigned&alert_class=alert-success";
- }else{
-  // alert
-  $alert="&alert=ticketError&alert_class=alert-error";
- }
+   api_log(API_LOG_NOTICE,"workflows","ticketAssigned",
+    "{logs_workflows_ticketAssigned|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
+    $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
+   if($workflow->status<>2){
+    $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='2' WHERE id='".$g_idWorkflow."'");
+    // log event
+    api_log(API_LOG_NOTICE,"workflows","workflowAssigned",
+     "{logs_workflows_workflowAssigned|".$workflow->number."|".$workflow->subject."|".api_accountName()."}",
+     $g_idWorkflow,"workflows/workflows_view.php?id=".$workflow->id);
+   }
+   // change group
+   if(api_accountMainGroup()!==FALSE){$GLOBALS['db']->execute("UPDATE workflows_tickets SET idGroup='".api_accountMainGroup()->id."' WHERE id='".$g_idTicket."'");}
+   // alert
+   $alert="&alert=ticketAssigned&alert_class=alert-success";
+  }else{$alert="&alert=ticketErrorAssigned&alert_class=alert-error";}
+ }else{$alert="&alert=ticketError&alert_class=alert-error";}
  // redirect
  exit(header("location: workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket.$alert));
 }
