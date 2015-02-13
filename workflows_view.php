@@ -174,6 +174,15 @@ function content(){
   $form_body->addField("text","slaClosure",api_text("view-ff-slaClosure"),NULL,"input-mini",NULL,FALSE,NULL,api_text("minutes"));
   $form_body->addControl("submit",api_text("view-fc-submit"));
   $ticket_modal->body($form_body->render(FALSE));
+ }elseif($selected_ticket->id>0 && $g_act=="cloneTicket"){
+  // build ticket edit modal window
+  $ticket_modal=new str_modal("ticket_clone");
+  $ticket_modal->header(stripslashes($selected_ticket->subject));
+  $body_form=new str_form("submit.php?act=ticket_clone&idWorkflow=".$workflow->id."&idTicket=".$selected_ticket->id,"post","ticket_clone");
+  $body_form->addField("text","subject",api_text("view-ff-subject"),$selected_ticket->subject,"input-xlarge");
+  $body_form->addField("textarea","referents",api_text("view-ff-referents"),NULL,"input-xlarge",api_text("view-ff-referents-placeholder"),FALSE,10);
+  $body_form->addControl("submit",api_text("view-fc-clone"));
+  $ticket_modal->body($body_form->render(FALSE));
  }
  // open split
  $GLOBALS['html']->split_open();
@@ -199,6 +208,7 @@ function content(){
  $(document).ready(function(){
   <?php if($g_act=="addTicket"){echo "  $('#modal_ticket_add').modal('show');\n";} ?>
   <?php if($g_act=="editTicket"){echo "  $('#modal_ticket_edit').modal('show');\n";} ?>
+  <?php if($g_act=="cloneTicket"){echo "  $('#modal_ticket_clone').modal('show');\n";} ?>
   // call action typology method change event
   $("form[name=ticket_add] #field_typology").trigger("change");
   // select2 idGroup
@@ -284,7 +294,6 @@ function content(){
    ignore:null,
    rules:{
     subject:{required:true,minlength:3},
-    idGroup:{required:true},
     slaAssigned:{number:true},
     slaClosure:{number:true}
    },
