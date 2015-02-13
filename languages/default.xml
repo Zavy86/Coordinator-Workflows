@@ -17,6 +17,7 @@
  <text key="ticketUpdated">Il ticket è stato aggiornato</text>
  <text key="ticketClosed">Il ticket è stato chiuso</text>
  <text key="ticketError">Si è verificato un errore durante il salvataggio del ticket</text>
+ <text key="ticketErrorAssigned">Si è verificato un errore durante l'assegnazione del ticket</text>
  <text key="mailDeleted">La mail è stata eliminata</text>
  <text key="mailError">Si è verificato un errore con questa mail</text>
  <text key="noteCreated">La nota è stata salvata</text>
