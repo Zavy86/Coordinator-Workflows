@@ -154,7 +154,7 @@ function workflow_update(){
    $query="INSERT INTO workflows_tickets
     (idWorkflow,idCategory,typology,hash,subject,idGroup,difficulty,priority,
      slaAssignment,slaClosure,status,solved,approved,hostname,addDate,addIdAccount) VALUES
-    ('".$workflow->id."','".$p_idCategory."','".$p_typology."','".$hash."','".$p_subject."',
+    ('".$workflow->id."','".$p_idCategory."','1','".$hash."','".$p_subject."',
      '".$idGroup."','2','".$p_priority."','0','480','1','0','0','".$hostname."',
      '".date("Y-m-d H:i:s")."','".api_accountId()."')";
    // execute query
