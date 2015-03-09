@@ -597,7 +597,7 @@ function api_workflows_ocs($hostname){
  $host_dl->addElement(api_text("api-ocs-dt-model"),$host_bios->SMODEL);
  $host_dl->addElement(api_text("api-ocs-dt-serial"),$host_bios->SSN);
  $host_dl->addElement(api_text("api-ocs-dt-ip"),$host_hardware->IPADDR);
- $host_dl->addElement(api_text("api-ocs-dt-osname"),$host_hardware->OSNAME);
+ $host_dl->addElement(api_text("api-ocs-dt-osname"),$host_hardware->OSNAME." ".substr($host_hardware->ARCH,-6));
  $host_dl->addElement(api_text("api-ocs-dt-osversion"),$host_hardware->OSVERSION." ".$host_hardware->OSCOMMENTS);
  $host_dl->addElement(api_text("api-ocs-dt-processor"),$host_hardware->PROCESSORT);
  // acquire memories informations
