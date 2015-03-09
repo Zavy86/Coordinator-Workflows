@@ -183,6 +183,8 @@
  <text key="nav-open">Apri un'attività</text>
  <text key="nav-operations">Operazioni</text>
  <text key="nav-urge">Sollecita</text>
+ <text key="nav-close">Chiudi attività</text>
+ <text key="nav-close-confirm">Confermi di voler chiudere questa attività?</text>
  <text key="nav-edit">Modifica attività</text>
  <text key="nav-sendmail">Inoltra per e-mail</text>
  <text key="nav-addTicket">Aggiungi ticket</text>

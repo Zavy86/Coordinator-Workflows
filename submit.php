@@ -10,6 +10,7 @@ switch($act){
  // workflows
  case "workflow_save":workflow_save();break;
  case "workflow_urge":workflow_urge();break;
+ case "workflow_close":workflow_close();break;
  case "workflow_update":workflow_update();break;
  case "workflow_sendmail":workflow_sendmail();break;
  // tickets
@@ -107,6 +108,38 @@ function workflow_urge(){
  }
  // redirect
  exit(header("location: workflows_view.php?id=".$workflow->id.$alert));
+}
+
+/* -[ Workflow Close ]------------------------------------------------------- */
+function workflow_close(){
+ // get workflow object
+ $workflow=api_workflows_workflow($_GET['id'],TRUE);
+ // check
+ if($workflow->id>0){
+  // execute query
+  $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE idWorkflow='".$workflow->id."' AND status<'4'");
+  while($ticket=api_workflows_ticket($GLOBALS['db']->fetchNextObject($tickets))){
+   api_log(API_LOG_NOTICE,"workflows","ticketClosed",
+    "{logs_workflows_ticketClosed|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
+    $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
+   // send notification
+   api_workflows_notifications($ticket->id);
+  }
+  // close tickets
+  $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='4',solved='2',idAssigned='".api_accountId()."',assDate='".api_now()."',updDate='".api_now()."',endDate='".api_now()."' WHERE idWorkflow='".$workflow->id."' AND status<'4'");
+  // close workflow
+  $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".api_now()."' WHERE id='".$workflow->id."'");
+  // log event
+  api_log(API_LOG_NOTICE,"workflows","workflowClosed",
+   "{logs_workflows_workflowClosed|".$workflow->number."|".$workflow->subject."}",
+   $workflow->id,"workflows/workflows_view.php?id=".$workflow->id);
+  // alert
+  $alert="?alert=workflowClosed&alert_class=alert-success";
+ }else{
+  $alert="?alert=workflowError&alert_class=alert-error";
+ }
+ // redirect
+ exit(header("location: workflows.php".$alert));
 }
 
 /* -[ Workflow Update ]------------------------------------------------------ */
