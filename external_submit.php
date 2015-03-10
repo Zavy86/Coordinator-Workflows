@@ -120,8 +120,8 @@ function ticket_authorize(){
     echo "OK, AUTHORIZED";
    }else{
 
-    // cancella tutti i ticket del workflow non ancora chiusi
-    $GLOBALS['db']->execute("DELETE FROM workflows_tickets WHERE idWorkflow='".$g_idWorkflow."' AND status<>'4'");
+    // chiude tutti i ticket del workflow non ancora chiusi
+    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='4',solved='2',endDate='".api_now()."' WHERE idWorkflow='".$g_idWorkflow."' AND status<>'4'");
 
     // chiude il workflow come non risolto inserendo nelle note non autorizzato
     $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idWorkflow."'");
