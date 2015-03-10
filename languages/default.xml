@@ -110,6 +110,10 @@
  <text key="solved-unexecuted">Non eseguibile</text>
  <text key="solved-unnecessary">Non necessario</text>
 
+ <!-- approved -->
+ <text key="approved-false">Non approvato</text>
+ <text key="approved-true">Approvato</text>
+
  <!-- typology -->
  <text key="typology">Typologia</text>
  <text key="typology-request">Richiesta</text>
