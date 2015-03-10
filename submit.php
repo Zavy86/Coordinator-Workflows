@@ -189,7 +189,7 @@ function workflow_update(){
      slaAssignment,slaClosure,status,solved,approved,hostname,addDate,addIdAccount) VALUES
     ('".$workflow->id."','".$p_idCategory."','1','".$hash."','".$p_subject."',
      '".$idGroup."','2','".$p_priority."','0','480','1','0','0','".$hostname."',
-     '".date("Y-m-d H:i:s")."','".api_accountId()."')";
+     '".date("Y-m-d H:i:s")."','".$workflow->addIdAccount."')";
    // execute query
    $GLOBALS['db']->execute($query);
    // set id to last inserted id
