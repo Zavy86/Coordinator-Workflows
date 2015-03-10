@@ -95,7 +95,7 @@ function content(){
   $tickets_table->addField(str_pad($ticket->idWorkflow,5,"0",STR_PAD_LEFT)."-".str_pad($ticket->id,5,"0",STR_PAD_LEFT),"nowarp");
   // DA RIFARE MOLTO MELGIO-----------------------------------
   if($ticket->typology==3){
-   $tickets_table->addField(api_workflows_status($ticket->status,TRUE,$ticket->approved),"nowarp text-center");
+   $tickets_table->addField(api_workflows_status($ticket->status,TRUE,NULL,$ticket->approved),"nowarp text-center");
   }else{
    $tickets_table->addField(api_workflows_status($ticket->status,TRUE,$ticket->solved),"nowarp text-center");
   }

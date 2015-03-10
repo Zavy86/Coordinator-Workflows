@@ -93,7 +93,7 @@ function api_workflows_workflowSLA($workflow,$popup=FALSE){
 /* -[ Workflows Status ]----------------------------------------------------- */
 // @integer $status : Value of status
 // @integer $onlyIcon : Show only icon
-function api_workflows_status($status,$onlyIcon=FALSE,$solved=NULL){
+function api_workflows_status($status,$onlyIcon=FALSE,$solved=NULL,$authorized=NULL){
  switch($status){
   //case 1:$return=api_icon("icon-map-marker",api_text("status-opened"));if(!$onlyIcon){$return.=" ".api_text("status-opened");}break;
   case 1:$return="<span title='".api_text("status-opened")."' style=\"background:url('../workflows/images/bullet-red.png') no-repeat top left;background-size:20px 20px;display: inline-block;height:16px;width:20px\"></span>";if(!$onlyIcon){$return.=" ".api_text("status-opened");}break;
@@ -109,6 +109,12 @@ function api_workflows_status($status,$onlyIcon=FALSE,$solved=NULL){
      case 0:$solvedText=" - ".api_text("solved-unexecuted");$statusIcon="bullet-purple";break; //$statusIcon="icon-remove";
      case 1:$solvedText=" - ".api_text("solved-executed");$statusIcon="bullet-green";break;
      case 2:$solvedText=" - ".api_text("solved-unnecessary");$statusIcon="bullet-blue";break;
+    }
+   }
+   if($authorized!==NULL){
+    switch($authorized){
+     case 0:$solvedText=" - ".api_text("approved-false");$statusIcon="bullet-purple";break;
+     case 1:$solvedText=" - ".api_text("approved-true");$statusIcon="bullet-green";break;
     }
    }
    /*$return=api_icon($statusIcon,api_text("status-closed").$solvedText);
