@@ -218,7 +218,7 @@ function workflow_sendmail(){
  $p_subject=$_POST['subject'];
  $p_message=$_POST['message'];
  // sendmail
- $sendmail=api_sendmail($p_to,$p_message,$p_subject,FALSE,NULL,NULL,$p_cc);
+ $sendmail=api_mailer($p_to,$p_message,$p_subject,FALSE,NULL,NULL,$p_cc);
  if($sendmail){
   $alert="&alert=sendmailSuccess&alert_class=alert-success";
  }else{
@@ -579,7 +579,7 @@ function ticket_process(){
    if(strlen($user->account)>4){
     $subject="Ticket ".$ticket->number." - ".$ticket->subject;
     $message=$p_note."\n\nLink: http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id;
-    api_sendmail($user->account,$message,$subject);
+    api_mailer($user->account,$message,$subject);
    }
   }
   // unlock locked tickets
