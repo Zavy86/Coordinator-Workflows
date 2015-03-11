@@ -551,7 +551,7 @@ function api_workflows_notifications($ticket){
    $message.="<a href='http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/external_submit.php?act=ticket_external&idTicket=".$ticket->id."&idWorkflow=".$ticket->idWorkflow."&solved=0&hash=".$ticket->hash."'>Premi qui per segnalare l'attività come <u>NON ESEGUIBILE</u></a>\n";
    $message.="<a href='http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/external_submit.php?act=ticket_external&idTicket=".$ticket->id."&idWorkflow=".$ticket->idWorkflow."&solved=2&hash=".$ticket->hash."'>Premi qui per segnalare l'attività come <u>NON NECESSARIA</u></a>\n";
    // sendmail
-   api_sendmail($ticket->mail,$message,$subject,TRUE);
+   api_mailer($ticket->mail,$message,$subject,TRUE);
    break;
   case 3: // authorization
    $subject="Workflows - Ticket ".str_pad($ticket->idWorkflow,5,"0",STR_PAD_LEFT)."-".str_pad($ticket->id,5,"0",STR_PAD_LEFT);
@@ -575,7 +575,7 @@ function api_workflows_notifications($ticket){
    $message.="<a href='http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/external_submit.php?act=ticket_authorize&idTicket=".$ticket->id."&idWorkflow=".$ticket->idWorkflow."&authorization=1&hash=".$ticket->hash."'>Premi qui per <u>AUTORIZZARE</u> la richiesta</a>\n\n";
    $message.="<a href='http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/external_submit.php?act=ticket_authorize&idTicket=".$ticket->id."&idWorkflow=".$ticket->idWorkflow."&authorization=0&hash=".$ticket->hash."'>Premi qui per <u>NON AUTORIZZARE</u> la richiesta</a>\n";
    // sendmail
-   api_sendmail($ticket->mail,$message,$subject,TRUE);
+   api_mailer($ticket->mail,$message,$subject,TRUE);
    break;
   // if unknown typology
   default:return FALSE;
