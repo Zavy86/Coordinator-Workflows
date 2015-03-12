@@ -579,7 +579,7 @@ function ticket_process(){
    if(strlen($user->account)>4){
     $subject="Ticket ".$ticket->number." - ".$ticket->subject;
     $message=$p_note."\n\nLink: http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id;
-    api_mailer($user->account,$message,$subject);
+    api_mailer($user->account,$message,$subject,FALSE,api_accountMail(),api_accountName());
    }
   }
   // unlock locked tickets
