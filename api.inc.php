@@ -54,6 +54,61 @@ function api_workflows_workflow($workflow,$subobjects=TRUE){
  return $workflow;
 }
 
+/* -[ Workflow Add ]--------------------------------------------------------- */
+// @param $workflow : workflow object or id
+function api_workflows_workflowAdd($subject,$description,$referent,$phone,$note=NULL,$priority=3,$idAccount=NULL,$idCategory=1,$slaAssignment=120,$slaClosure=480){
+
+ $f_description=addslashes($description);
+ $f_description.="\n\nReferent: ".$referent;
+ $f_description.="\n\nPhone: ".$phone;
+
+ if(!$idAccount){echo $idAccount=api_accountId();}
+
+ // build query
+ $query="INSERT INTO workflows_workflows
+  (idCategory,typology,subject,description,note,priority,sla,status,addDate,addIdAccount) VALUES
+  ('".$idCategory."','1','".addslashes($subject)."','".$f_description."','".addslashes($note)."',
+   '".$priority."','".$slaClosure."','1','".api_now()."','".$idAccount."')";
+ // execute query
+ $GLOBALS['db']->execute($query);
+ // set id to last inserted id
+ $q_idWorkflow=$GLOBALS['db']->lastInsertedId();
+
+ // get workflow object
+ $workflow=api_workflows_workflow($q_idWorkflow);
+
+ // log event
+ if(!$workflow->id){return FALSE;}
+
+ api_log(API_LOG_NOTICE,"workflows","workflowCreated",
+  "{logs_workflows_workflowCreated|".$workflow->number."|".$workflow->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
+  $workflow->id,"workflows/workflows_view.php?id=".$workflow->id);
+
+ // build query
+ $query="INSERT INTO workflows_tickets
+  (idWorkflow,idCategory,typology,subject,idGroup,difficulty,priority,
+   slaAssignment,slaClosure,status,hostname,addDate,addIdAccount) VALUES
+  ('".$workflow->id."','1','1','".$subject."','"."1"."','2','1','".$slaAssignment."',
+   '".$slaClosure."','1','".api_hostName()."','".api_now()."','".$idAccount."')";
+ // ^-----------------------------<<<<<<<<<<<<<<<<<<<<<<------------------------ nella query è presente l'id "1" che si riferisce al gruppo SIS valutare inserimento gruppo predefinito in tutto il modulo
+ // execute query
+ $GLOBALS['db']->execute($query);
+ // set id to last inserted id
+ $q_idTicket=$GLOBALS['db']->lastInsertedId();
+
+ // log event
+ $ticket=api_workflows_ticket($q_idTicket);
+ api_log(API_LOG_NOTICE,"workflows","ticketCreated",
+  "{logs_workflows_ticketCreated|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
+  $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
+
+ // send notification
+ api_workflows_notifications($ticket->id);
+
+ return TRUE;
+
+}
+
 /* -[ Workflow SLA ]--------------------------------------------------------- */
 // @object $workflow : workflow object
 // @boolean $popup : show textual difference in popup
