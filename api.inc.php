@@ -25,7 +25,7 @@ function api_workflows_referentName($workflow){
    $referent=substr($referent,0,strrpos($referent," "));
   }
  }else{
-  $referent=api_accountFirstname($workflow->addIdAccount);
+  $referent=api_account($workflow->addIdAccount)->firstname;
  }
  return $referent;
 }
@@ -57,13 +57,12 @@ function api_workflows_workflow($workflow,$subobjects=TRUE){
 /* -[ Workflow Add ]--------------------------------------------------------- */
 // @param $workflow : workflow object or id
 function api_workflows_workflowAdd($subject,$description,$referent,$phone,$note=NULL,$priority=3,$idAccount=NULL,$idCategory=1,$slaAssignment=120,$slaClosure=480){
-
+ // make description
  $f_description=addslashes($description);
  $f_description.="\n\nReferent: ".$referent;
  $f_description.="\n\nPhone: ".$phone;
-
- if(!$idAccount){echo $idAccount=api_accountId();}
-
+ // make idAccount if not set
+ if(!$idAccount){echo $idAccount=api_account()->id;}
  // build query
  $query="INSERT INTO workflows_workflows
   (idCategory,typology,subject,description,note,priority,sla,status,addDate,addIdAccount) VALUES
@@ -73,17 +72,13 @@ function api_workflows_workflowAdd($subject,$description,$referent,$phone,$note=
  $GLOBALS['db']->execute($query);
  // set id to last inserted id
  $q_idWorkflow=$GLOBALS['db']->lastInsertedId();
-
  // get workflow object
  $workflow=api_workflows_workflow($q_idWorkflow);
-
  // log event
  if(!$workflow->id){return FALSE;}
-
  api_log(API_LOG_NOTICE,"workflows","workflowCreated",
   "{logs_workflows_workflowCreated|".$workflow->number."|".$workflow->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
   $workflow->id,"workflows/workflows_view.php?id=".$workflow->id);
-
  // build query
  $query="INSERT INTO workflows_tickets
   (idWorkflow,idCategory,typology,subject,idGroup,difficulty,priority,
@@ -95,18 +90,15 @@ function api_workflows_workflowAdd($subject,$description,$referent,$phone,$note=
  $GLOBALS['db']->execute($query);
  // set id to last inserted id
  $q_idTicket=$GLOBALS['db']->lastInsertedId();
-
  // log event
  $ticket=api_workflows_ticket($q_idTicket);
+ if(!$ticket->id){return FALSE;}
  api_log(API_LOG_NOTICE,"workflows","ticketCreated",
   "{logs_workflows_ticketCreated|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
   $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
-
  // send notification
  api_workflows_notifications($ticket->id);
-
  return TRUE;
-
 }
 
 /* -[ Workflow SLA ]--------------------------------------------------------- */
@@ -121,7 +113,7 @@ function api_workflows_workflowSLA($workflow,$popup=FALSE){
  if($sla==0){return FALSE;}
  // choise timestamp to
  if($workflow->status==4){$timestamp_to=$workflow->endDate;}
- else{$timestamp_to=date("Y-m-d H:i:s");}
+ else{$timestamp_to=api_now();}
  // check
  $difference=api_timestampDifference($timestamp_from,$timestamp_to,"I");
  if($difference<($sla/2)){$class="text-success";}
@@ -263,7 +255,7 @@ function api_workflows_ticketSLA($ticket,$popup=TRUE){
  $timestamp_from=$ticket->addDate;
  // get timestamp to
  if($ticket->status==4){$timestamp_to=$ticket->endDate;}
- else{$timestamp_to=date("Y-m-d H:i:s");}
+ else{$timestamp_to=api_now();}
  // get sla
  if($ticket->status==1 && intval($ticket->slaAssignment)>0){$sla=intval($ticket->slaAssignment);}
  else{$sla=intval($ticket->slaClosure);}
@@ -301,10 +293,10 @@ function api_workflows_ticketDetailsModal($ticket){
  // build body dl
  $dl_body=new str_dl("br");
  $dl_body->addElement(api_text("api-details-dt-category"),api_workflows_categoryName($ticket->idCategory,TRUE,TRUE));
- $dl_body->addElement(api_text("api-details-dt-add"),api_text("api-details-dd-add",array(api_accountName($ticket->addIdAccount),api_timestampFormat($ticket->addDate,api_text("datetime")))));
- if($ticket->assDate<>NULL){$dl_body->addElement(api_text("api-details-dt-ass"),api_text("api-details-dd-ass",array(api_accountName($ticket->idAssigned),api_timestampFormat($ticket->assDate,api_text("datetime")))));}
+ $dl_body->addElement(api_text("api-details-dt-add"),api_text("api-details-dd-add",array(api_account($ticket->addIdAccount)->name,api_timestampFormat($ticket->addDate,api_text("datetime")))));
+ if($ticket->assDate<>NULL){$dl_body->addElement(api_text("api-details-dt-ass"),api_text("api-details-dd-ass",array(api_account($ticket->idAssigned)->name,api_timestampFormat($ticket->assDate,api_text("datetime")))));}
  if($ticket->endDate<>NULL){$dl_body->addElement(api_text("api-details-dt-end"),api_timestampFormat($ticket->endDate,api_text("datetime")));}
- if($ticket->updIdAccount<>NULL){$dl_body->addElement(api_text("api-details-dt-upd"),api_text("api-details-dd-upd",array(api_accountName($ticket->updIdAccount),api_timestampFormat($ticket->updDate,api_text("datetime")))));}
+ if($ticket->updIdAccount<>NULL){$dl_body->addElement(api_text("api-details-dt-upd"),api_text("api-details-dd-upd",array(api_account($ticket->updIdAccount)->name,api_timestampFormat($ticket->updDate,api_text("datetime")))));}
  if(strlen($ticket->hostname)>0){$dl_body->addElement(api_text("api-details-dt-hostname"),stripslashes($ticket->hostname));}
  //if(strlen($ticket->note)>0){$dl_body->addElement(api_text("api-details-dt-note"),nl2br(stripslashes($ticket->note)));}
  $dl_body->addElement(api_text("status"),api_workflows_status($ticket->status),NULL);
@@ -316,12 +308,12 @@ function api_workflows_ticketDetailsModal($ticket){
 // @object $ticket : ticket object or ticket id
 // @integer $idAccount : account id
 function api_workflows_ticketProcessPermission($ticket,$idAccount=NULL,$forceSIS=TRUE){
- if(!$idAccount>0){$idAccount=api_accountId();}
+ if(!$idAccount>0){$idAccount=api_account()->id;}
  if(!$ticket->id){$ticket=api_workflows_ticket($ticket);}
  if(!$ticket->id){return FALSE;}
  if($ticket->idAssigned==$idAccount){return TRUE;}
  if(api_accountGrouprole($ticket->idGroup,$idAccount,TRUE)>0){return TRUE;}
- if($forceSIS){if(api_accountGroupMember(api_groupId("SIS"),$idAccount,TRUE)){return TRUE;}}
+ if($forceSIS){if(api_accountGroupMember(1,$idAccount,TRUE)){return TRUE;}}
  return FALSE;
 }
 
@@ -463,11 +455,11 @@ function api_workflows_flowFieldOptions($field){
 function api_workflows_replaceTagCodes($string){
  // defined tag values
  $tagcodes_array=array(
-  "[account-id]"=>$_SESSION['account']->id,
-  "[account-mail]"=>api_accountMail(),
-  "[account-name]"=>api_accountName(),
-  "[account-firstname]"=>api_accountFirstname(),
-  "[account-ldap]"=>$_SESSION['account']->ldapUsername,
+  "[account-id]"=>api_account()->id,
+  "[account-mail]"=>api_account()->mail,
+  "[account-name]"=>api_account()->name,
+  "[account-firstname]"=>api_account()->firstname,
+  "[account-ldap]"=>api_account()->ldap
  );
  // replace tags
  $string=str_replace(array_keys($tagcodes_array),array_values($tagcodes_array),$string);
@@ -588,7 +580,7 @@ function api_workflows_notifications($ticket){
    $subject.=" - ".stripslashes($ticket->subject);
    $message="Salve, con la presente si richiede il vostro intervento per il seguente ticket:\n\n";
    $message.="<strong>Priorità:</strong> ".api_workflows_priority($ticket->priority)."\n\n";
-   $message.="<strong>Richiedente:</strong> ".api_accountName($ticket->addIdAccount)."\n\n";
+   $message.="<strong>Richiedente:</strong> ".api_account($ticket->addIdAccount)->name."\n\n";
    $message.="<strong>Categoria:</strong> ".api_workflows_categoryName($ticket->idCategory,TRUE,TRUE)."\n\n";
    $message.="<strong>Oggetto:</strong> ".stripslashes($ticket->subject)."\n\n";
    /*if(strlen($ticket->note)>0){
@@ -613,7 +605,7 @@ function api_workflows_notifications($ticket){
    $subject.=" - ".stripslashes($ticket->subject);
    $message="Salve, con la presente si richiede la vostra autorizzazione per il seguente ticket:\n\n";
    $message.="<strong>Priorità:</strong> ".api_workflows_priority($ticket->priority)."\n\n";
-   $message.="<strong>Richiedente:</strong> ".api_accountName($ticket->addIdAccount)."\n\n";
+   $message.="<strong>Richiedente:</strong> ".api_account($ticket->addIdAccount)->name."\n\n";
    $message.="<strong>Categoria:</strong> ".api_workflows_categoryName($ticket->idCategory,TRUE,TRUE)."\n\n";
    $message.="<strong>Oggetto:</strong> ".stripslashes($ticket->subject)."\n\n";
    if(strlen($ticket->note)>0){

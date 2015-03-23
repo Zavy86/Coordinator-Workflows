@@ -24,27 +24,27 @@ if($span<6){
  // check personal workflows
  $personal_workflows=NULL;
  // opened
- $personal_workflows_opened=$GLOBALS['db']->countOf("workflows_workflows","addIdAccount='".api_accountId()."' AND status='1'");
+ $personal_workflows_opened=$GLOBALS['db']->countOf("workflows_workflows","addIdAccount='".api_account()->id."' AND status='1'");
  if($personal_workflows_opened){$personal_workflows.="<p>".api_workflows_status(1,TRUE)." ".api_text("widget-workflows-opened").": ".number_format($personal_workflows_opened,0,",",".")."</p>\n";}
  // assigned
- $personal_workflows_assigned=$GLOBALS['db']->countOf("workflows_workflows","addIdAccount='".api_accountId()."' AND status='2'");
+ $personal_workflows_assigned=$GLOBALS['db']->countOf("workflows_workflows","addIdAccount='".api_account()->id."' AND status='2'");
  if($personal_workflows_assigned){$personal_workflows.="<p>".api_workflows_status(2,TRUE)." ".api_text("widget-workflows-assigned").": ".number_format($personal_workflows_assigned,0,",",".")."</p>\n";}
  // check pocessable tickets
  $processable_tickets=NULL;
  // opened
- $processable_tickets_where.="idAssigned='".api_accountId()."'";
- foreach(api_accountGroups() as $group){if($group->grouprole>1){$processable_tickets_where.=" OR idGroup='".$group->id."'";}}
- if(api_accountGroupMember(api_groupId("SIS"))){$processable_tickets_where.=" OR idGroup='0'";}
+ $processable_tickets_where.="idAssigned='".api_account()->id."'";
+ foreach(api_account()->companies[api_company()->id]->groups as $group){$processable_tickets_where.=" OR idGroup='".$group->id."'";}
+ if(api_accountGroupMember(1)){$processable_tickets_where.=" OR idGroup='0'";}
  $processable_tickets_opened=$GLOBALS['db']->countOf("workflows_tickets","status='1' AND ( ".$processable_tickets_where." )");
  if($processable_tickets_opened){$processable_tickets.="<p>".api_workflows_status(1,TRUE)." ".api_text("widget-tickets-opened").": ".number_format($processable_tickets_opened,0,",",".")."</p>\n";}
  // assigned
- $processable_tickets_assigned=$GLOBALS['db']->countOf("workflows_tickets","status='2' AND idAssigned='".api_accountId()."'");
+ $processable_tickets_assigned=$GLOBALS['db']->countOf("workflows_tickets","status='2' AND idAssigned='".api_account()->id."'");
  if($processable_tickets_assigned){$processable_tickets.="<p>".api_workflows_status(2,TRUE)." ".api_text("widget-tickets-assigned").": ".number_format($processable_tickets_assigned,0,",",".")."</p>\n";}
  // stanbdy
- $processable_tickets_standby=$GLOBALS['db']->countOf("workflows_tickets","status='3' AND idAssigned='".api_accountId()."'");
+ $processable_tickets_standby=$GLOBALS['db']->countOf("workflows_tickets","status='3' AND idAssigned='".api_account()->id."'");
  if($processable_tickets_standby){$processable_tickets.="<p>".api_workflows_status(3,TRUE)." ".api_text("widget-tickets-standby").": ".number_format($processable_tickets_standby,0,",",".")."</p>\n";}
  // closed
- $processable_tickets_closed=$GLOBALS['db']->countOf("workflows_tickets","status='4' AND idAssigned='".api_accountId()."'");
+ $processable_tickets_closed=$GLOBALS['db']->countOf("workflows_tickets","status='4' AND idAssigned='".api_account()->id."'");
  if($processable_tickets_closed){$processable_tickets.="<p>".api_workflows_status(4,TRUE)." ".api_text("widget-tickets-closed").": ".number_format($processable_tickets_closed,0,",",".")."</p>\n";}
  // check for null
  if($processable_tickets==NULL){$processable_tickets="<p>".api_text("widget-tickets-null")."</p>\n";}
@@ -87,10 +87,8 @@ $query_where="(status='1' OR status='2' OR status='3')";
 // only assignable tickets
 $query_where.=" AND ( ";
 $query_where.=" idAssigned='".$_SESSION['account']->id."'";
-foreach(api_accountGroups() as $group){
- if($group->grouprole>1){$query_where.=" OR idGroup='".$group->id."'";}
-}
-if(api_accountGroupMember(api_groupId("SIS"))){$query_where.=" OR idGroup='0'";}
+foreach(api_account()->companies[api_company()->id]->groups as $group){$query_where.=" OR idGroup='".$group->id."'";}
+if(api_accountGroupMember(1)){$query_where.=" OR idGroup='0'";}
 $query_where.=" )";
 // build tickets table
 $tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
@@ -121,10 +119,10 @@ while($ticket=$GLOBALS['db']->fetchNextObject($tickets)){
  $tickets_table->addField(api_workflows_status($ticket->status,TRUE,$ticket->solved),"nowarp text-center");
  if($span>8){$tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");}
  if($span>8){$tickets_table->addField($ticket->priority,"nowarp text-center");}
- $tickets_table->addField(api_accountFirstname($ticket->addIdAccount),"nowarp");
+ $tickets_table->addField(api_account($ticket->addIdAccount)->firstname,"nowarp");
  if($span>8){$tickets_table->addField(api_workflows_categoryName($ticket->idCategory,TRUE,TRUE,TRUE),"nowarp");}
  $tickets_table->addField(stripslashes($ticket->subject));
- if($span>8){$tickets_table->addField(api_accountFirstname($ticket->idAssigned),"nowarp text-right");}
+ if($span>8){$tickets_table->addField(api_account($ticket->idAssigned)->firstname,"nowarp text-right");}
  $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
  $tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
 }

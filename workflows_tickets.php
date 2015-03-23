@@ -36,11 +36,11 @@ function content(){
  $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idAssigned","1")." ) ";
  // if not admin show only assignable tickets
  // correggere mettendo impostazione come permesso   <----------------------------------------
- if(!api_accountGroupMember(api_groupId("SIS"))){
+ if(!api_accountGroupMember(1)){
   // only assignable tickets
-  $query_where.=" AND ( idAssigned='".api_accountId()."'";
-  foreach(api_accountGroups() as $group){if($group->grouprole>1){$query_where.=" OR idGroup='".$group->id."'";}}
-  $query_where.=" OR addIdAccount='".api_accountId()."' )";
+  $query_where.=" AND ( idAssigned='".api_account()->id."'";
+  foreach(api_account()->companies[api_company()->id]->groups as $group){$query_where.=" OR idGroup='".$group->id."'";}
+  $query_where.=" OR addIdAccount='".api_account()->id."' )";
  }
  // order tickets
  $query_order=api_queryOrder("addDate DESC");
@@ -71,7 +71,7 @@ function content(){
   $tickets_table->addField(api_workflows_referentName($ticket->idWorkflow),"nowarp");
   $tickets_table->addField(api_workflows_categoryName($ticket->idCategory,TRUE,TRUE,TRUE),"nowarp");
   $tickets_table->addField(stripslashes($ticket->subject));
-  $tickets_table->addField(api_accountFirstname($ticket->idAssigned),"nowarp text-right");
+  $tickets_table->addField(api_account($ticket->idAssigned)->firstname,"nowarp text-right");
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $tickets_table->addField($details_modal->link(api_icon("icon-list")),"nowarp text-center");
  }

@@ -39,9 +39,9 @@ function ticket_external(){
     status='4',
     solved='".$g_solved."',
     idAssigned='".$_SESSION['account']->id."',
-    updDate='".date("Y-m-d H:i:s")."',
-    assDate='".date("Y-m-d H:i:s")."',
-    endDate='".date("Y-m-d H:i:s")."'
+    updDate='".api_now()."',
+    assDate='".api_now()."',
+    endDate='".api_now()."'
     WHERE id='".$g_idTicket."'";
    // execute query
    $GLOBALS['db']->execute($query);
@@ -51,12 +51,12 @@ function ticket_external(){
      // send notification
      api_workflows_notifications($locked_ticket);
     }
-    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".date("Y-m-d H:i:s")."' WHERE requiredTicket='".$g_idTicket."' AND status='5'");
+    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".api_now()."' WHERE requiredTicket='".$g_idTicket."' AND status='5'");
    }
    // check if all activities are completed
    if($GLOBALS['db']->countOf("workflows_tickets","idWorkflow='".$g_idWorkflow."' AND (status<'4' OR status='5')")==0){
     // close workflow
-    $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idWorkflow."'");
+    $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".api_now()."' WHERE id='".$g_idWorkflow."'");
     // notification
 
     // -----!!!----- notifica che il workflow è chiuso
@@ -93,9 +93,9 @@ function ticket_authorize(){
     solved='1',
     approved='".$g_authorization."',
     idAssigned='".$_SESSION['account']->id."',
-    updDate='".date("Y-m-d H:i:s")."',
-    assDate='".date("Y-m-d H:i:s")."',
-    endDate='".date("Y-m-d H:i:s")."'
+    updDate='".api_now()."',
+    assDate='".api_now()."',
+    endDate='".api_now()."'
     WHERE id='".$g_idTicket."'";
    // execute query
    $GLOBALS['db']->execute($query);
@@ -105,12 +105,12 @@ function ticket_authorize(){
      // send notification
      api_workflows_notifications($locked_ticket);
     }
-    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".date("Y-m-d H:i:s")."' WHERE requiredTicket='".$g_idTicket."' AND status='5'");
+    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".api_now()."' WHERE requiredTicket='".$g_idTicket."' AND status='5'");
 
     // check if all activities are completed
     if($GLOBALS['db']->countOf("workflows_tickets","idWorkflow='".$g_idWorkflow."' AND (status<'4' OR status='5')")==0){
      // close workflow
-     $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idWorkflow."'");
+     $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".api_now()."' WHERE id='".$g_idWorkflow."'");
      // notification
 
      // -----!!!----- notifica che il workflow è chiuso
@@ -124,7 +124,7 @@ function ticket_authorize(){
     $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='4',solved='2',endDate='".api_now()."' WHERE idWorkflow='".$g_idWorkflow."' AND status<>'4'");
 
     // chiude il workflow come non risolto inserendo nelle note non autorizzato
-    $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idWorkflow."'");
+    $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".api_now()."' WHERE id='".$g_idWorkflow."'");
 
     echo "OK, NOT AUTHORIZED";
    }
