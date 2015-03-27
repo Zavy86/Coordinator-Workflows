@@ -639,7 +639,7 @@ function api_workflows_ocs($hostname){
  // connect to ocs inventory database
  $ocs=new DB($ocs_db_host,$ocs_db_user,$ocs_db_pass,$ocs_db_name);
  // acquire device informations
- $host_hardware=$ocs->queryUniqueObject("SELECT * FROM hardware WHERE name='".strtoupper(substr($hostname,0,strpos($hostname,".")))."'");
+ $host_hardware=$ocs->queryUniqueObject("SELECT * FROM hardware WHERE name='".strtoupper(substr($hostname,0,strpos($hostname,".")))."' OR IPSRC='".$hostname."'");
  if(!$host_hardware->ID){return FALSE;}
  $host_bios=$ocs->queryUniqueObject("SELECT * FROM bios WHERE HARDWARE_ID='".$host_hardware->ID."'");
  $host_tag=$ocs->queryUniqueObject("SELECT * FROM accountinfo WHERE HARDWARE_ID='".$host_hardware->ID."'");
@@ -682,6 +682,7 @@ function api_workflows_ocs($hostname){
  $host_modal=new str_modal($host_hardware->ID);
  $host_modal->header($host_hardware->NAME.".".$host_hardware->WORKGROUP);
  $host_modal->body($host_dl->render(FALSE));
+ $host_modal->hostname=$host_hardware->NAME.".".$host_hardware->WORKGROUP;
  // return
  return $host_modal;
 }
