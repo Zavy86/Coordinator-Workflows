@@ -28,9 +28,9 @@ $navigation->addTab(api_text("nav-history"),"workflows_tickets.php");
 // operations
 if($workflow->id){
  $navigation->addTab(api_text("nav-operations"),NULL,NULL,"active");
- if($workflow->status<4 && $workflow->addIdAccount==api_accountId()){$navigation->addSubTab(api_text("nav-urge"),"submit.php?act=workflow_urge&id=".$workflow->id);}
- if($workflow->status==1 && $workflow->addIdAccount==api_accountId()){$navigation->addSubTab(api_text("nav-close"),"submit.php?act=workflow_close&id=".$workflow->id,NULL,NULL,TRUE,"_self",api_text("nav-close-confirm"));}
- if(api_accountGroupMember(api_groupId("SIS"))){$navigation->addSubTab(api_text("nav-edit"),"workflows_edit.php?id=".$workflow->id);}
+ if($workflow->status<4 && $workflow->addIdAccount==api_account()->id){$navigation->addSubTab(api_text("nav-urge"),"submit.php?act=workflow_urge&id=".$workflow->id);}
+ if($workflow->status==1 && $workflow->addIdAccount==api_account()->id){$navigation->addSubTab(api_text("nav-close"),"submit.php?act=workflow_close&id=".$workflow->id,NULL,NULL,TRUE,"_self",api_text("nav-close-confirm"));}
+ if(api_accountGroupMember(1)){$navigation->addSubTab(api_text("nav-edit"),"workflows_edit.php?id=".$workflow->id);}
  $navigation->addSubTab(api_text("nav-sendmail"),"workflows_sendmail.php?idWorkflow=".$workflow->id);
  $navigation->addSubTab(api_text("nav-addTicket"),"workflows_view.php?id=".$workflow->id."&act=addTicket");
  if($ticket->id &&api_workflows_ticketProcessPermission($ticket)){
@@ -45,7 +45,7 @@ if($workflow->id){
   }else{
    $navigation->addSubTab(api_text("nav-reopen"),"workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."&act=editTicket");
   }
-  if($ticket->status<4 && $ticket->typology==1 && api_accountGroupMember(api_groupId("SIS"))){
+  if($ticket->status<4 && $ticket->typology==1 && api_accountGroupMember(1)){
    $navigation->addSubTab(api_text("nav-clone"),"workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id."&act=cloneTicket");
   }
  }
@@ -97,7 +97,7 @@ if(api_baseName()=="workflows_tickets.php" || api_baseName()=="workflows_flows_l
  $accounts_array=array(""=>ucfirst(api_text("all")));
  $accounts=$GLOBALS['db']->query("SELECT * FROM accounts_accounts WHERE id>'1' ORDER BY name ASC");
  while($account=$GLOBALS['db']->fetchNextObject($accounts)){
-  $accounts_array[$account->id]=api_accountName($account->id);
+  $accounts_array[$account->id]=api_account($account->id)->name;
  }
  $navigation->addFilter("select","addIdAccount",api_text("filter-addIdAccount"),$accounts_array,"input-xlarge");
  // idAssigned

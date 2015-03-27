@@ -67,7 +67,7 @@ function content(){
   }
  }
  // defaults fields
- $referent=api_accountName();
+ $referent=api_account()->name;
  if($mail->id){$referent=NULL;}
  $form->addField("text","referent",api_text("add-ff-referent"),$referent,"input-medium");
  $form->addField("text","phone",api_text("add-ff-phone"),NULL,"input-small");

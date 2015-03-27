@@ -16,7 +16,8 @@ function content(){
  $query_where="status<='3'";
  // only assignable tickets
  $query_where.=" AND ( idAssigned='".$_SESSION['account']->id."'";
- foreach(api_accountGroups() as $group){if($group->grouprole>1){$query_where.=" OR idGroup='".$group->id."'";}}
+
+ foreach(api_account()->companies[api_company()->id]->groups as $group){$query_where.=" OR idGroup='".$group->id."'";}
  $query_where.=" )";
  // order tickets
  $query_order=api_queryOrder("addDate DESC");
@@ -46,8 +47,8 @@ function content(){
   if(!$ticket->idAssigned){$ticket->idAssigned=0;}
   // status
   if($ticket->status==1){$table="opened";}
-  if($ticket->status==2&&$ticket->idAssigned==api_accountId()){$table="assigned";}
-  if($ticket->status==3&&$ticket->idAssigned==api_accountId()){$table="standby";}
+  if($ticket->status==2&&$ticket->idAssigned==api_account()->id){$table="assigned";}
+  if($ticket->status==3&&$ticket->idAssigned==api_account()->id){$table="standby";}
   // check table
   if(!$table){continue;}
   // details modal windows
@@ -80,7 +81,7 @@ function content(){
  // query where
  if($g_workflows<>"all"){$query_where=" AND (status<='3' OR addDate>=(NOW()-INTERVAL 15 DAY))";}else{$query_where=NULL;}
  // build workflow table rows
- $workflows=$GLOBALS['db']->query("SELECT * FROM workflows_workflows WHERE addIdAccount='".api_accountId()."'".$query_where." ORDER BY addDate DESC");
+ $workflows=$GLOBALS['db']->query("SELECT * FROM workflows_workflows WHERE addIdAccount='".api_account()->id."'".$query_where." ORDER BY addDate DESC");
  while($workflow=$GLOBALS['db']->fetchNextObject($workflows)){
   $workflows_table->addRow();
   // build workflows table fields
