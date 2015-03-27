@@ -32,9 +32,7 @@ function content(){
 
  // OCS inventory integration
  $host_modal=api_workflows_ocs($workflow->hostname);
- if($host_modal<>FALSE){$workflow->hostname=$host_modal->link($workflow->hostname);}
-
-
+ if($host_modal<>FALSE){$workflow->hostname=$host_modal->link($host_modal->hostname);}
  // build details dynamic list
  $details_dl=new str_dl("br","dl-horizontal");
  $details_dl->addElement(api_text("view-dt-details"),nl2br(stripslashes($workflow->description)));
