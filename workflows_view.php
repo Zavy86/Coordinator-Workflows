@@ -21,7 +21,7 @@ function content(){
  $workflow_dl->addElement(api_text("view-dt-idWorkflow"),$workflow->number);
  $workflow_dl->addElement(api_text("view-dt-category"),api_workflows_categoryName($workflow->idCategory,TRUE,TRUE));
  $workflow_dl->addElement(api_text("view-dt-subject"),"<strong>".stripslashes($workflow->subject)."</strong>");
- $workflow_dl->addElement(api_text("view-dt-account"),api_accountName($workflow->addIdAccount));
+ $workflow_dl->addElement(api_text("view-dt-account"),api_account($workflow->addIdAccount)->name);
  $workflow_dl->addElement(api_text("view-dt-typology"),api_workflows_typology($workflow->typology));
  $workflow_dl->addElement(api_text("view-dt-priority"),api_workflows_priority($workflow->priority));
  $workflow_dl->addElement(api_text("view-dt-status"),api_workflows_status($workflow->status));
@@ -74,11 +74,11 @@ function content(){
   $notes_modal=new str_modal("notes_".$ticket->id);
   $notes_modal->header(stripslashes($ticket->subject));
   $form_body=new str_form("submit.php?act=ticket_note&idWorkflow=".$workflow->id."&idTicket=".$ticket->id,"post","ticket_notes_".$ticket->id);
-  $form_body->addField("textarea","note",api_accountName()."<br>".api_timestampFormat(date("Y-m-d H:i:s"))."<br><br><input type='submit' class='btn btn-primary' value='Salva'>",NULL,"input-xlarge",api_text("view-ff-note-placeholder"),FALSE,5);
+  $form_body->addField("textarea","note",api_account()->name."<br>".api_timestampFormat(api_now())."<br><br><input type='submit' class='btn btn-primary' value='Salva'>",NULL,"input-xlarge",api_text("view-ff-note-placeholder"),FALSE,5);
   $dl_body=new str_dl("br","dl-horizontal");
   foreach($ticket->notes as $note){
-   if($note->addIdAccount==api_accountId()){$notes_del=api_link("submit.php?act=ticket_note_delete&idNote=".$note->id."&idWorkflow=".$workflow->id."&idTicket=".$ticket->id,api_icon("icon-trash"),api_text("view-ff-note-delete"),NULL,FALSE,api_text("view-ff-note-delete-confirm"))." ";}else{$notes_del=NULL;}
-   $dl_body->addElement(api_accountName($note->addIdAccount)."<br>".api_timestampFormat($note->addDate),$notes_del.nl2br(stripslashes($note->note)));
+   if($note->addIdAccount==api_account()->id){$notes_del=api_link("submit.php?act=ticket_note_delete&idNote=".$note->id."&idWorkflow=".$workflow->id."&idTicket=".$ticket->id,api_icon("icon-trash"),api_text("view-ff-note-delete"),NULL,FALSE,api_text("view-ff-note-delete-confirm"))." ";}else{$notes_del=NULL;}
+   $dl_body->addElement(api_account($note->addIdAccount)->name."<br>".api_timestampFormat($note->addDate),$notes_del.nl2br(stripslashes($note->note)));
   }
   if(!count($ticket->notes)){$dl_body->addElement("&nbsp;",api_text("view-dd-notesNull"));$note_count=NULL;}
    else{$note_count=" ".count($ticket->notes);}
@@ -103,7 +103,7 @@ function content(){
   $tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
   $tickets_table->addField($notes_modal->link(api_icon("icon-comment",api_text("view-td-note"))).$note_count,"nowarp");
   $tickets_table->addField(stripslashes($ticket->subject));
-  $tickets_table->addField($italic.(($ticket->idAssigned>0)?api_accountFirstName($ticket->idAssigned):"&nbsp;").$unitalic,"nowarp text-right");
+  $tickets_table->addField($italic.(($ticket->idAssigned>0)?api_account($ticket->idAssigned)->firstname:"&nbsp;").$unitalic,"nowarp text-right");
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
   $tickets_table->addField($update,"nowarp");
   // check for process permission

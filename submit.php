@@ -64,7 +64,7 @@ function workflow_save(){
  $query="INSERT INTO workflows_workflows
   (idCategory,idFlow,typology,subject,priority,sla,status,addDate,addIdAccount) VALUES
   ('".$p_idCategory."','".$idFlow."','".$p_typology."','".$p_subject."','".$p_priority."',
-   '".$sla."','1','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+   '".$sla."','1','".api_now()."','".$_SESSION['account']->id."')";
  // execute query
  $GLOBALS['db']->execute($query);
  // set id to last inserted id
@@ -126,7 +126,7 @@ function workflow_close(){
    api_workflows_notifications($ticket->id);
   }
   // close tickets
-  $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='4',solved='2',idAssigned='".api_accountId()."',assDate='".api_now()."',updDate='".api_now()."',endDate='".api_now()."' WHERE idWorkflow='".$workflow->id."' AND status<'4'");
+  $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='4',solved='2',idAssigned='".api_account()->id."',assDate='".api_now()."',updDate='".api_now()."',endDate='".api_now()."' WHERE idWorkflow='".$workflow->id."' AND status<'4'");
   // close workflow
   $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".api_now()."' WHERE id='".$workflow->id."'");
   // log event
@@ -176,7 +176,7 @@ function workflow_update(){
   if($p_tickets==1){
    // close all opened tickets
    foreach($workflow->tickets as $ticket){
-    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='4',solved='2',endDate='".date("Y-m-d H:i:s")."' WHERE status<>'4' AND id='".$ticket->id."'");
+    $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='4',solved='2',endDate='".api_now()."' WHERE status<>'4' AND id='".$ticket->id."'");
    }
    // open standard ticket
    $hash=md5(api_randomString(32));
@@ -189,7 +189,7 @@ function workflow_update(){
      slaAssignment,slaClosure,status,solved,approved,hostname,addDate,addIdAccount) VALUES
     ('".$workflow->id."','".$p_idCategory."','1','".$hash."','".$p_subject."',
      '".$idGroup."','2','".$p_priority."','0','480','1','0','0','".$hostname."',
-     '".date("Y-m-d H:i:s")."','".$workflow->addIdAccount."')";
+     '".api_now()."','".$workflow->addIdAccount."')";
    // execute query
    $GLOBALS['db']->execute($query);
    // set id to last inserted id
@@ -361,7 +361,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
       difficulty,priority,slaAssignment,slaClosure,status,solved,approved,hostname,addDate,addIdAccount) VALUES
      ('".$idWorkflow."','".$p_idCategory."','".$requiredTicket."','".$requiredAction."','".$typology."','".$hash."',
       '".$mail."','".$subject."','".$idGroup."','".$idAssigned."','".$difficulty."','".$priority."',
-      '".$slaAssignment."','".$slaClosure."','".$status."','0','0','".$hostname."','".date("Y-m-d H:i:s")."',
+      '".$slaAssignment."','".$slaClosure."','".$status."','0','0','".$hostname."','".api_now()."',
       '".$_SESSION['account']->id."')";
     // execute query
     $GLOBALS['db']->execute($query);
@@ -397,7 +397,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
     slaAssignment,slaClosure,status,solved,approved,hostname,addDate,addIdAccount) VALUES
    ('".$idWorkflow."','".$p_idCategory."','1','".$hash."','".$p_subject."',
     '".$idGroup."','2','".$p_priority."','0','480','1','0','0','".$hostname."',
-    '".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+    '".api_now()."','".$_SESSION['account']->id."')";
   // execute query
   $GLOBALS['db']->execute($query);
   // set id to last inserted id
@@ -448,7 +448,7 @@ function ticket_save(){
   ('".$workflow->id."','".$p_idCategory."','".$p_typology."','".$hash."','".$p_mail."',
    '".$p_subject."','".$p_idGroup."','".$p_idAssigned."','".$p_difficulty."',
    '".$p_priority."','".$slaAssignment."','".$slaClosure."','1','0','0','".$hostname."',
-   '".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+   '".api_now()."','".$_SESSION['account']->id."')";
  // execute query
  $GLOBALS['db']->execute($query);
  // set id to last inserted id
@@ -464,7 +464,7 @@ function ticket_save(){
  if(strlen($p_note)>0){
   $query="INSERT INTO workflows_tickets_notes
    (idTicket,note,addDate,addIdAccount) VALUES
-   ('".$ticket->id."','".$p_note."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+   ('".$ticket->id."','".$p_note."','".api_now()."','".$_SESSION['account']->id."')";
   // execute query
   $GLOBALS['db']->execute($query);
  }
@@ -487,7 +487,7 @@ function ticket_assign(){
  if($workflow->id>0 && $ticket->id>0){
   if($ticket->status<>2){
    // execute queries
-   $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='2',urged='0',idAssigned='".$_SESSION['account']->id."',assDate='".date("Y-m-d H:i:s")."',updDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idTicket."'");
+   $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='2',urged='0',idAssigned='".$_SESSION['account']->id."',assDate='".api_now()."',updDate='".api_now()."' WHERE id='".$g_idTicket."'");
    // log event
    api_log(API_LOG_NOTICE,"workflows","ticketAssigned",
     "{logs_workflows_ticketAssigned|".$ticket->number."|".$ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
@@ -496,11 +496,11 @@ function ticket_assign(){
     $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='2' WHERE id='".$g_idWorkflow."'");
     // log event
     api_log(API_LOG_NOTICE,"workflows","workflowAssigned",
-     "{logs_workflows_workflowAssigned|".$workflow->number."|".$workflow->subject."|".api_accountName()."}",
+     "{logs_workflows_workflowAssigned|".$workflow->number."|".$workflow->subject."|".api_account()->name."}",
      $g_idWorkflow,"workflows/workflows_view.php?id=".$workflow->id);
    }
    // change group
-   if(api_accountMainGroup()!==FALSE){$GLOBALS['db']->execute("UPDATE workflows_tickets SET idGroup='".api_accountMainGroup()->id."' WHERE id='".$g_idTicket."'");}
+   if(api_company()->mainGroup!==NULL){$GLOBALS['db']->execute("UPDATE workflows_tickets SET idGroup='".api_company()->mainGroup."' WHERE id='".$g_idTicket."'");}
    // alert
    $alert="&alert=ticketAssigned&alert_class=alert-success";
   }else{$alert="&alert=ticketErrorAssigned&alert_class=alert-error";}
@@ -550,7 +550,7 @@ function ticket_process(){
    $solved=0;
  }
  // if closed set endDate
- if($p_status==4){$update_date=",endDate='".date("Y-m-d H:i:s")."'";}
+ if($p_status==4){$update_date=",endDate='".api_now()."'";}
  // if change assigned account reset status
  if($p_status==2 && $p_idAssigned<>$_SESSION['account']->id){$p_status=1;}
  // check
@@ -571,7 +571,7 @@ function ticket_process(){
    // build query
    $query="INSERT INTO workflows_tickets_notes
     (idTicket,note,addDate,addIdAccount) VALUES
-    ('".$g_idTicket."','".$p_note."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+    ('".$g_idTicket."','".$p_note."','".api_now()."','".$_SESSION['account']->id."')";
    // execute query
    $GLOBALS['db']->execute($query);
    // send message to user if mail is setted
@@ -579,7 +579,7 @@ function ticket_process(){
    if(strlen($user->account)>4){
     $subject="Ticket ".$ticket->number." - ".$ticket->subject;
     $message=$p_note."\n\nLink: http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id;
-    api_mailer($user->account,$message,$subject,FALSE,api_accountMail(),api_accountName());
+    api_mailer($user->account,$message,$subject,FALSE,api_account()->mail,api_account()->name);
    }
   }
   // unlock locked tickets
@@ -594,7 +594,7 @@ function ticket_process(){
      "{logs_workflows_ticketUnlocked|".$unlocked_ticket->number."|".$unlocked_ticket->subject."|".$workflow->description."\n\nNote: ".$workflow->note."}",
      $unlocked_ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$unlocked_ticket->id);
    }
-   $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".date("Y-m-d H:i:s")."' WHERE requiredTicket='".$g_idTicket."' AND status='5'");
+   $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='1',addDate='".api_now()."' WHERE requiredTicket='".$g_idTicket."' AND status='5'");
   }
   // switch status for logs and notifications
   $alert="&alert=ticketUpdated&alert_class=alert-success";
@@ -609,7 +609,7 @@ function ticket_process(){
    case 3:
     // log event
     api_log(API_LOG_NOTICE,"workflows","ticketStandby",
-     "{logs_workflows_ticketStandby|".$ticket->number."|".$ticket->subject."|".api_accountName()."|".$p_note."}",
+     "{logs_workflows_ticketStandby|".$ticket->number."|".$ticket->subject."|".api_account()->name."|".$p_note."}",
      $g_idTicket,"workflows/workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket);
     break;
    // closed
@@ -617,7 +617,7 @@ function ticket_process(){
     $alert="&alert=ticketClosed&alert_class=alert-success";
     // log event
     api_log(API_LOG_NOTICE,"workflows","ticketClosed",
-     "{logs_workflows_ticketClosed|".$ticket->number."|".$ticket->subject."|".$solved_txt."|".api_accountName()."|".$p_note."}",
+     "{logs_workflows_ticketClosed|".$ticket->number."|".$ticket->subject."|".$solved_txt."|".api_account()->name."|".$p_note."}",
      $g_idTicket,"workflows/workflows_view.php?id=".$g_idWorkflow."&idTicket=".$g_idTicket);
    break;
    // locked
@@ -627,7 +627,7 @@ function ticket_process(){
   // check if all activities are completed
   if($GLOBALS['db']->countOf("workflows_tickets","idWorkflow='".$g_idWorkflow."' AND (status<'4' OR status='5')")==0){
    // close workflow
-   $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".date("Y-m-d H:i:s")."' WHERE id='".$g_idWorkflow."'");
+   $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".api_now()."' WHERE id='".$g_idWorkflow."'");
    // eventualmente disabilitarlo in caso il ticket sia unico del workflow
    // log event
    api_log(API_LOG_NOTICE,"workflows","workflowClosed",
@@ -663,7 +663,7 @@ function ticket_clone(){
      solved,approved,slaAssignment,slaClosure,hostname,addDate,addIdAccount) VALUES
     ('".$ticket->idWorkflow."','".$ticket->idCategory."','1','".$subject."','".$ticket->idGroup."',
      '".$ticket->difficulty."','".$ticket->priority."','1','0','0','".$ticket->slaAssignment."',
-     '".$ticket->slaClosure."','".$ticket->hostname."','".api_now()."','".api_accountId()."')";
+     '".$ticket->slaClosure."','".$ticket->hostname."','".api_now()."','".api_account()->id."')";
    // execute query
    $GLOBALS['db']->execute($query);
    // set id to last inserted id
@@ -702,14 +702,14 @@ function ticket_note(){
  // build query
  $query="INSERT INTO workflows_tickets_notes
   (idTicket,note,addDate,addIdAccount) VALUES
-  ('".$ticket->id."','".$p_note."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+  ('".$ticket->id."','".$p_note."','".api_now()."','".$_SESSION['account']->id."')";
  // execute query
  $GLOBALS['db']->execute($query);
  // set id to last inserted id
  $q_idNote=$GLOBALS['db']->lastInsertedId();
  // log and notifications
  api_log(API_LOG_NOTICE,"workflows","ticketNote",
-  "{logs_workflows_ticketNote|".$ticket->number."|".$ticket->subject."|".$q_idNote."|".$p_note."|".api_accountName()."}",
+  "{logs_workflows_ticketNote|".$ticket->number."|".$ticket->subject."|".$q_idNote."|".$p_note."|".api_account()->name."}",
   $ticket->id,"workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id);
  // redirect
  $alert="&alert=noteCreated&alert_class=alert-success";
@@ -771,7 +771,7 @@ function category_save(){
     name='".$p_name."',
     description='".$p_description."',
     idGroup='".$p_idGroup."',
-    updDate='".date("Y-m-d H:i:s")."',
+    updDate='".api_now()."',
     updIdAccount='".$_SESSION['account']->id."'
     WHERE id='".$g_id."'";
    // execute query
@@ -787,7 +787,7 @@ function category_save(){
    $query="INSERT INTO workflows_categories
     (idCategory,name,description,idGroup,addDate,addIdAccount) VALUES
     ('".$p_idCategory."','".$p_name."','".$p_description."','".$p_idGroup."',
-     '".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+     '".api_now()."','".$_SESSION['account']->id."')";
    // execute query
    $GLOBALS['db']->execute($query);
    // set id to last inserted id
@@ -837,7 +837,7 @@ function flow_save(){
    priority='".$p_priority."',
    sla='".$p_sla."',
    guide='".$p_guide."',
-   updDate='".date("Y-m-d H:i:s")."',
+   updDate='".api_now()."',
    updIdAccount='".$_SESSION['account']->id."'
    WHERE id='".$g_idFlow."'";
   // execute query
@@ -857,7 +857,7 @@ function flow_save(){
     addDate,addIdAccount) VALUES
    ('".$p_idCategory."','".$p_typology."','".$p_pinned."','".$p_subject."',
     '".$p_description."','".$p_advice."','".$p_priority."','".$p_sla."',
-    '".$p_guide."','".date("Y-m-d H:i:s")."','".$_SESSION['account']->id."')";
+    '".$p_guide."','".api_now()."','".$_SESSION['account']->id."')";
   // execute query
   $GLOBALS['db']->execute($query);
   // set id to last inserted id

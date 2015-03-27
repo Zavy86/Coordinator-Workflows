@@ -99,7 +99,7 @@ function content(){
   $actions_table->addField(stripslashes($action->priority),"text-center");
   $actions_table->addField($action->slaAssignment."-".$action->slaClosure,"nowarp text-center");
   $actions_table->addField($require."[#".$action->id."] ".stripslashes($action->subject));
-  $actions_table->addField(api_accountName($action->idAssigned),"nowarp text-right");
+  $actions_table->addField(api_account($action->idAssigned)->name,"nowarp text-right");
   $actions_table->addField(api_groupName($action->idGroup,TRUE,TRUE),"nowarp text-center");
   $actions_table->addField("<a href='workflows_flows_view.php?idFlow=".$flow->id."&idAction=".$action->id."&act=editAction'>".api_icon("icon-edit")."</a>");
  }
