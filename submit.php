@@ -180,7 +180,7 @@ function workflow_update(){
    }
    // open standard ticket
    $hash=md5(api_randomString(32));
-   $hostname=api_hostName();
+   $hostname=api_workflows_hostName();
    // get group id by selected category
    $idGroup=api_workflows_categoryGroup($p_idCategory);
    // build query
@@ -347,7 +347,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
     $priority=$action->priority;
     $slaAssignment=$action->slaAssignment;
     $slaClosure=$action->slaClosure;
-    $hostname=api_hostName();
+    $hostname=api_workflows_hostName();
     if($action->requiredAction>0){
      $status=5;
      $requiredTicket=$GLOBALS['db']->queryUniqueValue("SELECT id FROM workflows_tickets WHERE idWorkflow='".$idWorkflow."' AND requiredAction='".$action->requiredAction."'");
@@ -388,7 +388,7 @@ function workflow_process_actions($idWorkflow,$idFlow=0){
   $hash=md5(api_randomString(32));
   $p_subject=addslashes($_POST['subject']);
   $p_priority=$_POST['priority'];
-  $hostname=api_hostName();
+  $hostname=api_workflows_hostName();
   // get group id by selected category
   $idGroup=api_workflows_categoryGroup($p_idCategory);
   // build query
@@ -440,7 +440,7 @@ function ticket_save(){
  $p_priority=$_POST['priority'];
  $slaAssignment=$_POST['slaAssignment'];
  $slaClosure=$_POST['slaClosure'];
- $hostname=api_hostName();
+ $hostname=api_workflows_hostName();
  // build query
  $query="INSERT INTO workflows_tickets
   (idWorkflow,idCategory,typology,hash,mail,subject,idGroup,idAssigned,difficulty,priority,

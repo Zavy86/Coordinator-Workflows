@@ -631,10 +631,29 @@ function api_workflows_notifications($ticket){
 }
 
 
+/* -[ Hostname resolv ]------------------------------------------------------ */
+// @param string $ipaddr ip address
+function api_workflows_hostname($ipaddr=NULL){
+ $host=api_hostName($ipaddr);
+ if(is_numeric(substr($host,0,1))){
+  // check if ocs inventory is enabled
+  include('config.inc.php');
+  if(!$ocs_db_host){return $host;}
+  // connect to ocs inventory database
+  $ocs=new DB($ocs_db_host,$ocs_db_user,$ocs_db_pass,$ocs_db_name);
+  // acquire device informations
+  $host_hardware=$ocs->queryUniqueObject("SELECT * FROM hardware WHERE IPSRC='".$host."' ORDER BY LASTCOME DESC");
+  if(!$host_hardware->ID){return $host;}
+  $host=$host_hardware->NAME.".".$host_hardware->WORKGROUP;
+ }
+ return $host;
+}
+
+
 /* -[ OCS Inventory ]-------------------------------------------------------- */
 // @string $hostname : device hostname
 function api_workflows_ocs($hostname){
- include_once('config.inc.php');
+ include('config.inc.php');
  if(!$ocs_db_host){return FALSE;}
  // connect to ocs inventory database
  $ocs=new DB($ocs_db_host,$ocs_db_user,$ocs_db_pass,$ocs_db_name);
