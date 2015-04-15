@@ -98,6 +98,7 @@ function content(){
    submitHandler:function(form){form.submit();}
   });
   $("form[name='workflows_add']").submit(function(){$("#workflows_add_control_submit").attr("disabled","disabled");});
+  $("form[name='workflows_add']").change(function(){$("#workflows_add_control_submit").removeAttr("disabled");});
  });
 </script>
 <?php } ?>
