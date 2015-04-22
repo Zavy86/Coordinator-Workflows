@@ -70,7 +70,7 @@ function content(){
  $referent=api_account()->name;
  if($mail->id){$referent=NULL;}
  $form->addField("text","referent",api_text("add-ff-referent"),$referent,"input-medium");
- $form->addField("text","phone",api_text("add-ff-phone"),NULL,"input-small");
+ $form->addField("text","phone",api_text("add-ff-phone"),api_account()->phone,"input-small");
  $form->addField("textarea","note",api_text("add-ff-note"),stripslashes($mail->message),"input-xxlarge");
  // controls
  $form->addControl("submit",api_text("add-fc-submit"));
