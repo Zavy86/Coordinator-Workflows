@@ -12,4 +12,7 @@ $ocs_db_user="username";
 $ocs_db_pass="password";
 $ocs_db_name="database";
 
+/* -[ DameWare parameters ]-------------------------------------------------- */
+$dwrcc_enabled=FALSE;
+
 ?>
