@@ -28,16 +28,19 @@ function content(){
  $workflow_dl->addElement(api_text("view-dt-addDate"),api_timestampFormat($workflow->addDate,api_text("datetime")));
  if($workflow->endDate<>NULL){$workflow_dl->addElement(api_text("view-dt-endDate"),api_timestampFormat($workflow->endDate,api_text("datetime")));}
  $workflow_dl->addElement(api_text("view-dt-sla"),api_workflows_workflowSLA($workflow),NULL);
-
-
+ // DameWare integration
+ include('config.inc.php');
+ if($dwrcc_enabled){$workflow->dwrcc=api_link("dwrcc://".$workflow->hostname,api_icon("icon-screenshot"));}
  // OCS inventory integration
  $host_modal=api_workflows_ocs($workflow->hostname);
- if($host_modal<>FALSE){$workflow->hostname=$host_modal->link($host_modal->hostname);}
+ if($host_modal<>FALSE){
+  $workflow->hostname=$host_modal->link($host_modal->hostname);
+ }
  // build details dynamic list
  $details_dl=new str_dl("br","dl-horizontal");
  $details_dl->addElement(api_text("view-dt-details"),nl2br(stripslashes($workflow->description)));
  if(strlen($workflow->note)>0){$details_dl->addElement(api_text("view-dt-note"),nl2br(stripslashes($workflow->note)));}
- $details_dl->addElement(api_text("view-dt-hostname"),stripslashes($workflow->hostname));
+ $details_dl->addElement(api_text("view-dt-hostname"),$workflow->dwrcc." ".$workflow->hostname);
  $details_dl->addElement(api_text("view-dt-guide"),"<a href='#' onClick=\"window.prompt('".api_text("view-dd-guide")."','".addslashes($flow->guide)."');\">".$flow->guide."</a>",NULL);
  // build tickets table
  $tickets_table=new str_table(api_text("view-tr-unvalued"),TRUE);
