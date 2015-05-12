@@ -50,7 +50,7 @@ if($workflow->id){
   }
  }
 }
-// open new workflow
+// new workflow
 if(api_baseName()=="workflows_add.php"){$class="active";}else{$class=NULL;}
 $navigation->addTab(api_text("nav-open"),"workflows_search.php",NULL,$class);
 // selected
@@ -62,11 +62,14 @@ if(api_baseName()=="workflows_flows_list.php" ||
 }else{
  $class=NULL;
 }
-// administration
-if(api_checkPermission("workflows","workflows_admin")){
+// workflow by mail
+if(api_checkPermission("workflows","workflows_mails")){
  if(api_baseName()<>"workflows_mails_list.php"){$mails=$GLOBALS['db']->countOfAll("workflows_mails");}
  if($mails){$mails="&nbsp;<span class='badge badge-warning'>".$mails."</span>";}else{$mails=" ";}
  $navigation->addTab(api_text("nav-ticket-mails",$mails),"workflows_mails_list.php");
+}
+// administration
+if(api_checkPermission("workflows","workflows_admin")){
  $navigation->addTab(api_text("nav-administration"),NULL,NULL,$class);
  $navigation->addSubTab(api_text("nav-list"),"workflows_flows_list.php");
  $navigation->addSubTab(api_text("nav-add"),"workflows_flows_edit.php");
