@@ -30,7 +30,7 @@ function content(){
  $workflow_dl->addElement(api_text("view-dt-sla"),api_workflows_workflowSLA($workflow),NULL);
  // DameWare integration
  include('config.inc.php');
- if($dwrcc_enabled){$workflow->dwrcc=api_link("dwrcc://".$workflow->hostname,api_icon("icon-screenshot"));}
+ if($dwrcc_enabled){$workflow->dwrcc=api_link("dwrcc://".$workflow->hostname,api_icon("icon-screenshot"),NULL,NULL,FALSE,api_text("view-dd-connect",$workflow->hostname));}
  // OCS inventory integration
  $host_modal=api_workflows_ocs($workflow->hostname);
  if($host_modal<>FALSE){
