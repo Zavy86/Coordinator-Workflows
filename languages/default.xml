@@ -255,6 +255,7 @@
  <text key="view-dt-details">Dettagli</text>
  <text key="view-dt-note">Note</text>
  <text key="view-dt-hostname">Hostname</text>
+ <text key="view-dd-connect">Vuoi connetterti all'host {0}?</text>
  <text key="view-dt-guide">Procedura</text>
  <text key="view-dd-guide">Link diretto alla procedura: (Ctrl+C per copiare)</text>
  <text key="view-th-idTicket">Ticket</text>
