@@ -571,7 +571,7 @@ function ticket_process(){
    // build query
    $query="INSERT INTO workflows_tickets_notes
     (idTicket,note,addDate,addIdAccount) VALUES
-    ('".$g_idTicket."','".$p_note."','".api_now()."','".$_SESSION['account']->id."')";
+    ('".$g_idTicket."','→ ".$p_note."','".api_now()."','".$_SESSION['account']->id."')";
    // execute query
    $GLOBALS['db']->execute($query);
    // send message to user if mail is setted
