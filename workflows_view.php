@@ -149,7 +149,9 @@ function content(){
   $body_form->addFieldOption(1,api_text("difficulty-low"),($selected_ticket->difficulty==1)?TRUE:FALSE);
   $body_form->addFieldOption(2,api_text("difficulty-medium"),($selected_ticket->difficulty==2)?TRUE:FALSE);
   $body_form->addFieldOption(3,api_text("difficulty-high"),($selected_ticket->difficulty==3)?TRUE:FALSE);
-  $body_form->addField("textarea","note",api_text("view-ff-message"),stripslashes($selected_ticket->note),"input-xlarge",NULL,FALSE,3);
+  if(strlen(api_account($ticket->addIdAccount)->account)){
+   $body_form->addField("textarea","note",api_text("view-ff-message"),stripslashes($selected_ticket->note),"input-xlarge",NULL,FALSE,3);
+  }
   $body_form->addControl("submit",api_text("view-fc-submit"));
   $ticket_modal->body($body_form->render(FALSE));
  }elseif($g_act=="addTicket"){

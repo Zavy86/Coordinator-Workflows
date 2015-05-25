@@ -2,18 +2,15 @@
 /* -------------------------------------------------------------------------- *\
 |* -[ Workflows - List ]----------------------------------------------------- *|
 \* -------------------------------------------------------------------------- */
-header("refresh:300;");
 $checkPermission="workflows_view";
 require_once("template.inc.php");
 function content(){
  // definitions
  $details_modals_array=array();
  // acquire variabled
- $g_page=$_GET['p'];
- if(!$g_page){$g_page=1;}
+ $g_search=$_GET['q'];
  // show filters
  echo $GLOBALS['navigation']->filtersText();
-
  // build tickets table
  $tickets_table=new str_table(api_text("flows-tr-ticketsUnvalued"),TRUE);
  $tickets_table->addHeader("&nbsp;",NULL,"16");
@@ -28,12 +25,24 @@ function content(){
  $tickets_table->addHeader(api_text("flows-th-assigned"),"nowarp");
  $tickets_table->addHeader(api_text("flows-th-group"),"nowarp text-center");
  $tickets_table->addHeader("&nbsp;",NULL,"16");
-
- // generate query
- $query_where=" ( ".$GLOBALS['navigation']->filtersParameterQuery("status","1");
- $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idCategory","1");
- $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("addIdAccount","1");
- $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idAssigned","1")." ) ";
+ // build query
+ $query_table="workflows_tickets";
+ // fields
+ $query_fields="workflows_tickets.*";
+ // where
+ $query_where=" ( ".$GLOBALS['navigation']->filtersParameterQuery("workflows_tickets.status","1");
+ $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("workflows_tickets.idCategory","1");
+ $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("workflows_tickets.addIdAccount","1");
+ $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("workflows_tickets.idAssigned","1")." ) ";
+ // search
+ if(strlen($g_search)){
+  // join
+  $query_join=" LEFT JOIN workflows_workflows ON workflows_workflows.id=workflows_tickets.idWorkflow";
+  // where
+  $query_where.=" AND ( workflows_tickets.subject LIKE '%".$g_search."%'";
+  $query_where.=" OR workflows_workflows.subject LIKE '%".$g_search."%'";
+  $query_where.=" OR workflows_workflows.description LIKE '%".$g_search."%' )";
+ }
  // if not admin show only assignable tickets
  // correggere mettendo impostazione come permesso   <----------------------------------------
  if(!api_accountGroupMember(1)){
@@ -44,14 +53,12 @@ function content(){
  }
  // order tickets
  $query_order=api_queryOrder("addDate DESC");
-
  // pagination
- $pagination=new str_pagination("workflows_tickets",$query_where,$GLOBALS['navigation']->filtersGet());
+ $pagination=new str_pagination($query_table.$query_join,$query_where,$GLOBALS['navigation']->filtersGet());
  $query_limit=$pagination->queryLimit();
-
  // acquire tickets
- $tickets=$GLOBALS['db']->query("SELECT * FROM workflows_tickets WHERE ".$query_where.$query_order.$query_limit);
- while($ticket=api_workflows_ticket($GLOBALS['db']->fetchNextObject($tickets))){
+ $tickets=$GLOBALS['db']->query("SELECT ".$query_fields." FROM ".$query_table.$query_join." WHERE ".$query_where.$query_order.$query_limit);
+ while($ticket=api_workflows_ticket($GLOBALS['db']->fetchNextObject($tickets),FALSE)){
   // definitions
   if(!$ticket->idAssigned){$ticket->idAssigned=0;}
   // details modal windows
@@ -69,7 +76,7 @@ function content(){
   //$tickets_table->addField(api_workflows_ticketSLA($ticket),"nowarp text-center");
   $tickets_table->addField($ticket->priority,"nowarp text-center");
   $tickets_table->addField(api_workflows_referentName($ticket->idWorkflow),"nowarp");
-  $tickets_table->addField(api_workflows_categoryName($ticket->idCategory,TRUE,TRUE,TRUE),"nowarp");
+  $tickets_table->addField(api_workflows_categoryName($ticket->idCategory),"nowarp");
   $tickets_table->addField(stripslashes($ticket->subject));
   $tickets_table->addField(api_account($ticket->idAssigned)->firstname,"nowarp text-right");
   $tickets_table->addField(api_groupName($ticket->idGroup,TRUE,TRUE),"nowarp text-center");
