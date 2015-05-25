@@ -10,15 +10,13 @@ $html->header(api_text("module-title"),$module_name);
 // acquire variables
 $g_id=$_GET['id'];
 if(!$g_id){$g_id=0;}
-$g_idTicket=$_GET['idTicket'];
-if(!$g_idTicket){$g_idTicket=0;}
 $g_idWorkflow=$_GET['idWorkflow'];
 if(!$g_idWorkflow){$g_idWorkflow=0;}
 if($g_idWorkflow>0){$g_id=$g_idWorkflow;}
 // get workflow object
 $workflow=api_workflows_workflow($g_id,FALSE);
 // get ticket object
-$ticket=api_workflows_ticket($g_idTicket,TRUE);
+$ticket=api_workflows_ticket($_GET['idTicket'],FALSE);
 // build navigation
 global $navigation;
 $navigation=new str_navigation((api_baseName()=="workflows_tickets.php"||api_baseName()=="workflows_flows_list.php"||(api_baseName()=="workflows_search.php" && $_GET['idCategory']>0)?TRUE:FALSE),"idCategory");
@@ -33,7 +31,7 @@ if($workflow->id){
  if(api_accountGroupMember(1)){$navigation->addSubTab(api_text("nav-edit"),"workflows_edit.php?id=".$workflow->id);}
  $navigation->addSubTab(api_text("nav-sendmail"),"workflows_sendmail.php?idWorkflow=".$workflow->id);
  $navigation->addSubTab(api_text("nav-addTicket"),"workflows_view.php?id=".$workflow->id."&act=addTicket");
- if($ticket->id &&api_workflows_ticketProcessPermission($ticket)){
+ if($ticket->id && api_workflows_ticketProcessPermission($ticket)){
   $navigation->addSubTabDivider();
   $navigation->addSubTabHeader(api_text("nav-ticket",$ticket->number));
   if($ticket->status==1){
