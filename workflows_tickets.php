@@ -1,6 +1,6 @@
 <?php
 /* -------------------------------------------------------------------------- *\
-|* -[ Workflows - List ]----------------------------------------------------- *|
+|* -[ Workflows - Tickets ]-------------------------------------------------- *|
 \* -------------------------------------------------------------------------- */
 $checkPermission="workflows_view";
 require_once("template.inc.php");
@@ -30,10 +30,10 @@ function content(){
  // fields
  $query_fields="workflows_tickets.*";
  // where
- $query_where=" ( ".$GLOBALS['navigation']->filtersParameterQuery("workflows_tickets.status","1");
- $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("workflows_tickets.idCategory","1");
- $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("workflows_tickets.addIdAccount","1");
- $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("workflows_tickets.idAssigned","1")." ) ";
+ $query_where=" ( ".$GLOBALS['navigation']->filtersParameterQuery("status","1","workflows_tickets.status");
+ $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idCategory","1","workflows_tickets.idCategory");
+ $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("addIdAccount","1","workflows_tickets.addIdAccount");
+ $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idAssigned","1","workflows_tickets.idAssigned")." ) ";
  // search
  if(strlen($g_search)){
   // join
