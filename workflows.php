@@ -16,7 +16,6 @@ function content(){
  $query_where="status<='3'";
  // only assignable tickets
  $query_where.=" AND ( idAssigned='".$_SESSION['account']->id."'";
-
  foreach(api_account()->companies[api_company()->id]->groups as $group){$query_where.=" OR idGroup='".$group->id."'";}
  $query_where.=" )";
  // order tickets
