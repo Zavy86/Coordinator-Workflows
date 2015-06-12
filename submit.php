@@ -126,7 +126,7 @@ function workflow_close(){
    api_workflows_notifications($ticket->id);
   }
   // close tickets
-  $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='4',solved='2',idAssigned='".api_account()->id."',assDate='".api_now()."',updDate='".api_now()."',endDate='".api_now()."' WHERE idWorkflow='".$workflow->id."' AND status<'4'");
+  $GLOBALS['db']->execute("UPDATE workflows_tickets SET status='4',solved='2',idGroup='".api_company()->mainGroup."',idAssigned='".api_account()->id."',assDate='".api_now()."',updDate='".api_now()."',endDate='".api_now()."' WHERE idWorkflow='".$workflow->id."' AND status<'4'");
   // close workflow
   $GLOBALS['db']->execute("UPDATE workflows_workflows SET status='4',endDate='".api_now()."' WHERE id='".$workflow->id."'");
   // log event
