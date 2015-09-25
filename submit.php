@@ -238,6 +238,7 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
  $p_referent=addslashes($_POST['referent']);
  $p_phone=addslashes($_POST['phone']);
  $p_note=addslashes($_POST['note']);
+ $p_file=$_FILES['add_file'];
  // get flow fields
  if($idFlow>0){
   $fields=$GLOBALS['db']->query("SELECT * FROM workflows_fields WHERE idFlow='".$idFlow."' ORDER BY position ASC");
@@ -302,6 +303,10 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
  // acquire variables
  $description.=api_text("add-ff-referent").": ".$p_referent."\n\n";
  $description.=api_text("add-ff-phone").": ".$p_phone;
+
+ $file=api_file_upload($p_file,"workflows_attachments",NULL,NULL,NULL,NULL,FALSE,NULL,TRUE,"workflows");
+ if($file->id){$description.="\n\n".api_text("add-ff-file").": ".addslashes("<a href='submit.php?act=attachments_download&id=".$file->id."'>".$file->name."</a>");}
+
  // execute query
  $GLOBALS['db']->execute("UPDATE workflows_workflows SET description='".addslashes($description)."',note='".addslashes($p_note)."' WHERE id='".$idWorkflow."'");
  // log event

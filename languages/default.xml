@@ -312,6 +312,7 @@
  <text key="add-ff-referent">Referente</text>
  <text key="add-ff-phone">Telefono</text>
  <text key="add-ff-note">Note</text>
+ <text key="add-ff-file">Allegato</text>
  <text key="add-fc-submit">Salva</text>
  <text key="add-fc-cancel">Annulla</text>
 
