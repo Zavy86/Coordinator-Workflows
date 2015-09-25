@@ -72,6 +72,7 @@ function content(){
  $form->addField("text","referent",api_text("add-ff-referent"),$referent,"input-medium");
  $form->addField("text","phone",api_text("add-ff-phone"),api_account()->phone,"input-small");
  $form->addField("textarea","note",api_text("add-ff-note"),stripslashes($mail->message),"input-xxlarge");
+ $form->addField("file","add_file",api_text("add-ff-file"),NULL,"input-xlarge");
  // controls
  $form->addControl("submit",api_text("add-fc-submit"));
  if($mail->id){$form->addControl("button",api_text("add-fc-cancel"),NULL,"workflows_mails_list.php");}
