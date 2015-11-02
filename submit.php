@@ -305,7 +305,7 @@ function workflow_get_fields($idWorkflow,$idFlow=0){
  $description.=api_text("add-ff-phone").": ".$p_phone;
 
  $file=api_file_upload($p_file,"workflows_attachments",NULL,NULL,NULL,NULL,FALSE,NULL,TRUE,"workflows");
- if($file->id){$description.="\n\n".api_text("add-ff-file").": ".addslashes("<a href='submit.php?act=attachments_download&id=".$file->id."'>".$file->name."</a>");}
+ if($file->id){$description.="\n\n".api_text("add-ff-file").": ".addslashes("<a href='http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."/workflows/submit.php?act=attachments_download&id=".$file->id."'>".$file->name."</a>");}
 
  // execute query
  $GLOBALS['db']->execute("UPDATE workflows_workflows SET description='".addslashes($description)."',note='".addslashes($p_note)."' WHERE id='".$idWorkflow."'");
