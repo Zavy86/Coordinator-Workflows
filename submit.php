@@ -1170,7 +1170,6 @@ function flow_action_delete(){
 
 /* -[ Attachments Download ]-------------------------------------------- */
 function attachments_download(){
- if(!api_checkPermission("workflows","workflows_view")){api_die("accessDenied");}
  // acquire variables
  $g_id=$_GET['id'];
  if(!$g_id){$g_id=0;}
