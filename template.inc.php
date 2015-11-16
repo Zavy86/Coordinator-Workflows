@@ -94,6 +94,8 @@ if(api_baseName()=="workflows_tickets.php" || api_baseName()=="workflows_flows_l
   }
  }
  $navigation->addFilter("multiselect","idCategory",api_text("filter-category"),$categories_array,"input-xlarge");
+ // date range
+ $navigation->addFilter("daterange","addDate",api_text("filter-addDate"));
  // addIdAccount
  $accounts_array=array(""=>ucfirst(api_text("all")));
  $accounts=$GLOBALS['db']->query("SELECT * FROM accounts_accounts WHERE id>'1' ORDER BY name ASC");

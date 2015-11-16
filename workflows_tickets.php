@@ -32,6 +32,7 @@ function content(){
  // where
  $query_where=" ( ".$GLOBALS['navigation']->filtersParameterQuery("status","1","workflows_tickets.status");
  $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idCategory","1","workflows_tickets.idCategory");
+ $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("addDate","1","workflows_tickets.addDate");
  $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("addIdAccount","1","workflows_tickets.addIdAccount");
  $query_where.=" AND ".$GLOBALS['navigation']->filtersParameterQuery("idAssigned","1","workflows_tickets.idAssigned")." ) ";
  // search
