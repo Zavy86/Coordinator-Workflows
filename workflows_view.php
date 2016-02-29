@@ -16,12 +16,18 @@ function content(){
  $selected_ticket=api_workflows_ticket($_GET['idTicket'],TRUE);
  // acquire variables
  $g_act=$_GET['act'];
+ // make account
+ $account=api_account($workflow->addIdAccount);
+ $account_role=api_accounts_role($account->companies[$account->mainCompany]->idRole)->name;
+ $account_group=$account->companies[$account->mainCompany]->groups[$account->companies[$account->mainCompany]->mainGroup]->label;
+ if(api_checkPermission("accounts","accounts_edit")){$account_link="../accounts/accounts_edit.php?idAccount=".$account->id;}else{$account_link="#";}
+ $account_dd=api_link($account_link,$account->name,$account_role." &rarr; ".$account_group,NULL,TRUE,NULL,NULL,($account_link<>"#"?"_blank":"_self"));
  // build workflow dynamic list
  $workflow_dl=new str_dl("br","dl-horizontal");
  $workflow_dl->addElement(api_text("view-dt-idWorkflow"),$workflow->number);
  $workflow_dl->addElement(api_text("view-dt-category"),api_workflows_categoryName($workflow->idCategory,TRUE,TRUE));
  $workflow_dl->addElement(api_text("view-dt-subject"),"<strong>".stripslashes($workflow->subject)."</strong>");
- $workflow_dl->addElement(api_text("view-dt-account"),api_account($workflow->addIdAccount)->name);
+ $workflow_dl->addElement(api_text("view-dt-account"),$account_dd);
  $workflow_dl->addElement(api_text("view-dt-typology"),api_workflows_typology($workflow->typology));
  $workflow_dl->addElement(api_text("view-dt-priority"),api_workflows_priority($workflow->priority));
  $workflow_dl->addElement(api_text("view-dt-status"),api_workflows_status($workflow->status));
