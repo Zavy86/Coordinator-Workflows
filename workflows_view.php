@@ -89,7 +89,9 @@ function content(){
   }
   if(!count($ticket->notes)){$dl_body->addElement("&nbsp;",api_text("view-dd-notesNull"));$note_count=NULL;}
    else{$note_count=" ".count($ticket->notes);}
-  $notes_modal->body($form_body->render(FALSE).$dl_body->render(FALSE));
+  $notes_modal_body=$dl_body->render(FALSE);
+  if(api_workflows_ticketProcessPermission($ticket)){$notes_modal_body=$form_body->render(FALSE).$notes_modal_body;}
+  $notes_modal->body($notes_modal_body);
   $notes_modals_array[]=$notes_modal;
   // assigned
   if($ticket->status==1 || $ticket->status==3){$italic="<i>";$unitalic="</i>";}
