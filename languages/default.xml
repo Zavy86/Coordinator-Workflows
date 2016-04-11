@@ -340,6 +340,7 @@
  <text key="sendmail-ff-message">Messaggio</text>
  <text key="sendmail-ff-note">Note</text>
  <text key="sendmail-fc-submit">Invia</text>
+ <text key="sendmail-fc-submit-confirm">Confermi di voler inviare questo messaggio?</text>
  <text key="sendmail-fc-cancel">Annulla</text>
 
  <!-- workflows_categories.php -->
