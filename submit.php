@@ -530,6 +530,7 @@ function ticket_process(){
  $p_priority=$_POST['priority'];
  $p_difficulty=$_POST['difficulty'];
  $p_note=addslashes($_POST['note']);
+ $p_mail_cc=addslashes($_POST['mail_cc']);
  // switch status
  switch($p_status){
   case 1: // opened
@@ -584,7 +585,7 @@ function ticket_process(){
    if(strlen($user->account)>4){
     $subject="Ticket ".$ticket->number." - ".$ticket->subject;
     $message=$p_note."\n\nLink: http://".$_SERVER['SERVER_NAME'].$GLOBALS['dir']."workflows/workflows_view.php?id=".$workflow->id."&idTicket=".$ticket->id;
-    api_mailer($user->account,$message,$subject,FALSE,api_account()->mail,api_account()->name);
+    api_mailer($user->account,$message,$subject,FALSE,api_account()->mail,api_account()->name,$p_mail_cc);
    }
   }
   // unlock locked tickets
