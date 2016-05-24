@@ -153,12 +153,13 @@ function content(){
   $body_form->addFieldOption(3,api_text("priority-medium"),($selected_ticket->priority==3)?TRUE:FALSE);
   $body_form->addFieldOption(4,api_text("priority-low"),($selected_ticket->priority==4)?TRUE:FALSE);
   $body_form->addFieldOption(5,api_text("priority-lowest"),($selected_ticket->priority==5)?TRUE:FALSE);
-  $body_form->addField("select","difficulty",api_text("difficulty"),NULL,"input-medium");
+  /*$body_form->addField("select","difficulty",api_text("difficulty"),NULL,"input-medium");
   $body_form->addFieldOption(1,api_text("difficulty-low"),($selected_ticket->difficulty==1)?TRUE:FALSE);
   $body_form->addFieldOption(2,api_text("difficulty-medium"),($selected_ticket->difficulty==2)?TRUE:FALSE);
-  $body_form->addFieldOption(3,api_text("difficulty-high"),($selected_ticket->difficulty==3)?TRUE:FALSE);
+  $body_form->addFieldOption(3,api_text("difficulty-high"),($selected_ticket->difficulty==3)?TRUE:FALSE);*/
   if(strlen(api_account($ticket->addIdAccount)->account)){
    $body_form->addField("textarea","note",api_text("view-ff-message"),stripslashes($selected_ticket->note),"input-xlarge",NULL,FALSE,3);
+   $body_form->addField("text","mail_cc",api_text("view-ff-mail_cc"),NULL,"input-xlarge",api_text("view-ff-mail_cc-placeholder"));
   }
   $body_form->addControl("submit",api_text("view-fc-submit"));
   $ticket_modal->body($body_form->render(FALSE));
