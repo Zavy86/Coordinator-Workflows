@@ -31,6 +31,7 @@ if($workflow->id){
  if(api_accountGroupMember(1)){$navigation->addSubTab(api_text("nav-edit"),"workflows_edit.php?id=".$workflow->id);}
  $navigation->addSubTab(api_text("nav-sendmail"),"workflows_sendmail.php?idWorkflow=".$workflow->id);
  $navigation->addSubTab(api_text("nav-addTicket"),"workflows_view.php?id=".$workflow->id."&act=addTicket");
+ if(api_checkPermission("cr-authorizations","authorizations_edit") && file_exists("../cr-authorizations/index.php")){$navigation->addSubTab(api_text("nav-authorization"),"../cr-authorizations/authorizations_edit.php?idTicket=".$workflow->id);}
  if($ticket->id && api_workflows_ticketProcessPermission($ticket)){
   $navigation->addSubTabDivider();
   $navigation->addSubTabHeader(api_text("nav-ticket",$ticket->number));
