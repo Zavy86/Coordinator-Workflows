@@ -194,6 +194,7 @@
  <text key="nav-edit">Modifica attività</text>
  <text key="nav-sendmail">Inoltra per e-mail</text>
  <text key="nav-addTicket">Aggiungi ticket</text>
+ <text key="nav-authorization">Richiedi autorizzazione</text>
  <text key="nav-ticket">Ticket: {0}</text>
  <text key="nav-assign">Assegnati il ticket</text>
  <text key="nav-process">Processa il ticket</text>
@@ -295,7 +296,7 @@
  <text key="view-ff-note">Note</text>
  <text key="view-ff-message">Messaggio utente</text>
  <text key="view-ff-mail_cc">C/C Messaggio</text>
- <text key="view-ff-mail_cc-placeholder">Invia il messaggio in copia conoscenza</text>
+ <text key="view-ff-mail_cc-placeholder">Destinatari in copia separati da virgola ,</text>
  <text key="view-ff-referents">Referenti</text>
  <text key="view-ff-referents-placeholder">Inserisci un referente per riga per ogni ticket che vuoi clonare.&#xA;Se non specifichi nessun referente il ticket verrà clonato una singola volta.</text>
  <text key="view-ff-slaAssignment">SLA Assegnamento</text>
