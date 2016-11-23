@@ -48,9 +48,9 @@ function content(){
  // correggere mettendo impostazione come permesso   <----------------------------------------
  if(!api_accountGroupMember(1)){
   // only assignable tickets
-  $query_where.=" AND ( idAssigned='".api_account()->id."'";
+  $query_where.=" AND ( workflows_tickets.idAssigned='".api_account()->id."'";
   foreach(api_account()->companies[api_company()->id]->groups as $group){$query_where.=" OR idGroup='".$group->id."'";}
-  $query_where.=" OR addIdAccount='".api_account()->id."' )";
+  $query_where.=" OR workflows_tickets.addIdAccount='".api_account()->id."' )";
  }
  // order tickets
  $query_order=api_queryOrder("addDate DESC");
