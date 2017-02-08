@@ -39,10 +39,12 @@ function content(){
  if(strlen($g_search)){
   // join
   $query_join=" LEFT JOIN workflows_workflows ON workflows_workflows.id=workflows_tickets.idWorkflow";
+  $query_join.=" LEFT JOIN workflows_tickets_notes ON workflows_tickets_notes.idTicket=workflows_tickets.id";
   // where
   $query_where.=" AND ( workflows_tickets.subject LIKE '%".$g_search."%'";
   $query_where.=" OR workflows_workflows.subject LIKE '%".$g_search."%'";
-  $query_where.=" OR workflows_workflows.description LIKE '%".$g_search."%' )";
+  $query_where.=" OR workflows_workflows.description LIKE '%".$g_search."%'";
+  $query_where.=" OR workflows_tickets_notes.note LIKE '%".$g_search."%' )";
  }
  // if not admin show only assignable tickets
  // correggere mettendo impostazione come permesso   <----------------------------------------
